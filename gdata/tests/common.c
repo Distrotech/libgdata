@@ -25,6 +25,7 @@
 #include <libxml/xmlsave.h>
 
 #include "common.h"
+#include "mock-server.h"
 
 /* %TRUE if there's no Internet connection, so we should only run local tests */
 static gboolean no_internet = FALSE;
@@ -41,6 +42,15 @@ static void gdata_test_assert_handler (const gchar *message);
 /* global list of debugging messages */
 static GSList *message_list = NULL;
 
+/* Directory to output network trace files to, if trace output is enabled. (NULL otherwise.) */
+static GFile *trace_dir = NULL;
+
+/* TRUE if tests should be run online and a trace file written for each; FALSE if tests should run offline against existing trace files. */
+static gboolean write_traces = FALSE;
+
+/* Global mock server instance used by all tests. */
+static GDataMockServer *mock_server = NULL;
+
 void
 gdata_test_init (int argc, char **argv)
 {
@@ -50,13 +60,27 @@ gdata_test_init (int argc, char **argv)
 	g_type_init ();
 #endif
 
-	/* Parse the --no-internet and --no-interactive options */
+	/* Parse the custom options */
 	for (i = 1; i < argc; i++) {
 		if (strcmp ("--no-internet", argv[i]) == 0 || strcmp ("-n", argv[i]) == 0) {
 			no_internet = TRUE;
 			argv[i] = (char*) "";
 		} else if (strcmp ("--no-interactive", argv[i]) == 0 || strcmp ("-i", argv[i]) == 0) {
 			no_interactive = TRUE;
+			argv[i] = (char*) "";
+		} else if (strcmp ("--trace-dir", argv[i]) == 0 || strcmp ("-t", argv[i]) == 0) {
+			if (i >= argc - 1) {
+				fprintf (stderr, "Error: Missing directory for --trace-dir option.\n");
+				exit (1);
+			}
+
+			trace_dir = g_file_new_for_path (argv[i + 1]);
+
+			argv[i] = (char*) "";
+			argv[i + 1] = (char*) "";
+			i++;
+		} else if (strcmp ("--write-traces", argv[i]) == 0 || strcmp ("-w", argv[i]) == 0) {
+			write_traces = TRUE;
 			argv[i] = (char*) "";
 		} else if (strcmp ("-?", argv[i]) == 0 || strcmp ("--help", argv[i]) == 0 || strcmp ("-h" , argv[i]) == 0) {
 			/* We have to override --help in order to document --no-internet and --no-interactive */
@@ -74,7 +98,9 @@ gdata_test_init (int argc, char **argv)
 			          "  -m {perf|slow|thorough|quick}  Execute tests according modes\n"
 			          "  --debug-log                    Debug test logging output\n"
 			          "  -n, --no-internet              Only execute tests which don't require Internet connectivity\n"
-			          "  -i, --no-interactive           Only execute tests which don't require user interaction\n",
+			          "  -i, --no-interactive           Only execute tests which don't require user interaction\n"
+			          "  -t, --trace-dir [directory]    Read/Write trace files in the specified directory\n"
+			          "  -w, --write-traces             Work online and write trace files to --trace-dir\n",
 			          argv[0]);
 			exit (0);
 		}
@@ -92,6 +118,19 @@ gdata_test_init (int argc, char **argv)
 	/* Enable full debugging */
 	g_setenv ("LIBGDATA_DEBUG", "3" /* GDATA_LOG_FULL */, FALSE);
 	g_setenv ("G_MESSAGES_DEBUG", "libgdata", FALSE);
+
+	mock_server = gdata_mock_server_new ();
+	gdata_mock_server_set_enable_logging (mock_server, write_traces);
+	gdata_mock_server_set_enable_online (mock_server, write_traces);
+}
+
+/**
+ * TODO: Document me.
+ */
+GDataMockServer *
+gdata_test_get_mock_server (void)
+{
+	return mock_server;
 }
 
 /*
@@ -710,6 +749,11 @@ gdata_test_debug_handler (const gchar *log_domain, GLogLevelFlags log_level, con
 {
 	/* storing debugging messages in GSList for displaying them in case of error */
 	message_list = g_slist_append (message_list, g_strdup (message));
+
+	/* Log to the trace file. */
+	if (write_traces == TRUE && message != NULL && (*message == '<' || *message == '>' || *message == ' ') && *(message + 1) == ' ') {
+		gdata_mock_server_log_message_chunk (mock_server, message);
+	}
 }
 
 static void

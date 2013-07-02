@@ -20,6 +20,8 @@
 #include <glib.h>
 #include <gdata/gdata.h>
 
+#include "mock-server.h"
+
 #ifndef GDATA_TEST_COMMON_H
 #define GDATA_TEST_COMMON_H
 
@@ -45,6 +47,8 @@ G_BEGIN_DECLS
 #define TIME_FUZZINESS 5
 
 void gdata_test_init (int argc, char **argv);
+
+GDataMockServer *gdata_test_get_mock_server (void) G_GNUC_WARN_UNUSED_RESULT;
 
 gboolean gdata_test_internet (void);
 gboolean gdata_test_interactive (void);
