@@ -116,7 +116,7 @@ gdata_test_init (int argc, char **argv)
 	g_set_printerr_handler ((GPrintFunc) gdata_test_assert_handler);
 
 	/* Enable full debugging */
-	g_setenv ("LIBGDATA_DEBUG", "3" /* GDATA_LOG_FULL */, FALSE);
+	g_setenv ("LIBGDATA_DEBUG", "4" /* GDATA_LOG_FULL */, FALSE); /* TODO */
 	g_setenv ("G_MESSAGES_DEBUG", "libgdata", FALSE);
 
 	mock_server = gdata_mock_server_new ();

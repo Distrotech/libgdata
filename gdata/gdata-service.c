@@ -2114,7 +2114,8 @@ _gdata_service_get_log_level (void)
 SoupSession *
 _gdata_service_build_session (void)
 {
-	SoupSession *session = soup_session_sync_new_with_options (SOUP_SESSION_SSL_USE_SYSTEM_CA_FILE, TRUE, NULL);
+	/* TODO: Need to generate a certificate and sign it with the system CA (but also allow using an invalid/unsigned certificate for testing). */
+	SoupSession *session = soup_session_new_with_options ("ssl-strict", FALSE /* TODO */, NULL);
 
 #ifdef HAVE_GNOME
 	soup_session_add_feature_by_type (session, SOUP_TYPE_GNOME_FEATURES_2_26);
