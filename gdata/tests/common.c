@@ -25,7 +25,6 @@
 #include <libxml/xmlsave.h>
 
 #include "common.h"
-#include "mock-proxy.h"
 #include "mock-server.h"
 
 /* %TRUE if there's no Internet connection, so we should only run local tests */
@@ -56,22 +55,10 @@ void
 gdata_test_init (int argc, char **argv)
 {
 	gint i;
-	GList *extensions, *l;
-	GIOExtensionPoint *extension_point;
 
 #if !GLIB_CHECK_VERSION (2, 35, 0)
 	g_type_init ();
 #endif
-
-	_gdata_mock_proxy_resolver_get_type (); /* TODO */
-
-	g_setenv ("GIO_USE_PROXY_RESOLVER", "gdata-mock", TRUE);
-	extension_point = g_io_extension_point_lookup (G_PROXY_RESOLVER_EXTENSION_POINT_NAME);
-	g_assert (extension_point != NULL);
-	extensions = g_io_extension_point_get_extensions (extension_point);
-	for (l = extensions; l != NULL; l = l->next) {
-		g_message ("Extension: %s, %i", g_io_extension_get_name (l->data), g_io_extension_get_priority (l->data));
-	}
 
 	/* Parse the custom options */
 	for (i = 1; i < argc; i++) {

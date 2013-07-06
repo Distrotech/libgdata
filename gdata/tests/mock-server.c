@@ -845,7 +845,6 @@ gdata_mock_server_run (GDataMockServer *self)
 	struct sockaddr_in sock;
 	SoupAddress *addr;
 	GMainContext *thread_context;
-	GProxyResolver *proxy;
 
 	g_return_if_fail (GDATA_IS_MOCK_SERVER (self));
 	g_return_if_fail (priv->resolver == NULL);
@@ -859,10 +858,6 @@ gdata_mock_server_run (GDataMockServer *self)
 
 	addr = soup_address_new_from_sockaddr ((struct sockaddr *) &sock, sizeof (sock));
 	g_assert (addr != NULL);
-
-proxy = g_proxy_resolver_get_default ();
-g_message ("Resolver %p: %s", proxy, (proxy != NULL) ? G_OBJECT_TYPE_NAME (proxy) : "null");
-
 
 	/* Set up the resolver, adding TODO */
 	priv->resolver = gdata_mock_resolver_new ();
