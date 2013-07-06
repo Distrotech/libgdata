@@ -23,6 +23,8 @@ noinst_PROGRAMS = $(TEST_PROGS)
 TEST_SRCS = \
 	common.c \
 	common.h \
+	mock-proxy.c \
+	mock-proxy.h \
 	mock-resolver.c \
 	mock-resolver.h \
 	mock-server.c \
