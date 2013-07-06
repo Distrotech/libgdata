@@ -42,6 +42,11 @@ typedef struct {
 
 typedef struct {
 	GObjectClass parent;
+
+	/**
+	 * TODO: Document me.
+	 */
+	gboolean (*handle_message) (GDataMockServer *self, SoupMessage *message, SoupClientContext *client);
 } GDataMockServerClass;
 
 GType gdata_mock_server_get_type (void) G_GNUC_CONST;

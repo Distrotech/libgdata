@@ -33,6 +33,8 @@ static void gdata_mock_server_dispose (GObject *object);
 static void gdata_mock_server_get_property (GObject *object, guint property_id, GValue *value, GParamSpec *pspec);
 static void gdata_mock_server_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 
+static gboolean real_handle_message (GDataMockServer *self, SoupMessage *message, SoupClientContext *client);
+
 static void server_handler_cb (SoupServer *server, SoupMessage *message, const gchar *path, GHashTable *query, SoupClientContext *client, gpointer user_data);
 static void load_file_stream_thread_cb (GTask *task, gpointer source_object, gpointer task_data, GCancellable *cancellable);
 static void load_file_iteration_thread_cb (GTask *task, gpointer source_object, gpointer task_data, GCancellable *cancellable);
@@ -61,6 +63,13 @@ enum {
 	PROP_ENABLE_LOGGING,
 };
 
+enum {
+	SIGNAL_HANDLE_MESSAGE = 1,
+	LAST_SIGNAL,
+};
+
+static guint signals[LAST_SIGNAL] = { 0, };
+
 G_DEFINE_TYPE (GDataMockServer, gdata_mock_server, G_TYPE_OBJECT)
 
 static void
@@ -74,23 +83,44 @@ gdata_mock_server_class_init (GDataMockServerClass *klass)
 	gobject_class->set_property = gdata_mock_server_set_property;
 	gobject_class->dispose = gdata_mock_server_dispose;
 
+	klass->handle_message = real_handle_message;
+
+	/**
+	 * TODO: Document me.
+	 */
 	g_object_class_install_property (gobject_class, PROP_TRACE_DIRECTORY,
 	                                 g_param_spec_object ("trace-directory",
 	                                                      "Trace Directory", "TODO",
 	                                                      G_TYPE_FILE,
 	                                                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+	/**
+	 * TODO: Document me.
+	 */
 	g_object_class_install_property (gobject_class, PROP_ENABLE_ONLINE,
 	                                 g_param_spec_boolean ("enable-online",
 	                                                       "Enable Online", "TODO",
 	                                                       FALSE,
 	                                                       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+	/**
+	 * TODO: Document me.
+	 */
 	g_object_class_install_property (gobject_class, PROP_ENABLE_LOGGING,
 	                                 g_param_spec_boolean ("enable-logging",
 	                                                       "Enable Logging", "TODO",
 	                                                       FALSE,
 	                                                       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+	/**
+	 * TODO: Document me.
+	 */
+	signals[SIGNAL_HANDLE_MESSAGE] = g_signal_new ("handle-message", G_OBJECT_CLASS_TYPE (klass), G_SIGNAL_RUN_LAST,
+	                                               G_STRUCT_OFFSET (GDataMockServerClass, handle_message),
+	                                               g_signal_accumulator_true_handled, NULL,
+	                                               g_cclosure_marshal_generic,
+	                                               G_TYPE_BOOLEAN, 2,
+	                                               SOUP_TYPE_MESSAGE, SOUP_TYPE_CLIENT_CONTEXT);
 }
 
 static void
@@ -251,14 +281,26 @@ static void
 server_handler_cb (SoupServer *server, SoupMessage *message, const gchar *path, GHashTable *query, SoupClientContext *client, gpointer user_data)
 {
 	GDataMockServer *self = user_data;
+	gboolean message_handled = FALSE;
+
+	soup_server_pause_message (server, message);
+	g_signal_emit (self, signals[SIGNAL_HANDLE_MESSAGE], 0, message, client, &message_handled);
+	soup_server_unpause_message (server, message);
+
+	/* The message should always be handled by real_handle_message() at least. */
+	g_assert (message_handled == TRUE);
+}
+
+static gboolean
+real_handle_message (GDataMockServer *self, SoupMessage *message, SoupClientContext *client)
+{
 	GDataMockServerPrivate *priv = self->priv;
-g_message ("%s: %s", __func__, path);
+	gboolean handled = FALSE;
+
 	/* Asynchronously load the next expected message from the trace file. */
 	if (priv->next_message == NULL) {
 		GTask *task;
 		GError *child_error = NULL;
-
-		soup_server_pause_message (server, message);
 
 		task = g_task_new (self, NULL, NULL, NULL);
 		g_task_set_task_data (task, g_object_ref (priv->input_stream), g_object_unref);
@@ -276,6 +318,7 @@ g_message ("%s: %s", __func__, path);
 
 			body = g_strdup_printf ("Error: %s", child_error->message);
 			soup_message_body_append_take (message->response_body, (guchar *) body, strlen (body));
+			handled = TRUE;
 
 			g_error_free (child_error);
 		} else if (priv->next_message == NULL) {
@@ -288,15 +331,19 @@ g_message ("%s: %s", __func__, path);
 			body = g_strdup_printf ("Expected no request, but got ‘%s’.", actual_uri);
 			g_free (actual_uri);
 			soup_message_body_append_take (message->response_body, (guchar *) body, strlen (body));
+			handled = TRUE;
 		}
-
-		soup_server_unpause_message (server, message);
 	}
 
 	/* Process the actual message if we already know the expected message. */
-	if (priv->next_message != NULL) {
+	g_assert (priv->next_message != NULL || handled == TRUE);
+	if (handled == FALSE) {
 		server_process_message (self, message, client);
+		handled = TRUE;
 	}
+
+	g_assert (handled == TRUE);
+	return handled;
 }
 
 /**

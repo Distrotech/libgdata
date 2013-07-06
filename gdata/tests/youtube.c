@@ -18,6 +18,7 @@
  */
 
 #include <glib.h>
+#include <string.h>
 #include <unistd.h>
 
 #include "gdata.h"
@@ -57,6 +58,101 @@ test_authentication (void)
 	g_object_unref (authorizer);
 
 	gdata_mock_server_end_trace (mock_server);
+}
+
+/* TODO: Document me. */
+typedef struct {
+	guint status_code;
+	const gchar *reason_phrase;
+	const gchar *message_body;
+	gboolean client_login_authorizer_error; /* TRUE if error domain is GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR; FALSE if it's GDATA_SERVICE_ERROR */
+	gint error_code;
+} RequestErrorData;
+
+static const RequestErrorData authentication_errors[] = {
+	{ SOUP_STATUS_BAD_REQUEST, "Bad Request", "Invalid parameter ‘foobar’.",
+	  FALSE, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=BadAuthentication\n",
+	  TRUE, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_BAD_AUTHENTICATION },
+	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=BadAuthentication\nInfo=InvalidSecondFactor\n",
+	  TRUE, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_INVALID_SECOND_FACTOR },
+	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=NotVerified\nUrl=http://example.com/\n",
+	  TRUE, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_NOT_VERIFIED },
+	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=TermsNotAgreed\nUrl=http://example.com/\n",
+	  TRUE, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_TERMS_NOT_AGREED },
+	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=Unknown\nUrl=http://example.com/\n",
+	  FALSE, GDATA_SERVICE_ERROR_AUTHENTICATION_REQUIRED },
+	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=AccountDeleted\nUrl=http://example.com/\n",
+	  TRUE, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_ACCOUNT_DELETED },
+	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=AccountDisabled\nUrl=http://example.com/\n",
+	  TRUE, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_ACCOUNT_DISABLED },
+	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=AccountMigrated\nUrl=http://example.com/\n",
+	  TRUE, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_ACCOUNT_MIGRATED },
+	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=ServiceDisabled\nUrl=http://example.com/\n",
+	  TRUE, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_SERVICE_DISABLED },
+	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=ServiceUnavailable\nUrl=http://example.com/\n",
+	  FALSE, GDATA_SERVICE_ERROR_UNAVAILABLE },
+};
+
+static gboolean
+authentication_error_cb (GDataMockServer *self, SoupMessage *message, SoupClientContext *client, gpointer user_data)
+{
+	const RequestErrorData *data = user_data;
+
+	soup_message_set_status_full (message, data->status_code, data->reason_phrase);
+	soup_message_body_append (message->response_body, SOUP_MEMORY_STATIC, data->message_body, strlen (data->message_body));
+
+	return TRUE;
+}
+
+static void
+test_authentication_error (void)
+{
+	gboolean retval;
+	GDataClientLoginAuthorizer *authorizer;
+	GError *error = NULL;
+	gulong handler_id;
+	guint i;
+
+	if (gdata_mock_server_get_enable_logging (mock_server) == TRUE) {
+		g_test_message ("Ignoring test due to logging being enabled.");
+		return;
+	} else if (gdata_mock_server_get_enable_online (mock_server) == TRUE) {
+		g_test_message ("Ignoring test due to running online and test not being reproducible.");
+		return;
+	}
+
+	for (i = 0; i < G_N_ELEMENTS (authentication_errors); i++) {
+		const RequestErrorData *data = &authentication_errors[i];
+		GQuark error_domain;
+
+		handler_id = g_signal_connect (mock_server, "handle-message", (GCallback) authentication_error_cb, (gpointer) data);
+		gdata_mock_server_run (mock_server);
+
+		/* Create an authorizer */
+		authorizer = gdata_client_login_authorizer_new (CLIENT_ID, GDATA_TYPE_YOUTUBE_SERVICE);
+
+		g_assert_cmpstr (gdata_client_login_authorizer_get_client_id (authorizer), ==, CLIENT_ID);
+
+		/* Log in */
+		retval = gdata_client_login_authorizer_authenticate (authorizer, USERNAME, PASSWORD, NULL, &error);
+		error_domain = (data->client_login_authorizer_error == TRUE) ? GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR : GDATA_SERVICE_ERROR;
+		g_assert_error (error, error_domain, data->error_code);
+		g_assert (retval == FALSE);
+		g_clear_error (&error);
+
+		/* Check nothing's changed in the authoriser. */
+		g_assert_cmpstr (gdata_client_login_authorizer_get_username (authorizer), ==, NULL);
+		g_assert_cmpstr (gdata_client_login_authorizer_get_password (authorizer), ==, NULL);
+
+		g_assert (gdata_authorizer_is_authorized_for_domain (GDATA_AUTHORIZER (authorizer),
+		                                                     gdata_youtube_service_get_primary_authorization_domain ()) == FALSE);
+
+		g_object_unref (authorizer);
+
+		gdata_mock_server_stop (mock_server);
+		g_signal_handler_disconnect (mock_server, handler_id);
+	}
 }
 
 GDATA_ASYNC_TEST_FUNCTIONS (authentication, void,
@@ -2015,6 +2111,7 @@ main (int argc, char *argv[])
 	service = GDATA_SERVICE (gdata_youtube_service_new (DEVELOPER_KEY, authorizer));
 
 	g_test_add_func ("/youtube/authentication", test_authentication);
+	g_test_add_func ("/youtube/authentication/error", test_authentication_error);
 	g_test_add ("/youtube/authentication/async", GDataAsyncTestData, NULL, gdata_set_up_async_test_data, test_authentication_async,
 	            gdata_tear_down_async_test_data);
 	g_test_add ("/youtube/authentication/async/cancellation", GDataAsyncTestData, NULL, gdata_set_up_async_test_data,
