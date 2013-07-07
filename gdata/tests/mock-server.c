@@ -40,12 +40,16 @@ static void load_file_stream_thread_cb (GTask *task, gpointer source_object, gpo
 static void load_file_iteration_thread_cb (GTask *task, gpointer source_object, gpointer task_data, GCancellable *cancellable);
 
 static GFileInputStream *load_file_stream (GFile *trace_file, GCancellable *cancellable, GError **error);
-static SoupMessage *load_file_iteration (GFileInputStream *input_stream, GCancellable *cancellable, GError **error);
+static SoupMessage *load_file_iteration (GFileInputStream *input_stream, SoupURI *base_uri, GCancellable *cancellable, GError **error);
 
 struct _GDataMockServerPrivate {
 	SoupServer *server;
 	GDataMockResolver *resolver;
 	GThread *server_thread;
+
+	/* Server interface. */
+	SoupAddress *address; /* unowned */
+	guint port;
 
 	GFile *trace_file;
 	GFileInputStream *input_stream;
@@ -61,6 +65,8 @@ enum {
 	PROP_TRACE_DIRECTORY = 1,
 	PROP_ENABLE_ONLINE,
 	PROP_ENABLE_LOGGING,
+	PROP_ADDRESS,
+	PROP_PORT,
 };
 
 enum {
@@ -115,6 +121,24 @@ gdata_mock_server_class_init (GDataMockServerClass *klass)
 	/**
 	 * TODO: Document me.
 	 */
+	g_object_class_install_property (gobject_class, PROP_ADDRESS,
+	                                 g_param_spec_object ("address",
+	                                                      "Server Address", "TODO",
+	                                                      SOUP_TYPE_ADDRESS,
+	                                                      G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+	/**
+	 * TODO: Document me.
+	 */
+	g_object_class_install_property (gobject_class, PROP_PORT,
+	                                 g_param_spec_uint ("port",
+	                                                    "Server Port", "TODO",
+	                                                    0, G_MAXUINT, 0,
+	                                                    G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+	/**
+	 * TODO: Document me.
+	 */
 	signals[SIGNAL_HANDLE_MESSAGE] = g_signal_new ("handle-message", G_OBJECT_CLASS_TYPE (klass), G_SIGNAL_RUN_LAST,
 	                                               G_STRUCT_OFFSET (GDataMockServerClass, handle_message),
 	                                               g_signal_accumulator_true_handled, NULL,
@@ -164,6 +188,12 @@ gdata_mock_server_get_property (GObject *object, guint property_id, GValue *valu
 		case PROP_ENABLE_LOGGING:
 			g_value_set_boolean (value, priv->enable_logging);
 			break;
+		case PROP_ADDRESS:
+			g_value_set_object (value, priv->address);
+			break;
+		case PROP_PORT:
+			g_value_set_uint (value, priv->port);
+			break;
 		default:
 			/* We don't have any other property... */
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -186,11 +216,40 @@ gdata_mock_server_set_property (GObject *object, guint property_id, const GValue
 		case PROP_ENABLE_LOGGING:
 			gdata_mock_server_set_enable_logging (self, g_value_get_boolean (value));
 			break;
+		case PROP_ADDRESS:
+		case PROP_PORT:
+			/* Read-only. */
 		default:
 			/* We don't have any other property... */
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 			break;
 	}
+}
+
+typedef struct {
+	GFileInputStream *input_stream;
+	SoupURI *base_uri;
+} LoadFileIterationData;
+
+static void
+load_file_iteration_data_free (LoadFileIterationData *data)
+{
+	g_object_unref (data->input_stream);
+	soup_uri_free (data->base_uri);
+	g_slice_free (LoadFileIterationData, data);
+}
+
+static SoupURI * /* transfer full */
+build_base_uri (GDataMockServer *self)
+{
+	gchar *base_uri_string;
+	SoupURI *base_uri;
+
+	base_uri_string = g_strdup_printf ("https://%s:%u", soup_address_get_physical (self->priv->address), self->priv->port);
+	base_uri = soup_uri_new (base_uri_string);
+	g_free (base_uri_string);
+
+	return base_uri;
 }
 
 static inline gboolean
@@ -300,10 +359,15 @@ real_handle_message (GDataMockServer *self, SoupMessage *message, SoupClientCont
 	/* Asynchronously load the next expected message from the trace file. */
 	if (priv->next_message == NULL) {
 		GTask *task;
+		LoadFileIterationData *data;
 		GError *child_error = NULL;
 
+		data = g_slice_new (LoadFileIterationData);
+		data->input_stream = g_object_ref (priv->input_stream);
+		data->base_uri = build_base_uri (self);
+
 		task = g_task_new (self, NULL, NULL, NULL);
-		g_task_set_task_data (task, g_object_ref (priv->input_stream), g_object_unref);
+		g_task_set_task_data (task, data, (GDestroyNotify) load_file_iteration_data_free);
 		g_task_run_in_thread_sync (task, load_file_iteration_thread_cb);
 
 		/* Handle the results. */
@@ -445,15 +509,16 @@ error:
 	return FALSE;
 }
 
+/* base_uri is the base URI for the server, e.g. https://127.0.0.1:1431. */
 static SoupMessage *
-trace_to_soup_message (const gchar *trace)
+trace_to_soup_message (const gchar *trace, SoupURI *base_uri)
 {
 	SoupMessage *message;
 	const gchar *i, *j, *method;
 	gchar *uri_string, *response_message;
 	SoupHTTPVersion http_version;
 	guint response_status;
-	SoupURI *base_uri, *uri;
+	SoupURI *uri;
 
 	g_return_val_if_fail (trace != NULL, NULL);
 
@@ -530,12 +595,9 @@ trace_to_soup_message (const gchar *trace)
 	trace++;
 
 	/* Build the message. */
-	base_uri = soup_uri_new ("https://127.0.0.1:443"); /* TODO */
 	uri = soup_uri_new_with_base (base_uri, uri_string);
 	message = soup_message_new_from_uri (method, uri);
-
 	soup_uri_free (uri);
-	soup_uri_free (base_uri);
 
 	if (message == NULL) {
 		g_warning ("Invalid URI ‘%s’.", uri_string);
@@ -660,7 +722,7 @@ load_message_half (GFileInputStream *input_stream, GString *current_message, gch
 }
 
 static SoupMessage *
-load_file_iteration (GFileInputStream *input_stream, GCancellable *cancellable, GError **error)
+load_file_iteration (GFileInputStream *input_stream, SoupURI *base_uri, GCancellable *cancellable, GError **error)
 {
 	SoupMessage *output_message = NULL;
 	GString *current_message = NULL;
@@ -675,7 +737,7 @@ load_file_iteration (GFileInputStream *input_stream, GCancellable *cancellable, 
 	}
 
 	if (current_message->len > 0) {
-		output_message = trace_to_soup_message (current_message->str);
+		output_message = trace_to_soup_message (current_message->str, base_uri);
 	} else {
 		/* Reached the end of the file. */
 		output_message = NULL;
@@ -715,14 +777,17 @@ load_file_stream_thread_cb (GTask *task, gpointer source_object, gpointer task_d
 static void
 load_file_iteration_thread_cb (GTask *task, gpointer source_object, gpointer task_data, GCancellable *cancellable)
 {
+	LoadFileIterationData *data = task_data;
 	GFileInputStream *input_stream;
 	SoupMessage *output_message;
+	SoupURI *base_uri;
 	GError *child_error = NULL;
 
-	input_stream = task_data;
+	input_stream = data->input_stream;
 	g_assert (G_IS_FILE_INPUT_STREAM (input_stream));
+	base_uri = data->base_uri;
 
-	output_message = load_file_iteration (input_stream, cancellable, &child_error);
+	output_message = load_file_iteration (input_stream, base_uri, cancellable, &child_error);
 
 	if (child_error != NULL) {
 		g_task_return_error (task, child_error);
@@ -737,22 +802,29 @@ load_file_iteration_thread_cb (GTask *task, gpointer source_object, gpointer tas
 void
 gdata_mock_server_load_trace (GDataMockServer *self, GFile *trace_file, GCancellable *cancellable, GError **error)
 {
+	SoupURI *base_uri;
+
 	g_return_if_fail (GDATA_IS_MOCK_SERVER (self));
 	g_return_if_fail (G_IS_FILE (trace_file));
 	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 	g_return_if_fail (error == NULL || *error == NULL);
 	g_return_if_fail (self->priv->trace_file == NULL && self->priv->input_stream == NULL && self->priv->next_message == NULL);
 
+	base_uri = build_base_uri (self);
+
 	self->priv->trace_file = g_object_ref (trace_file);
 	self->priv->input_stream = load_file_stream (self->priv->trace_file, cancellable, error);
 	if (self->priv->input_stream != NULL) {
-		self->priv->next_message = load_file_iteration (self->priv->input_stream, cancellable, error);
+		self->priv->next_message = load_file_iteration (self->priv->input_stream, base_uri, cancellable, error);
 	}
+
+	soup_uri_free (base_uri);
 }
 
 typedef struct {
 	GAsyncReadyCallback callback;
 	gpointer user_data;
+	SoupURI *base_uri;
 } LoadTraceData;
 
 static void
@@ -760,6 +832,7 @@ load_trace_async_cb (GObject *source_object, GAsyncResult *result, gpointer user
 {
 	GDataMockServer *self = GDATA_MOCK_SERVER (source_object);
 	LoadTraceData *data = user_data;
+	LoadFileIterationData *iteration_data;
 	GTask *task;
 	GError *child_error = NULL;
 
@@ -769,8 +842,13 @@ load_trace_async_cb (GObject *source_object, GAsyncResult *result, gpointer user
 
 	self->priv->input_stream = g_task_propagate_pointer (G_TASK (result), &child_error);
 
+	iteration_data = g_slice_new (LoadFileIterationData);
+	iteration_data->input_stream = g_object_ref (self->priv->input_stream);
+	iteration_data->base_uri = data->base_uri; /* transfer ownership */
+	data->base_uri = NULL;
+
 	task = g_task_new (g_task_get_source_object (G_TASK (result)), g_task_get_cancellable (G_TASK (result)), data->callback, data->user_data);
-	g_task_set_task_data (task, g_object_ref (self->priv->input_stream), g_object_unref);
+	g_task_set_task_data (task, iteration_data, (GDestroyNotify) load_file_iteration_data_free);
 
 	if (child_error != NULL) {
 		g_task_return_error (task, child_error);
@@ -802,6 +880,7 @@ gdata_mock_server_load_trace_async (GDataMockServer *self, GFile *trace_file, GC
 	data = g_slice_new (LoadTraceData);
 	data->callback = callback;
 	data->user_data = user_data;
+	data->base_uri = build_base_uri (self);
 
 	task = g_task_new (self, cancellable, load_trace_async_cb, data);
 	g_task_set_task_data (task, g_object_ref (self->priv->trace_file), g_object_unref);
@@ -854,7 +933,7 @@ gdata_mock_server_run (GDataMockServer *self)
 	memset (&sock, 0, sizeof (sock));
 	sock.sin_family = AF_INET;
 	sock.sin_addr.s_addr = htonl (INADDR_LOOPBACK); /* TODO: don't hard-code this */
-	sock.sin_port = htons (443);
+	sock.sin_port = htons (0); /* random port */
 
 	addr = soup_address_new_from_sockaddr ((struct sockaddr *) &sock, sizeof (sock));
 	g_assert (addr != NULL);
@@ -870,12 +949,15 @@ gdata_mock_server_run (GDataMockServer *self)
 	/* Set up the server. */
 	thread_context = g_main_context_new ();
 	priv->server = soup_server_new ("interface", addr,
-	                                "port", 443,
 	                                "ssl-cert-file", "/etc/pki/tls/certs/localhost.crt", /* TODO */
 	                                "ssl-key-file", "/etc/pki/tls/private/localhost.key" /* TODO */,
 	                                "async-context", thread_context,
 	                                NULL);
 	soup_server_add_handler (priv->server, "/", server_handler_cb, self, NULL);
+
+	/* Grab the randomly selected address and port. */
+	priv->address = soup_socket_get_local_address (soup_server_get_listener (priv->server));
+	priv->port = soup_server_get_port (priv->server);
 
 	g_main_context_unref (thread_context);
 	g_object_unref (addr);
@@ -990,6 +1072,7 @@ gdata_mock_server_start_trace_full (GDataMockServer *self, GFile *trace_file)
 	}
 
 	if (priv->enable_online == FALSE) {
+		gdata_mock_server_run (self);
 		gdata_mock_server_load_trace (self, trace_file, NULL, &child_error);
 
 		if (child_error != NULL) {
@@ -999,10 +1082,10 @@ gdata_mock_server_start_trace_full (GDataMockServer *self, GFile *trace_file)
 
 			g_error_free (child_error);
 
+			gdata_mock_server_stop (self);
+
 			return;
 		}
-
-		gdata_mock_server_run (self);
 	}
 }
 
@@ -1102,4 +1185,26 @@ gdata_mock_server_log_message_chunk (GDataMockServer *self, const gchar *message
 
 		return;
 	}
+}
+
+/**
+ * TODO: Document me.
+ */
+SoupAddress *
+gdata_mock_server_get_address (GDataMockServer *self)
+{
+	g_return_val_if_fail (GDATA_IS_MOCK_SERVER (self), NULL);
+
+	return self->priv->address;
+}
+
+/**
+ * TODO: Document me.
+ */
+guint
+gdata_mock_server_get_port (GDataMockServer *self)
+{
+	g_return_val_if_fail (GDATA_IS_MOCK_SERVER (self), 0);
+
+	return self->priv->port;
 }

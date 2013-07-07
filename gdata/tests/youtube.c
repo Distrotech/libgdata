@@ -29,13 +29,25 @@
 static GDataMockServer *mock_server = NULL;
 
 static void
+gdata_test_mock_server_start_trace (GDataMockServer *server, const gchar *trace_filename)
+{
+	gchar *port_string;
+
+	gdata_mock_server_start_trace (server, trace_filename);
+
+	port_string = g_strdup_printf ("%u", gdata_mock_server_get_port (server));
+	g_setenv ("LIBGDATA_HTTPS_PORT", port_string, TRUE);
+	g_free (port_string);
+}
+
+static void
 test_authentication (void)
 {
 	gboolean retval;
 	GDataClientLoginAuthorizer *authorizer;
 	GError *error = NULL;
 
-	gdata_mock_server_start_trace (mock_server, "authentication");
+	gdata_test_mock_server_start_trace (mock_server, "authentication");
 
 	/* Create an authorizer */
 	authorizer = gdata_client_login_authorizer_new (CLIENT_ID, GDATA_TYPE_YOUTUBE_SERVICE);
@@ -125,9 +137,14 @@ test_authentication_error (void)
 	for (i = 0; i < G_N_ELEMENTS (authentication_errors); i++) {
 		const RequestErrorData *data = &authentication_errors[i];
 		GQuark error_domain;
+		gchar *port_string;
 
 		handler_id = g_signal_connect (mock_server, "handle-message", (GCallback) authentication_error_cb, (gpointer) data);
 		gdata_mock_server_run (mock_server);
+
+		port_string = g_strdup_printf ("%u", gdata_mock_server_get_port (mock_server));
+		g_setenv ("LIBGDATA_HTTPS_PORT", port_string, TRUE);
+		g_free (port_string);
 
 		/* Create an authorizer */
 		authorizer = gdata_client_login_authorizer_new (CLIENT_ID, GDATA_TYPE_YOUTUBE_SERVICE);
@@ -159,7 +176,7 @@ GDATA_ASYNC_TEST_FUNCTIONS (authentication, void,
 G_STMT_START {
 	GDataClientLoginAuthorizer *authorizer;
 
-	gdata_mock_server_start_trace (mock_server, "authentication-async");
+	gdata_test_mock_server_start_trace (mock_server, "authentication-async");
 
 	/* Create an authorizer */
 	authorizer = gdata_client_login_authorizer_new (CLIENT_ID, GDATA_TYPE_YOUTUBE_SERVICE);
@@ -220,7 +237,7 @@ test_query_standard_feed (gconstpointer service)
 	GDataFeed *feed;
 	GError *error = NULL;
 
-	gdata_mock_server_start_trace (mock_server, "query-standard-feed");
+	gdata_test_mock_server_start_trace (mock_server, "query-standard-feed");
 
 	feed = gdata_youtube_service_query_standard_feed (GDATA_YOUTUBE_SERVICE (service), GDATA_YOUTUBE_TOP_RATED_FEED, NULL, NULL, NULL, NULL, &error);
 	g_assert_no_error (error);
@@ -236,7 +253,7 @@ test_query_standard_feed (gconstpointer service)
 
 GDATA_ASYNC_TEST_FUNCTIONS (query_standard_feed, void,
 G_STMT_START {
-	gdata_mock_server_start_trace (mock_server, "query-standard-feed-async");
+	gdata_test_mock_server_start_trace (mock_server, "query-standard-feed-async");
 
 	gdata_youtube_service_query_standard_feed_async (GDATA_YOUTUBE_SERVICE (service), GDATA_YOUTUBE_TOP_RATED_FEED, NULL, cancellable,
 	                                                 NULL, NULL, NULL, async_ready_callback, async_data);
@@ -265,7 +282,7 @@ test_query_standard_feed_async_progress_closure (gconstpointer service)
 
 	g_assert (service != NULL);
 
-	gdata_mock_server_start_trace (mock_server, "query-standard-feed-async-progress-closure");
+	gdata_test_mock_server_start_trace (mock_server, "query-standard-feed-async-progress-closure");
 
 	data->main_loop = g_main_loop_new (NULL, TRUE);
 
@@ -361,7 +378,7 @@ test_query_related (gconstpointer service)
 	GDataYouTubeVideo *video;
 	GError *error = NULL;
 
-	gdata_mock_server_start_trace (mock_server, "query-related");
+	gdata_test_mock_server_start_trace (mock_server, "query-related");
 
 	video = get_video_for_related ();
 	feed = gdata_youtube_service_query_related (GDATA_YOUTUBE_SERVICE (service), video, NULL, NULL, NULL, NULL, &error);
@@ -381,7 +398,7 @@ GDATA_ASYNC_TEST_FUNCTIONS (query_related, void,
 G_STMT_START {
 	GDataYouTubeVideo *video;
 
-	gdata_mock_server_start_trace (mock_server, "query-related");
+	gdata_test_mock_server_start_trace (mock_server, "query-related");
 
 	video = get_video_for_related ();
 	gdata_youtube_service_query_related_async (GDATA_YOUTUBE_SERVICE (service), video, NULL, cancellable, NULL,
@@ -413,7 +430,7 @@ test_query_related_async_progress_closure (gconstpointer service)
 
 	g_assert (service != NULL);
 
-	gdata_mock_server_start_trace (mock_server, "query-related-async-progress-closure");
+	gdata_test_mock_server_start_trace (mock_server, "query-related-async-progress-closure");
 
 	data->main_loop = g_main_loop_new (NULL, TRUE);
 	video = get_video_for_related ();
@@ -484,7 +501,7 @@ set_up_upload (UploadData *data, gconstpointer service)
 static void
 tear_down_upload (UploadData *data, gconstpointer service)
 {
-	gdata_mock_server_start_trace (mock_server, "teardown-upload");
+	gdata_test_mock_server_start_trace (mock_server, "teardown-upload");
 
 	/* Delete the uploaded video, if possible */
 	if (data->updated_video != NULL) {
@@ -511,7 +528,7 @@ test_upload_simple (UploadData *data, gconstpointer service)
 	gssize transfer_size;
 	GError *error = NULL;
 
-	gdata_mock_server_start_trace (mock_server, "upload-simple");
+	gdata_test_mock_server_start_trace (mock_server, "upload-simple");
 
 	/* Prepare the upload stream */
 	upload_stream = gdata_youtube_service_upload_video (GDATA_YOUTUBE_SERVICE (service), data->video, data->slug, data->content_type, NULL,
@@ -563,7 +580,7 @@ G_STMT_START {
 	GFileInputStream *file_stream;
 	GError *error = NULL;
 
-	gdata_mock_server_start_trace (mock_server, "upload-async");
+	gdata_test_mock_server_start_trace (mock_server, "upload-async");
 
 	/* Prepare the upload stream */
 	upload_stream = gdata_youtube_service_upload_video (GDATA_YOUTUBE_SERVICE (service), data->video, data->slug,
@@ -1478,7 +1495,7 @@ test_query_single (gconstpointer service)
 	GDataYouTubeVideo *video;
 	GError *error = NULL;
 
-	gdata_mock_server_start_trace (mock_server, "query-single");
+	gdata_test_mock_server_start_trace (mock_server, "query-single");
 
 	video = GDATA_YOUTUBE_VIDEO (gdata_service_query_single_entry (GDATA_SERVICE (service),
 	                                                               gdata_youtube_service_get_primary_authorization_domain (),
@@ -1499,7 +1516,7 @@ test_query_single (gconstpointer service)
 
 GDATA_ASYNC_TEST_FUNCTIONS (query_single, void,
 G_STMT_START {
-	gdata_mock_server_start_trace (mock_server, "query-single-async");
+	gdata_test_mock_server_start_trace (mock_server, "query-single-async");
 
 	gdata_service_query_single_entry_async (GDATA_SERVICE (service), gdata_youtube_service_get_primary_authorization_domain (),
 	                                        "tag:youtube.com,2008:video:_LeQuMpwbW4", NULL, GDATA_TYPE_YOUTUBE_VIDEO,
@@ -1530,7 +1547,7 @@ typedef struct {
 static void
 set_up_comment (CommentData *data, gconstpointer service)
 {
-	gdata_mock_server_start_trace (mock_server, "setup-comment");
+	gdata_test_mock_server_start_trace (mock_server, "setup-comment");
 
 	/* Get a video known to have comments on it. */
 	data->video = GDATA_YOUTUBE_VIDEO (gdata_service_query_single_entry (GDATA_SERVICE (service),
@@ -1582,7 +1599,7 @@ test_comment_query (CommentData *data, gconstpointer service)
 	GDataFeed *comments_feed;
 	GError *error = NULL;
 
-	gdata_mock_server_start_trace (mock_server, "comment-query");
+	gdata_test_mock_server_start_trace (mock_server, "comment-query");
 
 	/* Get the comments feed for the video */
 	comments_feed = gdata_commentable_query_comments (GDATA_COMMENTABLE (data->video), GDATA_SERVICE (service), NULL, NULL, NULL, NULL, &error);
@@ -1600,7 +1617,7 @@ GDATA_ASYNC_CLOSURE_FUNCTIONS (comment, CommentData);
 
 GDATA_ASYNC_TEST_FUNCTIONS (comment_query, CommentData,
 G_STMT_START {
-	gdata_mock_server_start_trace (mock_server, "comment-query-async");
+	gdata_test_mock_server_start_trace (mock_server, "comment-query-async");
 
 	gdata_commentable_query_comments_async (GDATA_COMMENTABLE (data->video), GDATA_SERVICE (service), NULL, cancellable, NULL, NULL, NULL,
 	                                        async_ready_callback, async_data);
@@ -1629,7 +1646,7 @@ test_comment_query_async_progress_closure (CommentData *query_data, gconstpointe
 {
 	GDataAsyncProgressClosure *data = g_slice_new0 (GDataAsyncProgressClosure);
 
-	gdata_mock_server_start_trace (mock_server, "comment-query-async-progress-closure");
+	gdata_test_mock_server_start_trace (mock_server, "comment-query-async-progress-closure");
 
 	data->main_loop = g_main_loop_new (NULL, TRUE);
 
@@ -1660,7 +1677,7 @@ set_up_insert_comment (InsertCommentData *data, gconstpointer service)
 {
 	set_up_comment ((CommentData*) data, service);
 
-	gdata_mock_server_start_trace (mock_server, "setup-insert-comment");
+	gdata_test_mock_server_start_trace (mock_server, "setup-insert-comment");
 
 	/* Create a test comment to be inserted. */
 	data->comment = gdata_youtube_comment_new (NULL);
@@ -1674,7 +1691,7 @@ set_up_insert_comment (InsertCommentData *data, gconstpointer service)
 static void
 tear_down_insert_comment (InsertCommentData *data, gconstpointer service)
 {
-	gdata_mock_server_start_trace (mock_server, "teardown-insert-comment");
+	gdata_test_mock_server_start_trace (mock_server, "teardown-insert-comment");
 
 	if (data->comment != NULL) {
 		g_object_unref (data->comment);
@@ -1715,7 +1732,7 @@ test_comment_insert (InsertCommentData *data, gconstpointer service)
 	GDataComment *new_comment;
 	GError *error = NULL;
 
-	gdata_mock_server_start_trace (mock_server, "comment-insert");
+	gdata_test_mock_server_start_trace (mock_server, "comment-insert");
 
 	new_comment = gdata_commentable_insert_comment (GDATA_COMMENTABLE (data->parent.video), GDATA_SERVICE (service), GDATA_COMMENT (data->comment),
 	                                                NULL, &error);
@@ -1733,7 +1750,7 @@ GDATA_ASYNC_CLOSURE_FUNCTIONS (insert_comment, InsertCommentData);
 
 GDATA_ASYNC_TEST_FUNCTIONS (comment_insert, InsertCommentData,
 G_STMT_START {
-	gdata_mock_server_start_trace (mock_server, "comment-insert-async");
+	gdata_test_mock_server_start_trace (mock_server, "comment-insert-async");
 
 	gdata_commentable_insert_comment_async (GDATA_COMMENTABLE (data->parent.video), GDATA_SERVICE (service),
 	                                        GDATA_COMMENT (data->comment), cancellable, async_ready_callback, async_data);
@@ -1760,7 +1777,7 @@ test_comment_delete (InsertCommentData *data, gconstpointer service)
 	gboolean success;
 	GError *error = NULL;
 
-	gdata_mock_server_start_trace (mock_server, "comment-delete");
+	gdata_test_mock_server_start_trace (mock_server, "comment-delete");
 
 	/* We attempt to delete a comment which hasn't been inserted here, but that doesn't matter as the function should always immediately
 	 * return an error because deleting YouTube comments isn't allowed. */
@@ -1775,7 +1792,7 @@ test_comment_delete (InsertCommentData *data, gconstpointer service)
 
 GDATA_ASYNC_TEST_FUNCTIONS (comment_delete, InsertCommentData,
 G_STMT_START {
-	gdata_mock_server_start_trace (mock_server, "comment-delete-async");
+	gdata_test_mock_server_start_trace (mock_server, "comment-delete-async");
 
 	gdata_commentable_delete_comment_async (GDATA_COMMENTABLE (data->parent.video), GDATA_SERVICE (service),
 	                                        GDATA_COMMENT (data->comment), cancellable, async_ready_callback, async_data);
@@ -1840,7 +1857,7 @@ test_categories (gconstpointer service)
 	GError *error = NULL;
 	gchar *category_label, *old_locale;
 
-	gdata_mock_server_start_trace (mock_server, "categories");
+	gdata_test_mock_server_start_trace (mock_server, "categories");
 
 	app_categories = gdata_youtube_service_get_categories (GDATA_YOUTUBE_SERVICE (service), NULL, &error);
 	g_assert_no_error (error);
@@ -1884,7 +1901,7 @@ test_categories (gconstpointer service)
 
 GDATA_ASYNC_TEST_FUNCTIONS (categories, void,
 G_STMT_START {
-	gdata_mock_server_start_trace (mock_server, "categories-async");
+	gdata_test_mock_server_start_trace (mock_server, "categories-async");
 
 	gdata_youtube_service_get_categories_async (GDATA_YOUTUBE_SERVICE (service), cancellable, async_ready_callback, async_data);
 } G_STMT_END,
@@ -1920,7 +1937,7 @@ setup_batch (BatchData *data, gconstpointer service)
 	GDataEntry *video;
 	GError *error = NULL;
 
-	gdata_mock_server_start_trace (mock_server, "setup-batch");
+	gdata_test_mock_server_start_trace (mock_server, "setup-batch");
 
 	/* We can't insert new videos as they'd just hit the moderation queue and cause tests to fail. Instead, we rely on two videos already existing
 	 * on the server with the given IDs. */
@@ -1952,7 +1969,7 @@ test_batch (BatchData *data, gconstpointer service)
 	guint op_id, op_id2;
 	GError *error = NULL;
 
-	gdata_mock_server_start_trace (mock_server, "batch");
+	gdata_test_mock_server_start_trace (mock_server, "batch");
 
 	/* Here we hardcode the feed URI, but it should really be extracted from a video feed, as the GDATA_LINK_BATCH link.
 	 * It looks like this feed is read-only, so we can only test querying. */
@@ -2019,7 +2036,7 @@ test_batch_async (BatchData *data, gconstpointer service)
 	GDataBatchOperation *operation;
 	GMainLoop *main_loop;
 
-	gdata_mock_server_start_trace (mock_server, "batch-async");
+	gdata_test_mock_server_start_trace (mock_server, "batch-async");
 
 	/* Run an async query operation on the video */
 	operation = gdata_batchable_create_operation (GDATA_BATCHABLE (service), gdata_youtube_service_get_primary_authorization_domain (),
@@ -2056,7 +2073,7 @@ test_batch_async_cancellation (BatchData *data, gconstpointer service)
 	GCancellable *cancellable;
 	GError *error = NULL;
 
-	gdata_mock_server_start_trace (mock_server, "batch-async-cancellation");
+	gdata_test_mock_server_start_trace (mock_server, "batch-async-cancellation");
 
 	/* Run an async query operation on the video */
 	operation = gdata_batchable_create_operation (GDATA_BATCHABLE (service), gdata_youtube_service_get_primary_authorization_domain (),
@@ -2103,7 +2120,7 @@ main (int argc, char *argv[])
 	gdata_mock_server_set_trace_directory (mock_server, trace_directory);
 	g_object_unref (trace_directory);
 
-	gdata_mock_server_start_trace (mock_server, "global-authentication");
+	gdata_test_mock_server_start_trace (mock_server, "global-authentication");
 	authorizer = GDATA_AUTHORIZER (gdata_client_login_authorizer_new (CLIENT_ID, GDATA_TYPE_YOUTUBE_SERVICE));
 	gdata_client_login_authorizer_authenticate (GDATA_CLIENT_LOGIN_AUTHORIZER (authorizer), USERNAME, PASSWORD, NULL, NULL);
 	gdata_mock_server_end_trace (mock_server);

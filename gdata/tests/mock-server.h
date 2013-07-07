@@ -75,6 +75,9 @@ void gdata_mock_server_set_enable_logging (GDataMockServer *self, gboolean enabl
 
 void gdata_mock_server_log_message_chunk (GDataMockServer *self, const gchar *message_chunk);
 
+SoupAddress *gdata_mock_server_get_address (GDataMockServer *self);
+guint gdata_mock_server_get_port (GDataMockServer *self);
+
 G_END_DECLS
 
 #endif /* !GDATA_MOCK_SERVER_H */
