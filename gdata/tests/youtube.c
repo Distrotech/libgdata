@@ -29,15 +29,18 @@
 static GDataMockServer *mock_server = NULL;
 
 static void
-gdata_test_mock_server_start_trace (GDataMockServer *server, const gchar *trace_filename)
+gdata_test_set_https_port (GDataMockServer *server)
 {
-	gchar *port_string;
-
-	gdata_mock_server_start_trace (server, trace_filename);
-
-	port_string = g_strdup_printf ("%u", gdata_mock_server_get_port (server));
+	gchar *port_string = g_strdup_printf ("%u", gdata_mock_server_get_port (server));
 	g_setenv ("LIBGDATA_HTTPS_PORT", port_string, TRUE);
 	g_free (port_string);
+}
+
+static void
+gdata_test_mock_server_start_trace (GDataMockServer *server, const gchar *trace_filename)
+{
+	gdata_mock_server_start_trace (server, trace_filename);
+	gdata_test_set_https_port (server);
 }
 
 static void
@@ -82,8 +85,16 @@ typedef struct {
 } RequestErrorData;
 
 static const RequestErrorData authentication_errors[] = {
+	/* Generic network errors. */
 	{ SOUP_STATUS_BAD_REQUEST, "Bad Request", "Invalid parameter ‘foobar’.",
 	  FALSE, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	{ SOUP_STATUS_NOT_FOUND, "Not Found", "Login page wasn't found for no good reason at all.",
+	  FALSE, GDATA_SERVICE_ERROR_NOT_FOUND },
+	{ SOUP_STATUS_PRECONDITION_FAILED, "Precondition Failed", "Not allowed to log in at this time, possibly.",
+	  FALSE, GDATA_SERVICE_ERROR_CONFLICT },
+	{ SOUP_STATUS_INTERNAL_SERVER_ERROR, "Internal Server Error", "Whoops.",
+	  FALSE, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	/* Specific authentication errors. */
 	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=BadAuthentication\n",
 	  TRUE, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_BAD_AUTHENTICATION },
 	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=BadAuthentication\nInfo=InvalidSecondFactor\n",
@@ -104,6 +115,19 @@ static const RequestErrorData authentication_errors[] = {
 	  TRUE, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_SERVICE_DISABLED },
 	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=ServiceUnavailable\nUrl=http://example.com/\n",
 	  FALSE, GDATA_SERVICE_ERROR_UNAVAILABLE },
+	/* Malformed authentication errors to test parser error handling. */
+	{ SOUP_STATUS_INTERNAL_SERVER_ERROR, "Access Forbidden", "Error=BadAuthentication", /* missing Error delimiter */
+	  FALSE, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	{ SOUP_STATUS_INTERNAL_SERVER_ERROR, "Access Forbidden", "Error=AccountDeleted\n", /* missing Url */
+	  FALSE, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	{ SOUP_STATUS_INTERNAL_SERVER_ERROR, "Access Forbidden", "Error=AccountDeleted\nUrl=http://example.com/", /* missing Url delimiter */
+	  FALSE, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	{ SOUP_STATUS_INTERNAL_SERVER_ERROR, "Access Forbidden", "", /* missing Error */
+	  FALSE, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	{ SOUP_STATUS_INTERNAL_SERVER_ERROR, "Access Forbidden", "Error=", /* missing Error */
+	  FALSE, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	{ SOUP_STATUS_INTERNAL_SERVER_ERROR, "Access Forbidden", "Error=Foobar\nUrl=http://example.com/\n", /* unknown Error */
+	  FALSE, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
 };
 
 static gboolean
@@ -137,14 +161,10 @@ test_authentication_error (void)
 	for (i = 0; i < G_N_ELEMENTS (authentication_errors); i++) {
 		const RequestErrorData *data = &authentication_errors[i];
 		GQuark error_domain;
-		gchar *port_string;
 
 		handler_id = g_signal_connect (mock_server, "handle-message", (GCallback) authentication_error_cb, (gpointer) data);
 		gdata_mock_server_run (mock_server);
-
-		port_string = g_strdup_printf ("%u", gdata_mock_server_get_port (mock_server));
-		g_setenv ("LIBGDATA_HTTPS_PORT", port_string, TRUE);
-		g_free (port_string);
+		gdata_test_set_https_port (mock_server);
 
 		/* Create an authorizer */
 		authorizer = gdata_client_login_authorizer_new (CLIENT_ID, GDATA_TYPE_YOUTUBE_SERVICE);
@@ -191,7 +211,6 @@ test_authentication_timeout (void)
 	GDataClientLoginAuthorizer *authorizer;
 	GError *error = NULL;
 	gulong handler_id;
-	gchar *port_string;
 
 	if (gdata_mock_server_get_enable_logging (mock_server) == TRUE) {
 		g_test_message ("Ignoring test due to logging being enabled.");
@@ -203,10 +222,7 @@ test_authentication_timeout (void)
 
 	handler_id = g_signal_connect (mock_server, "handle-message", (GCallback) authentication_timeout_cb, NULL);
 	gdata_mock_server_run (mock_server);
-
-	port_string = g_strdup_printf ("%u", gdata_mock_server_get_port (mock_server));
-	g_setenv ("LIBGDATA_HTTPS_PORT", port_string, TRUE);
-	g_free (port_string);
+	gdata_test_set_https_port (mock_server);
 
 	/* Create an authorizer and set its timeout as low as possible (1 second). */
 	authorizer = gdata_client_login_authorizer_new (CLIENT_ID, GDATA_TYPE_YOUTUBE_SERVICE);
