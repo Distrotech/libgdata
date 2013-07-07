@@ -162,12 +162,11 @@ gdata_mock_server_dispose (GObject *object)
 	g_clear_object (&priv->server);
 	g_clear_object (&priv->input_stream);
 	g_clear_object (&priv->trace_file);
-
-	/* TODO: More. */
-	if (priv->server_thread != NULL) {
-		g_thread_unref (priv->server_thread);
-		priv->server_thread = NULL;
-	}
+	g_clear_object (&priv->input_stream);
+	g_clear_object (&priv->output_stream);
+	g_clear_object (&priv->next_message);
+	g_clear_object (&priv->trace_directory);
+	g_clear_pointer (&priv->server_thread, g_thread_unref);
 
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (gdata_mock_server_parent_class)->dispose (object);
@@ -290,10 +289,6 @@ header_append_cb (const gchar *name, const gchar *value, gpointer user_data)
 
 	soup_message_headers_append (message->response_headers, name, value);
 }
-
-/* TODO: Some problem with client-side cancellation and SSL handshakes in here. */
-/* TODO: This needs to be overrideable. */
-
 
 static void
 server_process_message (GDataMockServer *self, SoupMessage *message, SoupClientContext *client)
@@ -924,6 +919,7 @@ gdata_mock_server_run (GDataMockServer *self)
 	struct sockaddr_in sock;
 	SoupAddress *addr;
 	GMainContext *thread_context;
+	const gchar *ip_address;
 
 	g_return_if_fail (GDATA_IS_MOCK_SERVER (self));
 	g_return_if_fail (priv->resolver == NULL);
@@ -932,35 +928,43 @@ gdata_mock_server_run (GDataMockServer *self)
 	/* Grab a loopback IP to use. */
 	memset (&sock, 0, sizeof (sock));
 	sock.sin_family = AF_INET;
-	sock.sin_addr.s_addr = htonl (INADDR_LOOPBACK); /* TODO: don't hard-code this */
+	sock.sin_addr.s_addr = htonl (INADDR_LOOPBACK);
 	sock.sin_port = htons (0); /* random port */
 
 	addr = soup_address_new_from_sockaddr ((struct sockaddr *) &sock, sizeof (sock));
 	g_assert (addr != NULL);
 
-	/* Set up the resolver, adding TODO */
-	priv->resolver = gdata_mock_resolver_new ();
-	gdata_mock_resolver_add_A (priv->resolver, "www.google.com", "127.0.0.1"); /* TODO: get IP from soup */
-	gdata_mock_resolver_add_A (priv->resolver, "gdata.youtube.com", "127.0.0.1"); /* TODO */
-	gdata_mock_resolver_add_A (priv->resolver, "uploads.gdata.youtube.com", "127.0.0.1"); /* TODO */
-
-	g_resolver_set_default (G_RESOLVER (priv->resolver));
-
-	/* Set up the server. */
+	/* Set up the server. The SSL certificate can be generated using:
+	 *     openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -nodes */
 	thread_context = g_main_context_new ();
 	priv->server = soup_server_new ("interface", addr,
-	                                "ssl-cert-file", "/etc/pki/tls/certs/localhost.crt", /* TODO */
-	                                "ssl-key-file", "/etc/pki/tls/private/localhost.key" /* TODO */,
+	                                "ssl-cert-file", TEST_FILE_DIR "cert.pem",
+	                                "ssl-key-file", TEST_FILE_DIR "key.pem",
 	                                "async-context", thread_context,
 	                                NULL);
 	soup_server_add_handler (priv->server, "/", server_handler_cb, self, NULL);
+
+	g_main_context_unref (thread_context);
+	g_object_unref (addr);
 
 	/* Grab the randomly selected address and port. */
 	priv->address = soup_socket_get_local_address (soup_server_get_listener (priv->server));
 	priv->port = soup_server_get_port (priv->server);
 
-	g_main_context_unref (thread_context);
-	g_object_unref (addr);
+	g_object_freeze_notify (G_OBJECT (self));
+	g_object_notify (G_OBJECT (self), "address");
+	g_object_notify (G_OBJECT (self), "port");
+	g_object_thaw_notify (G_OBJECT (self));
+
+	ip_address = soup_address_get_physical (priv->address);
+
+	/* Set up the resolver, adding some expected hostnames. TODO: Do this dynamically. */
+	priv->resolver = gdata_mock_resolver_new ();
+	gdata_mock_resolver_add_A (priv->resolver, "www.google.com", ip_address);
+	gdata_mock_resolver_add_A (priv->resolver, "gdata.youtube.com", ip_address);
+	gdata_mock_resolver_add_A (priv->resolver, "uploads.gdata.youtube.com", ip_address);
+
+	g_resolver_set_default (G_RESOLVER (priv->resolver));
 
 	/* Start the network thread. */
 	priv->server_thread = g_thread_new ("mock-server-thread", server_thread_cb, self);
@@ -1054,7 +1058,7 @@ gdata_mock_server_start_trace_full (GDataMockServer *self, GFile *trace_file)
 
 	g_return_if_fail (priv->output_stream == NULL);
 
-	/* TODO */
+	/* Start writing out a trace file if logging is enabled. */
 	if (priv->enable_logging == TRUE) {
 		priv->output_stream = g_file_replace (trace_file, NULL, FALSE, G_FILE_CREATE_NONE, NULL, &child_error);
 
@@ -1071,6 +1075,7 @@ gdata_mock_server_start_trace_full (GDataMockServer *self, GFile *trace_file)
 		}
 	}
 
+	/* Start reading from a trace file if online testing is disabled. */
 	if (priv->enable_online == FALSE) {
 		gdata_mock_server_run (self);
 		gdata_mock_server_load_trace (self, trace_file, NULL, &child_error);
@@ -1102,7 +1107,6 @@ gdata_mock_server_end_trace (GDataMockServer *self)
 	if (priv->enable_online == FALSE) {
 		gdata_mock_server_stop (self);
 	}
-	/* TODO: Integrate logging. */
 
 	if (priv->enable_logging == TRUE) {
 		g_clear_object (&self->priv->output_stream);
@@ -1153,8 +1157,6 @@ gdata_mock_server_set_enable_logging (GDataMockServer *self, gboolean enable_log
 
 	self->priv->enable_logging = enable_logging;
 	g_object_notify (G_OBJECT (self), "enable-logging");
-
-	/* TODO: Disable logging if we're currently in a trace section? */
 }
 
 /**
