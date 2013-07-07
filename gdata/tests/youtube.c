@@ -172,6 +172,67 @@ test_authentication_error (void)
 	}
 }
 
+static gboolean
+authentication_timeout_cb (GDataMockServer *self, SoupMessage *message, SoupClientContext *client, gpointer user_data)
+{
+	/* Sleep for longer than the timeout, set below. */
+	g_usleep (2 * G_USEC_PER_SEC);
+
+	soup_message_set_status_full (message, SOUP_STATUS_REQUEST_TIMEOUT, "Request Timeout");
+	soup_message_body_append (message->response_body, SOUP_MEMORY_STATIC, "Request timed out.", strlen ("Request timed out."));
+
+	return TRUE;
+}
+
+static void
+test_authentication_timeout (void)
+{
+	gboolean retval;
+	GDataClientLoginAuthorizer *authorizer;
+	GError *error = NULL;
+	gulong handler_id;
+	gchar *port_string;
+
+	if (gdata_mock_server_get_enable_logging (mock_server) == TRUE) {
+		g_test_message ("Ignoring test due to logging being enabled.");
+		return;
+	} else if (gdata_mock_server_get_enable_online (mock_server) == TRUE) {
+		g_test_message ("Ignoring test due to running online and test not being reproducible.");
+		return;
+	}
+
+	handler_id = g_signal_connect (mock_server, "handle-message", (GCallback) authentication_timeout_cb, NULL);
+	gdata_mock_server_run (mock_server);
+
+	port_string = g_strdup_printf ("%u", gdata_mock_server_get_port (mock_server));
+	g_setenv ("LIBGDATA_HTTPS_PORT", port_string, TRUE);
+	g_free (port_string);
+
+	/* Create an authorizer and set its timeout as low as possible (1 second). */
+	authorizer = gdata_client_login_authorizer_new (CLIENT_ID, GDATA_TYPE_YOUTUBE_SERVICE);
+	gdata_client_login_authorizer_set_timeout (authorizer, 1);
+
+	g_assert_cmpstr (gdata_client_login_authorizer_get_client_id (authorizer), ==, CLIENT_ID);
+
+	/* Log in */
+	retval = gdata_client_login_authorizer_authenticate (authorizer, USERNAME, PASSWORD, NULL, &error);
+	g_assert_error (error, GDATA_SERVICE_ERROR, GDATA_SERVICE_ERROR_NETWORK_ERROR);
+	g_assert (retval == FALSE);
+	g_clear_error (&error);
+
+	/* Check nothing's changed in the authoriser. */
+	g_assert_cmpstr (gdata_client_login_authorizer_get_username (authorizer), ==, NULL);
+	g_assert_cmpstr (gdata_client_login_authorizer_get_password (authorizer), ==, NULL);
+
+	g_assert (gdata_authorizer_is_authorized_for_domain (GDATA_AUTHORIZER (authorizer),
+	                                                     gdata_youtube_service_get_primary_authorization_domain ()) == FALSE);
+
+	g_object_unref (authorizer);
+
+	gdata_mock_server_stop (mock_server);
+	g_signal_handler_disconnect (mock_server, handler_id);
+}
+
 GDATA_ASYNC_TEST_FUNCTIONS (authentication, void,
 G_STMT_START {
 	GDataClientLoginAuthorizer *authorizer;
@@ -2129,6 +2190,7 @@ main (int argc, char *argv[])
 
 	g_test_add_func ("/youtube/authentication", test_authentication);
 	g_test_add_func ("/youtube/authentication/error", test_authentication_error);
+	g_test_add_func ("/youtube/authentication/timeout", test_authentication_timeout);
 	g_test_add ("/youtube/authentication/async", GDataAsyncTestData, NULL, gdata_set_up_async_test_data, test_authentication_async,
 	            gdata_tear_down_async_test_data);
 	g_test_add ("/youtube/authentication/async/cancellation", GDataAsyncTestData, NULL, gdata_set_up_async_test_data,
