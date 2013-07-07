@@ -17,6 +17,21 @@
  * along with GData Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * GDataMockServer:
+ *
+ * This is a mock HTTPS server which can be used to run unit tests of network client code on a loopback interface rather than on the real Internet.
+ * At its core, it's a simple HTTPS server which runs on a loopback address on an arbitrary port. The code under test must be modified to send its
+ * requests to this port, although #GDataMockResolver may be used to transparently redirect all IP addresses to the mock server.
+ * A convenience layer on the mock server provides loading of and recording to trace files, which are sequences of request–response HTTPS message pairs
+ * where each request is expected by the server (in order). On receiving an expected request, the mock server will return the relevant response and move
+ * to expecting the next request in the trace file.
+ *
+ * The mock server currently only operates on a single network interface, on HTTPS only. This may change in future. A dummy TLS certificate is used
+ * to authenticate the server. This certificate is not signed by a CA, so the SoupSession:ssl-strict property must be set to %FALSE in client code
+ * during (and only during!) testing.
+ */
+
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <libsoup/soup.h>
@@ -92,52 +107,80 @@ gdata_mock_server_class_init (GDataMockServerClass *klass)
 	klass->handle_message = real_handle_message;
 
 	/**
-	 * TODO: Document me.
+	 * GDataMockServer:trace-directory:
+	 *
+	 * Directory relative to which all trace files specified in calls to gdata_mock_server_start_trace() will be resolved.
+	 * This is not used for any other methods, but must be non-%NULL if gdata_mock_server_start_trace() is called.
 	 */
 	g_object_class_install_property (gobject_class, PROP_TRACE_DIRECTORY,
 	                                 g_param_spec_object ("trace-directory",
-	                                                      "Trace Directory", "TODO",
+	                                                      "Trace Directory", "Directory relative to which all trace files will be resolved.",
 	                                                      G_TYPE_FILE,
 	                                                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
 	/**
-	 * TODO: Document me.
+	 * GDataMockServer:enable-online:
+	 *
+	 * %TRUE if network traffic should reach the Internet as normal; %FALSE to redirect it to the local mock server.
+	 * Use this in conjunction with #GDataMockServer:enable-logging to either log online traffic, or replay logged traffic locally.
 	 */
 	g_object_class_install_property (gobject_class, PROP_ENABLE_ONLINE,
 	                                 g_param_spec_boolean ("enable-online",
-	                                                       "Enable Online", "TODO",
+	                                                       "Enable Online", "Whether network traffic should reach the Internet as normal.",
 	                                                       FALSE,
 	                                                       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
 	/**
-	 * TODO: Document me.
+	 * GDataMockServer:enable-logging:
+	 *
+	 * %TRUE if network traffic should be logged to a trace file (specified by calling gdata_mock_server_start_trace()). This operates independently
+	 * of whether traffic is online or being handled locally by the mock server.
+	 * Use this in conjunction with #GDataMockServer:enable-online to either log online traffic, or replay logged traffic locally.
 	 */
 	g_object_class_install_property (gobject_class, PROP_ENABLE_LOGGING,
 	                                 g_param_spec_boolean ("enable-logging",
-	                                                       "Enable Logging", "TODO",
+	                                                       "Enable Logging", "Whether network traffic should be logged to a trace file.",
 	                                                       FALSE,
 	                                                       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
 	/**
-	 * TODO: Document me.
+	 * GDataMockServer:address:
+	 *
+	 * Address of the local mock server if it's running, or %NULL otherwise. This will be non-%NULL between calls to gdata_mock_server_run() and
+	 * gdata_mock_server_stop().
+	 *
+	 * This should not normally need to be passed into client code under test, unless the code references IP addresses specifically. The mock server
+	 * runs a DNS resolver which automatically redirects client requests for known domain names to this address.
 	 */
 	g_object_class_install_property (gobject_class, PROP_ADDRESS,
 	                                 g_param_spec_object ("address",
-	                                                      "Server Address", "TODO",
+	                                                      "Server Address", "Address of the local mock server if it's running.",
 	                                                      SOUP_TYPE_ADDRESS,
 	                                                      G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
 	/**
-	 * TODO: Document me.
+	 * GDataMockServer:port:
+	 *
+	 * Port of the local mock server if it's running, or <code class="literal">0</code> otherwise. This will be non-<code class="literal">0</code> between
+	 * calls to gdata_mock_server_run() and gdata_mock_server_stop().
+	 *
+	 * It is intended that this port be passed into the client code under test, to substitute for the default HTTPS port (443) which it would otherwise
+	 * use.
 	 */
 	g_object_class_install_property (gobject_class, PROP_PORT,
 	                                 g_param_spec_uint ("port",
-	                                                    "Server Port", "TODO",
+	                                                    "Server Port", "Port of the local mock server if it's running",
 	                                                    0, G_MAXUINT, 0,
 	                                                    G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
 	/**
-	 * TODO: Document me.
+	 * GDataMockServer::handle-message:
+	 *
+	 * Emitted whenever the mock server is running and receives a request from a client. Test code may connect to this signal and implement a handler
+	 * which builds and returns a suitable response for a given message. The default handler reads a request–response pair from the current trace file,
+	 * matches the requests and then returns the given response. If the requests don't match, an error is raised.
+	 *
+	 * Signal handlers should return %TRUE if they have handled the request and set an appropriate response; and %FALSE otherwise.
 	 */
 	signals[SIGNAL_HANDLE_MESSAGE] = g_signal_new ("handle-message", G_OBJECT_CLASS_TYPE (klass), G_SIGNAL_RUN_LAST,
 	                                               G_STRUCT_OFFSET (GDataMockServerClass, handle_message),
@@ -302,7 +345,7 @@ server_process_message (GDataMockServer *self, SoupMessage *message, SoupClientC
 		gchar *body, *next_uri, *actual_uri;
 
 		/* Received message is not what we expected. Return an error. */
-		soup_message_set_status_full (message, SOUP_STATUS_BAD_REQUEST, _("Unexpected request to mock server"));
+		soup_message_set_status_full (message, SOUP_STATUS_BAD_REQUEST, "Unexpected request to mock server");
 
 		next_uri = soup_uri_to_string (soup_message_get_uri (priv->next_message), TRUE);
 		actual_uri = soup_uri_to_string (soup_message_get_uri (message), TRUE);
@@ -373,7 +416,7 @@ real_handle_message (GDataMockServer *self, SoupMessage *message, SoupClientCont
 		if (child_error != NULL) {
 			gchar *body;
 
-			soup_message_set_status_full (message, SOUP_STATUS_INTERNAL_SERVER_ERROR, _("Error loading expected request"));
+			soup_message_set_status_full (message, SOUP_STATUS_INTERNAL_SERVER_ERROR, "Error loading expected request");
 
 			body = g_strdup_printf ("Error: %s", child_error->message);
 			soup_message_body_append_take (message->response_body, (guchar *) body, strlen (body));
@@ -384,7 +427,7 @@ real_handle_message (GDataMockServer *self, SoupMessage *message, SoupClientCont
 			gchar *body, *actual_uri;
 
 			/* Received message is not what we expected. Return an error. */
-			soup_message_set_status_full (message, SOUP_STATUS_BAD_REQUEST, _("Unexpected request to mock server"));
+			soup_message_set_status_full (message, SOUP_STATUS_BAD_REQUEST, "Unexpected request to mock server");
 
 			actual_uri = soup_uri_to_string (soup_message_get_uri (message), TRUE);
 			body = g_strdup_printf ("Expected no request, but got ‘%s’.", actual_uri);
@@ -406,7 +449,11 @@ real_handle_message (GDataMockServer *self, SoupMessage *message, SoupClientCont
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_server_new:
+ *
+ * Creates a new #GDataMockServer with default properties.
+ *
+ * Return value: (transfer full): a new #GDataMockServer; unref with g_object_unref()
  */
 GDataMockServer *
 gdata_mock_server_new (void)
@@ -792,25 +839,49 @@ load_file_iteration_thread_cb (GTask *task, gpointer source_object, gpointer tas
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_server_load_trace:
+ * @self: a #GDataMockServer
+ * @trace_file: trace file to load
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @error: (allow-none): return location for a #GError, or %NULL
+ *
+ * Synchronously loads the given @trace_file of network messages, ready to simulate a network conversation by matching
+ * requests against the file and returning the associated responses. Call gdata_mock_server_run() to start the mock
+ * server afterwards.
+ *
+ * Loading the trace file may be cancelled from another thread using @cancellable.
+ *
+ * On error, @error will be set and the state of the #GDataMockServer will not change.
  */
 void
 gdata_mock_server_load_trace (GDataMockServer *self, GFile *trace_file, GCancellable *cancellable, GError **error)
 {
+	GDataMockServerPrivate *priv = self->priv;
 	SoupURI *base_uri;
 
 	g_return_if_fail (GDATA_IS_MOCK_SERVER (self));
 	g_return_if_fail (G_IS_FILE (trace_file));
 	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 	g_return_if_fail (error == NULL || *error == NULL);
-	g_return_if_fail (self->priv->trace_file == NULL && self->priv->input_stream == NULL && self->priv->next_message == NULL);
+	g_return_if_fail (priv->trace_file == NULL && priv->input_stream == NULL && priv->next_message == NULL);
 
 	base_uri = build_base_uri (self);
 
-	self->priv->trace_file = g_object_ref (trace_file);
-	self->priv->input_stream = load_file_stream (self->priv->trace_file, cancellable, error);
-	if (self->priv->input_stream != NULL) {
-		self->priv->next_message = load_file_iteration (self->priv->input_stream, base_uri, cancellable, error);
+	priv->trace_file = g_object_ref (trace_file);
+	priv->input_stream = load_file_stream (priv->trace_file, cancellable, error);
+
+	if (priv->input_stream != NULL) {
+		GError *child_error = NULL;
+
+		priv->next_message = load_file_iteration (priv->input_stream, base_uri, cancellable, &child_error);
+
+		if (child_error != NULL) {
+			g_clear_object (&priv->trace_file);
+			g_propagate_error (error, child_error);
+		}
+	} else {
+		/* Error. */
+		g_clear_object (&priv->trace_file);
 	}
 
 	soup_uri_free (base_uri);
@@ -857,7 +928,14 @@ load_trace_async_cb (GObject *source_object, GAsyncResult *result, gpointer user
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_server_load_trace_async:
+ * @self: a #GDataMockServer
+ * @trace_file: trace file to load
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @callback: function to call once the async operation is complete
+ * @user_data: (allow-none): user data to pass to @callback, or %NULL
+ *
+ * Asynchronous version of gdata_mock_server_load_trace(). In @callback, call gdata_mock_server_load_trace_finish() to complete the operation.
  */
 void
 gdata_mock_server_load_trace_async (GDataMockServer *self, GFile *trace_file, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data)
@@ -884,7 +962,14 @@ gdata_mock_server_load_trace_async (GDataMockServer *self, GFile *trace_file, GC
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_server_load_trace_finish:
+ * @self: a #GDataMockServer
+ * @result: asynchronous operation result passed to the callback
+ * @error: (allow-none): return location for a #GError, or %NULL
+ *
+ * Finishes an asynchronous operation started by gdata_mock_server_load_trace_async().
+ *
+ * On error, @error will be set and the state of the #GDataMockServer will not change.
  */
 void
 gdata_mock_server_load_trace_finish (GDataMockServer *self, GAsyncResult *result, GError **error)
@@ -910,7 +995,17 @@ server_thread_cb (gpointer user_data)
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_server_run:
+ * @self: a #GDataMockServer
+ *
+ * Runs the mock server, binding to a loopback TCP/IP interface and preparing a HTTPS server which is ready to accept requests.
+ * The TCP/IP address and port number are chosen randomly out of the loopback addresses, and are exposed as #GDataMockServer:address and #GDataMockServer:port
+ * once this function has returned.
+ *
+ * The server is started in a worker thread, so this function returns immediately and the server continues to run in the background. Use gdata_mock_server_stop()
+ * to shut it down.
+ *
+ * This function always succeeds.
  */
 void
 gdata_mock_server_run (GDataMockServer *self)
@@ -971,7 +1066,14 @@ gdata_mock_server_run (GDataMockServer *self)
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_server_stop:
+ * @self: a #GDataMockServer
+ *
+ * Stops a mock server started by calling gdata_mock_server_run(). This shuts down the server's worker thread and unbinds it from its TCP/IP socket.
+ *
+ * This unloads any trace file loaded by calling gdata_mock_server_load_trace() (or its asynchronous counterpart).
+ *
+ * This function always succeeds.
  */
 void
 gdata_mock_server_stop (GDataMockServer *self)
@@ -991,6 +1093,14 @@ gdata_mock_server_stop (GDataMockServer *self)
 	g_clear_object (&priv->server);
 	g_clear_object (&priv->resolver);
 
+	priv->address = NULL;
+	priv->port = 0;
+
+	g_object_freeze_notify (G_OBJECT (self));
+	g_object_notify (G_OBJECT (self), "address");
+	g_object_notify (G_OBJECT (self), "port");
+	g_object_thaw_notify (G_OBJECT (self));
+
 	/* Reset the trace file. */
 	g_clear_object (&priv->next_message);
 	g_clear_object (&priv->input_stream);
@@ -998,7 +1108,12 @@ gdata_mock_server_stop (GDataMockServer *self)
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_server_get_trace_directory:
+ * @self: a #GDataMockServer
+ *
+ * Gets the value of the #GDataMockServer:trace-directory property.
+ *
+ * Return value: (allow-none) (transfer none): the directory to load/store trace files from, or %NULL
  */
 GFile *
 gdata_mock_server_get_trace_directory (GDataMockServer *self)
@@ -1009,7 +1124,11 @@ gdata_mock_server_get_trace_directory (GDataMockServer *self)
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_server_set_trace_directory:
+ * @self: a #GDataMockServer
+ * @trace_directory: (allow-none) (transfer none): a directory to load/store trace files from, or %NULL to unset it
+ *
+ * Sets the value of the #GDataMockServer:trace-directory property.
  */
 void
 gdata_mock_server_set_trace_directory (GDataMockServer *self, GFile *trace_directory)
@@ -1027,7 +1146,14 @@ gdata_mock_server_set_trace_directory (GDataMockServer *self, GFile *trace_direc
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_server_start_trace:
+ * @self: a #GDataMockServer
+ * @trace_name: name of the trace
+ *
+ * Starts a mock server which follows the trace file of filename @trace_name in the #GDataMockServer:trace-directory directory.
+ * See gdata_mock_server_start_trace_full() for further documentation.
+ *
+ * This function has undefined behaviour if #GDataMockServer:trace-directory is %NULL.
  */
 void
 gdata_mock_server_start_trace (GDataMockServer *self, const gchar *trace_name)
@@ -1045,7 +1171,20 @@ gdata_mock_server_start_trace (GDataMockServer *self, const gchar *trace_name)
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_server_start_trace_full:
+ * @self: a #GDataMockServer
+ * @trace_file: a trace file to load
+ *
+ * Convenience function to start logging to or reading from the given @trace_file, depending on the values of #GDataMockServer:enable-logging and
+ * #GDataMockServer:enable-online.
+ *
+ * If #GDataMockServer:enable-logging is %TRUE, a log handler will be set up to redirect all client network activity into the given @trace_file.
+ * If @trace_file already exists, it will be overwritten.
+ *
+ * If #GDataMockServer:enable-online is %FALSE, the given @trace_file is loaded using gdata_mock_server_load_trace() and then a mock server is
+ * started using gdata_mock_server_run().
+ *
+ * On error, a warning message will be printed. FIXME: Ewww.
  */
 void
 gdata_mock_server_start_trace_full (GDataMockServer *self, GFile *trace_file)
@@ -1095,7 +1234,13 @@ gdata_mock_server_start_trace_full (GDataMockServer *self, GFile *trace_file)
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_server_end_trace:
+ * @self: a #GDataMockServer
+ *
+ * Convenience function to finish logging to or reading from a trace file previously passed to gdata_mock_server_start_trace() or
+ * gdata_mock_server_start_trace_full().
+ *
+ * If #GDataMockServer:enable-online is %FALSE, this will shut down the mock server (as if gdata_mock_server_stop() had been called).
  */
 void
 gdata_mock_server_end_trace (GDataMockServer *self)
@@ -1114,7 +1259,12 @@ gdata_mock_server_end_trace (GDataMockServer *self)
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_server_get_enable_online:
+ * @self: a #GDataMockServer
+ *
+ * Gets the value of the #GDataMockServer:enable-online property.
+ *
+ * Return value: %TRUE if the server does not intercept and handle network connections from client code; %FALSE otherwise
  */
 gboolean
 gdata_mock_server_get_enable_online (GDataMockServer *self)
@@ -1125,7 +1275,11 @@ gdata_mock_server_get_enable_online (GDataMockServer *self)
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_server_set_enable_online:
+ * @self: a #GDataMockServer
+ * @enable_online: %TRUE to not intercept and handle network connections from client code; %FALSE otherwise
+ *
+ * Sets the value of the #GDataMockServer:enable-online property.
  */
 void
 gdata_mock_server_set_enable_online (GDataMockServer *self, gboolean enable_online)
@@ -1137,7 +1291,12 @@ gdata_mock_server_set_enable_online (GDataMockServer *self, gboolean enable_onli
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_server_get_enable_logging:
+ * @self: a #GDataMockServer
+ *
+ * Gets the value of the #GDataMockServer:enable-logging property.
+ *
+ * Return value: %TRUE if client network traffic is being logged to a trace file; %FALSE otherwise
  */
 gboolean
 gdata_mock_server_get_enable_logging (GDataMockServer *self)
@@ -1148,7 +1307,11 @@ gdata_mock_server_get_enable_logging (GDataMockServer *self)
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_server_set_enable_logging:
+ * @self: a #GDataMockServer
+ * @enable_logging: %TRUE to log client network traffic to a trace file; %FALSE otherwise
+ *
+ * Sets the value of the #GDataMockServer:enable-logging property.
  */
 void
 gdata_mock_server_set_enable_logging (GDataMockServer *self, gboolean enable_logging)
@@ -1160,7 +1323,16 @@ gdata_mock_server_set_enable_logging (GDataMockServer *self, gboolean enable_log
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_server_log_message_chunk:
+ * @self: a #GDataMockServer
+ * @message_chunk: single line of a message to log
+ *
+ * Appends a single new line of a message to the current trace file, adding a newline character at the end.
+ *
+ * This function is a no-op if the mock server is not in logging mode (i.e. if #GDataMockServer:enable-logging is %FALSE),
+ * or if a trace file has not been specified using gdata_mock_server_start_trace().
+ *
+ * On error, a warning will be printed. FIXME: That's icky.
  */
 void
 gdata_mock_server_log_message_chunk (GDataMockServer *self, const gchar *message_chunk)
@@ -1190,7 +1362,12 @@ gdata_mock_server_log_message_chunk (GDataMockServer *self, const gchar *message
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_server_get_address:
+ * @self: a #GDataMockServer
+ *
+ * Gets the value of the #GDataMockServer:address property.
+ *
+ * Return value: (allow-none) (transfer none): the address of the listening socket the server is currently bound to; or %NULL if the server is not running
  */
 SoupAddress *
 gdata_mock_server_get_address (GDataMockServer *self)
@@ -1201,7 +1378,12 @@ gdata_mock_server_get_address (GDataMockServer *self)
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_server_get_port:
+ * @self: a #GDataMockServer
+ *
+ * Gets the value of the #GDataMockServer:port property.
+ *
+ * Return value: the port of the listening socket the server is currently bound to; or <code class="literal">0</code> if the server is not running
  */
 guint
 gdata_mock_server_get_port (GDataMockServer *self)

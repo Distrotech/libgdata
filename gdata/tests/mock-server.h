@@ -44,7 +44,11 @@ typedef struct {
 	GObjectClass parent;
 
 	/**
-	 * TODO: Document me.
+	 * handle_message:
+	 *
+	 * Class handler for the #GDataMockServer::handle-message signal. Subclasses may implement this to override the
+	 * default handler for the signal. The default handler should always return %TRUE to indicate that it has handled
+	 * the @message from @client by setting an appropriate response on the #SoupMessage.
 	 */
 	gboolean (*handle_message) (GDataMockServer *self, SoupMessage *message, SoupClientContext *client);
 } GDataMockServerClass;

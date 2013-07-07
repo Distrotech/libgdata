@@ -2,6 +2,7 @@
 /*
  * GData Client
  * Copyright (C) Philip Withnall 2013 <philip@tecnocode.co.uk>
+ * Copyright (C) Collabora Ltd. 2009
  * 
  * GData Client is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,12 +16,19 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with GData Client.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Original author: Vivek Dasmohapatra <vivek@collabora.co.uk>
  */
 
 /**
- * TODO: Document me.
+ * GDataMockResolver:
  *
- * TODO: Copied from http://cgit.collabora.com/git/user/sjoerd/telepathy-gabble.git/plain/tests/twisted/test-resolver.c; add authorship.
+ * A mock DNS resolver which resolves according to specified host-name–IP-address pairs, and raises an error for all non-specified host name requests.
+ * This allows network connections for expected services to be redirected to a different server, such as a local mock server on a loopback interface.
+ *
+ * This code is heavily based on code originally by Vivek Dasmohapatra, found here:
+ * http://cgit.collabora.com/git/user/sjoerd/telepathy-gabble.git/plain/tests/twisted/test-resolver.c
+ * It was originally licenced under LGPLv2.1+, and implicitly relicenced to LGPLv3+ on copying into libgdata.
  */
 
 #include <stdio.h>
@@ -148,7 +156,6 @@ gdata_mock_resolver_lookup_by_name (GResolver *resolver, const gchar *hostname, 
 	result = find_fake_hosts (GDATA_MOCK_RESOLVER (resolver), hostname);
 
 	if (result == NULL) {
-		g_message ("TODO: no fake hostname for ‘%s’", hostname);
 		g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND, "No fake hostname record registered for ‘%s’.", hostname);
 	}
 
@@ -191,9 +198,15 @@ gdata_mock_resolver_lookup_by_name_finish (GResolver *resolver, GAsyncResult *re
 static GList *
 gdata_mock_resolver_lookup_service (GResolver *resolver, const gchar *rrname, GCancellable *cancellable, GError **error)
 {
-	/* TODO */
-	g_message ("%s: %p, %s, %p, %p", __func__, resolver, rrname, cancellable, error);
-	return G_RESOLVER_CLASS (gdata_mock_resolver_parent_class)->lookup_service (resolver, rrname, cancellable, error);
+	GList *result;
+
+	result = find_fake_services (GDATA_MOCK_RESOLVER (resolver), rrname);
+
+	if (result == NULL) {
+		g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND, "No fake service records registered for ‘%s’.", rrname);
+	}
+
+	return result;
 }
 
 static void
@@ -229,7 +242,11 @@ gdata_mock_resolver_lookup_service_finish (GResolver *resolver, GAsyncResult *re
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_resolver_new:
+ *
+ * Creates a new #GDataMockResolver with default property values.
+ *
+ * Return value: (transfer full): a new #GDataMockResolver; unref with g_object_unref()
  */
 GDataMockResolver *
 gdata_mock_resolver_new (void)
@@ -238,7 +255,10 @@ gdata_mock_resolver_new (void)
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_resolver_reset:
+ * @self: a #GDataMockResolver
+ *
+ * Resets the state of the #GDataMockResolver, deleting all records added with gdata_mock_resolver_add_A() and gdata_mock_resolver_add_SRV().
  */
 void
 gdata_mock_resolver_reset (GDataMockResolver *self)
@@ -265,7 +285,14 @@ gdata_mock_resolver_reset (GDataMockResolver *self)
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_resolver_add_A:
+ * @self: a #GDataMockResolver
+ * @hostname: the hostname to match
+ * @addr: the IP address to resolve to
+ *
+ * Adds a resolution mapping from the host name @hostname to the IP address @addr.
+ *
+ * Return value: %TRUE on success; %FALSE otherwise
  */
 gboolean
 gdata_mock_resolver_add_A (GDataMockResolver *self, const gchar *hostname, const gchar *addr)
@@ -279,7 +306,17 @@ gdata_mock_resolver_add_A (GDataMockResolver *self, const gchar *hostname, const
 }
 
 /**
- * TODO: Document me.
+ * gdata_mock_resolver_add_SRV:
+ * @self: a #GDataMockResolver
+ * @hostname: the service name to match
+ * @protocol: the protocol name to match
+ * @domain: the domain name to match
+ * @addr: the IP address to resolve to
+ * @port: the port to resolve to
+ *
+ * Adds a resolution mapping the given @service (on @protocol and @domain) to the IP address @addr and given @port.
+ *
+ * Return value: %TRUE on success; %FALSE otherwise
  */
 gboolean
 gdata_mock_resolver_add_SRV (GDataMockResolver *self, const gchar *service, const gchar *protocol, const gchar *domain, const gchar *addr, guint16 port)
