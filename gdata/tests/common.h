@@ -291,6 +291,35 @@ void gdata_tear_down_async_test_data (GDataAsyncTestData *async_data, gconstpoin
 /* Debugging output in case of assert failure */
 void gdata_test_debug_output (void);
 
+/**
+ * GDataTestRequestErrorData:
+ * @status_code: HTTP response status code
+ * @reason_phrase: HTTP response status phrase
+ * @message_body: HTTP response message body
+ * @error_domain_func: constant function returning the #GQuark for the expected error domain
+ * @error_code: expected error code
+ *
+ * A mapping between a HTTP response emitted by a #GDataMockServer and the error expected to be thrown by the HTTP client.
+ * This is designed for testing error handling in the client code, typically by running a single request through an array
+ * of these such mappings and testing the client code throws the correct error in each case.
+ *
+ * Since: 0.13.4
+ */
+typedef struct {
+	/* HTTP response. */
+	guint status_code;
+	const gchar *reason_phrase;
+	const gchar *message_body;
+	/* Expected GData error. */
+	GQuark (*error_domain_func) (void); /* typically gdata_service_error_quark */
+	gint error_code;
+} GDataTestRequestErrorData;
+
+void gdata_test_set_https_port (GDataMockServer *server);
+void gdata_test_mock_server_start_trace (GDataMockServer *server, const gchar *trace_filename);
+gboolean gdata_test_mock_server_handle_message_error (GDataMockServer *server, SoupMessage *message, SoupClientContext *client, gpointer user_data);
+gboolean gdata_test_mock_server_handle_message_timeout (GDataMockServer *server, SoupMessage *message, SoupClientContext *client, gpointer user_data);
+
 G_END_DECLS
 
 #endif /* !GDATA_TEST_COMMON_H */

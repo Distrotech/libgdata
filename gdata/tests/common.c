@@ -768,3 +768,85 @@ gdata_test_assert_handler (const gchar *message)
 	gdata_test_debug_output ();
 	printf ("%s", (gchar*) message);
 }
+
+/**
+ * gdata_test_set_https_port:
+ * @server: a #GDataMockServer
+ *
+ * Sets the HTTPS port used for all future libgdata requests to that used by the given mock @server,
+ * effectively redirecting all client requests to the mock server.
+ *
+ * Since: 0.13.4
+ */
+void
+gdata_test_set_https_port (GDataMockServer *server)
+{
+	gchar *port_string = g_strdup_printf ("%u", gdata_mock_server_get_port (server));
+	g_setenv ("LIBGDATA_HTTPS_PORT", port_string, TRUE);
+	g_free (port_string);
+}
+
+/**
+ * gdata_test_mock_server_start_trace:
+ * @server: a #GDataMockServer
+ * @trace_filename: filename of the trace to load
+ *
+ * Wrapper around gdata_mock_server_start_trace() which additionally sets the <code class="literal">LIBGDATA_HTTPS_PORT</code>
+ * environment variable to redirect all libgdata requests to the mock server.
+ *
+ * Since: 0.13.4
+ */
+void
+gdata_test_mock_server_start_trace (GDataMockServer *server, const gchar *trace_filename)
+{
+	gdata_mock_server_start_trace (server, trace_filename);
+	gdata_test_set_https_port (server);
+}
+
+/**
+ * gdata_test_mock_server_handle_message_error:
+ * @server: a #GDataMockServer
+ * @message: the message whose response should be filled
+ * @client: the currently connected client
+ * @user_data: user data provided when connecting the signal
+ *
+ * Handler for #GDataMockServer::handle-message which sets the HTTP response for @message to the HTTP error status
+ * specified in a #GDataTestRequestErrorData structure passed to @user_data.
+ *
+ * Since: 0.13.4
+ */
+gboolean
+gdata_test_mock_server_handle_message_error (GDataMockServer *server, SoupMessage *message, SoupClientContext *client, gpointer user_data)
+{
+	const GDataTestRequestErrorData *data = user_data;
+
+	soup_message_set_status_full (message, data->status_code, data->reason_phrase);
+	soup_message_body_append (message->response_body, SOUP_MEMORY_STATIC, data->message_body, strlen (data->message_body));
+
+	return TRUE;
+}
+
+/**
+ * gdata_test_mock_server_handle_message_timeout:
+ * @server: a #GDataMockServer
+ * @message: the message whose response should be filled
+ * @client: the currently connected client
+ * @user_data: user data provided when connecting the signal
+ *
+ * Handler for #GDataMockServer::handle-message which waits for 2 seconds before returning a %SOUP_STATUS_REQUEST_TIMEOUT status
+ * and appropriate error message body. If used in conjunction with a 1 second timeout in the client code under test, this can
+ * simulate network error conditions and timeouts, in order to test the error handling code for such conditions.
+ *
+ * Since: 0.13.4
+ */
+gboolean
+gdata_test_mock_server_handle_message_timeout (GDataMockServer *server, SoupMessage *message, SoupClientContext *client, gpointer user_data)
+{
+	/* Sleep for longer than the timeout set on the client. */
+	g_usleep (2 * G_USEC_PER_SEC);
+
+	soup_message_set_status_full (message, SOUP_STATUS_REQUEST_TIMEOUT, "Request Timeout");
+	soup_message_body_append (message->response_body, SOUP_MEMORY_STATIC, "Request timed out.", strlen ("Request timed out."));
+
+	return TRUE;
+}

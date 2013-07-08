@@ -29,21 +29,6 @@
 static GDataMockServer *mock_server = NULL;
 
 static void
-gdata_test_set_https_port (GDataMockServer *server)
-{
-	gchar *port_string = g_strdup_printf ("%u", gdata_mock_server_get_port (server));
-	g_setenv ("LIBGDATA_HTTPS_PORT", port_string, TRUE);
-	g_free (port_string);
-}
-
-static void
-gdata_test_mock_server_start_trace (GDataMockServer *server, const gchar *trace_filename)
-{
-	gdata_mock_server_start_trace (server, trace_filename);
-	gdata_test_set_https_port (server);
-}
-
-static void
 test_authentication (void)
 {
 	gboolean retval;
@@ -75,16 +60,8 @@ test_authentication (void)
 	gdata_mock_server_end_trace (mock_server);
 }
 
-/* TODO: Document me. */
-typedef struct {
-	guint status_code;
-	const gchar *reason_phrase;
-	const gchar *message_body;
-	GQuark (*error_domain_func) (void); /* typically gdata_service_error_quark */
-	gint error_code;
-} RequestErrorData;
-
-static const RequestErrorData authentication_errors[] = {
+/* HTTP message responses and the expected associated GData error domain/code. */
+static const GDataTestRequestErrorData authentication_errors[] = {
 	/* Generic network errors. */
 	{ SOUP_STATUS_BAD_REQUEST, "Bad Request", "Invalid parameter ‘foobar’.",
 	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
@@ -130,17 +107,6 @@ static const RequestErrorData authentication_errors[] = {
 	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
 };
 
-static gboolean
-authentication_error_cb (GDataMockServer *self, SoupMessage *message, SoupClientContext *client, gpointer user_data)
-{
-	const RequestErrorData *data = user_data;
-
-	soup_message_set_status_full (message, data->status_code, data->reason_phrase);
-	soup_message_body_append (message->response_body, SOUP_MEMORY_STATIC, data->message_body, strlen (data->message_body));
-
-	return TRUE;
-}
-
 static void
 test_authentication_error (void)
 {
@@ -159,9 +125,9 @@ test_authentication_error (void)
 	}
 
 	for (i = 0; i < G_N_ELEMENTS (authentication_errors); i++) {
-		const RequestErrorData *data = &authentication_errors[i];
+		const GDataTestRequestErrorData *data = &authentication_errors[i];
 
-		handler_id = g_signal_connect (mock_server, "handle-message", (GCallback) authentication_error_cb, (gpointer) data);
+		handler_id = g_signal_connect (mock_server, "handle-message", (GCallback) gdata_test_mock_server_handle_message_error, (gpointer) data);
 		gdata_mock_server_run (mock_server);
 		gdata_test_set_https_port (mock_server);
 
@@ -190,18 +156,6 @@ test_authentication_error (void)
 	}
 }
 
-static gboolean
-authentication_timeout_cb (GDataMockServer *self, SoupMessage *message, SoupClientContext *client, gpointer user_data)
-{
-	/* Sleep for longer than the timeout, set below. */
-	g_usleep (2 * G_USEC_PER_SEC);
-
-	soup_message_set_status_full (message, SOUP_STATUS_REQUEST_TIMEOUT, "Request Timeout");
-	soup_message_body_append (message->response_body, SOUP_MEMORY_STATIC, "Request timed out.", strlen ("Request timed out."));
-
-	return TRUE;
-}
-
 static void
 test_authentication_timeout (void)
 {
@@ -218,7 +172,7 @@ test_authentication_timeout (void)
 		return;
 	}
 
-	handler_id = g_signal_connect (mock_server, "handle-message", (GCallback) authentication_timeout_cb, NULL);
+	handler_id = g_signal_connect (mock_server, "handle-message", (GCallback) gdata_test_mock_server_handle_message_timeout, NULL);
 	gdata_mock_server_run (mock_server);
 	gdata_test_set_https_port (mock_server);
 
@@ -390,8 +344,8 @@ test_query_standard_feed_with_query (gconstpointer service)
 	gdata_mock_server_end_trace (mock_server);
 }
 
-/* TODO: Document me. */
-static const RequestErrorData query_standard_feed_errors[] = {
+/* HTTP message responses and the expected associated GData error domain/code. */
+static const GDataTestRequestErrorData query_standard_feed_errors[] = {
 	/* Generic network errors. */
 	{ SOUP_STATUS_BAD_REQUEST, "Bad Request", "Invalid parameter ‘foobar’.",
 	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
@@ -441,18 +395,6 @@ static const RequestErrorData query_standard_feed_errors[] = {
 	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
 };
 
-/* TODO: Factor this out */
-static gboolean
-query_standard_feed_error_cb (GDataMockServer *self, SoupMessage *message, SoupClientContext *client, gpointer user_data)
-{
-	const RequestErrorData *data = user_data;
-
-	soup_message_set_status_full (message, data->status_code, data->reason_phrase);
-	soup_message_body_append (message->response_body, SOUP_MEMORY_STATIC, data->message_body, strlen (data->message_body));
-
-	return TRUE;
-}
-
 static void
 test_query_standard_feed_error (gconstpointer service)
 {
@@ -470,9 +412,9 @@ test_query_standard_feed_error (gconstpointer service)
 	}
 
 	for (i = 0; i < G_N_ELEMENTS (query_standard_feed_errors); i++) {
-		const RequestErrorData *data = &query_standard_feed_errors[i];
+		const GDataTestRequestErrorData *data = &query_standard_feed_errors[i];
 
-		handler_id = g_signal_connect (mock_server, "handle-message", (GCallback) query_standard_feed_error_cb, (gpointer) data);
+		handler_id = g_signal_connect (mock_server, "handle-message", (GCallback) gdata_test_mock_server_handle_message_error, (gpointer) data);
 		gdata_mock_server_run (mock_server);
 		gdata_test_set_https_port (mock_server);
 
@@ -485,19 +427,6 @@ test_query_standard_feed_error (gconstpointer service)
 		gdata_mock_server_stop (mock_server);
 		g_signal_handler_disconnect (mock_server, handler_id);
 	}
-}
-
-/* TODO: factor this out */
-static gboolean
-query_standard_feed_timeout_cb (GDataMockServer *self, SoupMessage *message, SoupClientContext *client, gpointer user_data)
-{
-	/* Sleep for longer than the timeout, set below. */
-	g_usleep (2 * G_USEC_PER_SEC);
-
-	soup_message_set_status_full (message, SOUP_STATUS_REQUEST_TIMEOUT, "Request Timeout");
-	soup_message_body_append (message->response_body, SOUP_MEMORY_STATIC, "Request timed out.", strlen ("Request timed out."));
-
-	return TRUE;
 }
 
 static void
@@ -515,7 +444,7 @@ test_query_standard_feed_timeout (gconstpointer service)
 		return;
 	}
 
-	handler_id = g_signal_connect (mock_server, "handle-message", (GCallback) query_standard_feed_timeout_cb, NULL);
+	handler_id = g_signal_connect (mock_server, "handle-message", (GCallback) gdata_test_mock_server_handle_message_timeout, NULL);
 	gdata_mock_server_run (mock_server);
 	gdata_test_set_https_port (mock_server);
 
