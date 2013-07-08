@@ -600,6 +600,9 @@ trace_to_soup_message (const gchar *trace, SoupURI *base_uri)
 	} else if (strncmp (trace, "DELETE", strlen ("DELETE")) == 0) {
 		method = SOUP_METHOD_DELETE;
 		trace += strlen ("DELETE");
+	} else if (strncmp (trace, "PUT", strlen ("PUT")) == 0) {
+		method = SOUP_METHOD_PUT;
+		trace += strlen ("PUT");
 	} else {
 		g_warning ("Unknown method ‘%s’.", trace);
 		goto error;
@@ -1036,6 +1039,7 @@ gdata_mock_server_run (GDataMockServer *self)
 	                                "ssl-cert-file", TEST_FILE_DIR "cert.pem",
 	                                "ssl-key-file", TEST_FILE_DIR "key.pem",
 	                                "async-context", thread_context,
+	                                "raw-paths", TRUE,
 	                                NULL);
 	soup_server_add_handler (priv->server, "/", server_handler_cb, self, NULL);
 
