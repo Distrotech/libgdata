@@ -124,8 +124,14 @@ gdata_test_init (int argc, char **argv)
 	gdata_mock_server_set_enable_online (mock_server, write_traces);
 }
 
-/**
- * TODO: Document me.
+/*
+ * gdata_test_get_mock_server:
+ *
+ * Returns the singleton #GDataMockServer instance used throughout the test suite.
+ *
+ * Return value: (transfer none): the mock server
+ *
+ * Since: 0.13.4
  */
 GDataMockServer *
 gdata_test_get_mock_server (void)

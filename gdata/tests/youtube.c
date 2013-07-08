@@ -80,54 +80,54 @@ typedef struct {
 	guint status_code;
 	const gchar *reason_phrase;
 	const gchar *message_body;
-	gboolean client_login_authorizer_error; /* TRUE if error domain is GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR; FALSE if it's GDATA_SERVICE_ERROR */
+	GQuark (*error_domain_func) (void); /* typically gdata_service_error_quark */
 	gint error_code;
 } RequestErrorData;
 
 static const RequestErrorData authentication_errors[] = {
 	/* Generic network errors. */
 	{ SOUP_STATUS_BAD_REQUEST, "Bad Request", "Invalid parameter ‘foobar’.",
-	  FALSE, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
 	{ SOUP_STATUS_NOT_FOUND, "Not Found", "Login page wasn't found for no good reason at all.",
-	  FALSE, GDATA_SERVICE_ERROR_NOT_FOUND },
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_NOT_FOUND },
 	{ SOUP_STATUS_PRECONDITION_FAILED, "Precondition Failed", "Not allowed to log in at this time, possibly.",
-	  FALSE, GDATA_SERVICE_ERROR_CONFLICT },
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_CONFLICT },
 	{ SOUP_STATUS_INTERNAL_SERVER_ERROR, "Internal Server Error", "Whoops.",
-	  FALSE, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
 	/* Specific authentication errors. */
 	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=BadAuthentication\n",
-	  TRUE, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_BAD_AUTHENTICATION },
+	  gdata_client_login_authorizer_error_quark, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_BAD_AUTHENTICATION },
 	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=BadAuthentication\nInfo=InvalidSecondFactor\n",
-	  TRUE, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_INVALID_SECOND_FACTOR },
+	  gdata_client_login_authorizer_error_quark, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_INVALID_SECOND_FACTOR },
 	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=NotVerified\nUrl=http://example.com/\n",
-	  TRUE, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_NOT_VERIFIED },
+	  gdata_client_login_authorizer_error_quark, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_NOT_VERIFIED },
 	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=TermsNotAgreed\nUrl=http://example.com/\n",
-	  TRUE, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_TERMS_NOT_AGREED },
+	  gdata_client_login_authorizer_error_quark, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_TERMS_NOT_AGREED },
 	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=Unknown\nUrl=http://example.com/\n",
-	  FALSE, GDATA_SERVICE_ERROR_AUTHENTICATION_REQUIRED },
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_AUTHENTICATION_REQUIRED },
 	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=AccountDeleted\nUrl=http://example.com/\n",
-	  TRUE, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_ACCOUNT_DELETED },
+	  gdata_client_login_authorizer_error_quark, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_ACCOUNT_DELETED },
 	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=AccountDisabled\nUrl=http://example.com/\n",
-	  TRUE, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_ACCOUNT_DISABLED },
+	  gdata_client_login_authorizer_error_quark, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_ACCOUNT_DISABLED },
 	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=AccountMigrated\nUrl=http://example.com/\n",
-	  TRUE, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_ACCOUNT_MIGRATED },
+	  gdata_client_login_authorizer_error_quark, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_ACCOUNT_MIGRATED },
 	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=ServiceDisabled\nUrl=http://example.com/\n",
-	  TRUE, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_SERVICE_DISABLED },
+	  gdata_client_login_authorizer_error_quark, GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR_SERVICE_DISABLED },
 	{ SOUP_STATUS_FORBIDDEN, "Access Forbidden", "Error=ServiceUnavailable\nUrl=http://example.com/\n",
-	  FALSE, GDATA_SERVICE_ERROR_UNAVAILABLE },
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_UNAVAILABLE },
 	/* Malformed authentication errors to test parser error handling. */
 	{ SOUP_STATUS_INTERNAL_SERVER_ERROR, "Access Forbidden", "Error=BadAuthentication", /* missing Error delimiter */
-	  FALSE, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
 	{ SOUP_STATUS_INTERNAL_SERVER_ERROR, "Access Forbidden", "Error=AccountDeleted\n", /* missing Url */
-	  FALSE, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
 	{ SOUP_STATUS_INTERNAL_SERVER_ERROR, "Access Forbidden", "Error=AccountDeleted\nUrl=http://example.com/", /* missing Url delimiter */
-	  FALSE, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
 	{ SOUP_STATUS_INTERNAL_SERVER_ERROR, "Access Forbidden", "", /* missing Error */
-	  FALSE, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
 	{ SOUP_STATUS_INTERNAL_SERVER_ERROR, "Access Forbidden", "Error=", /* missing Error */
-	  FALSE, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
 	{ SOUP_STATUS_INTERNAL_SERVER_ERROR, "Access Forbidden", "Error=Foobar\nUrl=http://example.com/\n", /* unknown Error */
-	  FALSE, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
 };
 
 static gboolean
@@ -160,7 +160,6 @@ test_authentication_error (void)
 
 	for (i = 0; i < G_N_ELEMENTS (authentication_errors); i++) {
 		const RequestErrorData *data = &authentication_errors[i];
-		GQuark error_domain;
 
 		handler_id = g_signal_connect (mock_server, "handle-message", (GCallback) authentication_error_cb, (gpointer) data);
 		gdata_mock_server_run (mock_server);
@@ -173,8 +172,7 @@ test_authentication_error (void)
 
 		/* Log in */
 		retval = gdata_client_login_authorizer_authenticate (authorizer, USERNAME, PASSWORD, NULL, &error);
-		error_domain = (data->client_login_authorizer_error == TRUE) ? GDATA_CLIENT_LOGIN_AUTHORIZER_ERROR : GDATA_SERVICE_ERROR;
-		g_assert_error (error, error_domain, data->error_code);
+		g_assert_error (error, data->error_domain_func (), data->error_code);
 		g_assert (retval == FALSE);
 		g_clear_error (&error);
 
@@ -309,6 +307,45 @@ test_service_properties (void)
 }
 
 static void
+test_query_standard_feeds (gconstpointer service)
+{
+	GDataFeed *feed;
+	GError *error = NULL;
+	guint i;
+	struct {
+		GDataYouTubeStandardFeedType feed_type;
+		const gchar *expected_title;
+	} feeds[] = {
+		/* This must be kept up-to-date with GDataYouTubeStandardFeedType. */
+		{ GDATA_YOUTUBE_TOP_RATED_FEED, "Top Rated" },
+		{ GDATA_YOUTUBE_TOP_FAVORITES_FEED, "Top Favorites" },
+		{ GDATA_YOUTUBE_MOST_VIEWED_FEED, "Most Popular" },
+		{ GDATA_YOUTUBE_MOST_POPULAR_FEED, "Most Popular" },
+		{ GDATA_YOUTUBE_MOST_RECENT_FEED, "Most Recent" },
+		{ GDATA_YOUTUBE_MOST_DISCUSSED_FEED, "Most Discussed" },
+		{ GDATA_YOUTUBE_MOST_LINKED_FEED, NULL },
+		{ GDATA_YOUTUBE_MOST_RESPONDED_FEED, "Most Responded" },
+		{ GDATA_YOUTUBE_RECENTLY_FEATURED_FEED, "Spotlight Videos" },
+		{ GDATA_YOUTUBE_WATCH_ON_MOBILE_FEED, NULL },
+	};
+
+	gdata_test_mock_server_start_trace (mock_server, "query-standard-feeds");
+
+	for (i = 0; i < G_N_ELEMENTS (feeds); i++) {
+		feed = gdata_youtube_service_query_standard_feed (GDATA_YOUTUBE_SERVICE (service), feeds[i].feed_type, NULL, NULL, NULL, NULL, &error);
+		g_assert_no_error (error);
+		g_assert (GDATA_IS_FEED (feed));
+		g_clear_error (&error);
+
+		g_assert_cmpstr (gdata_feed_get_title (feed), ==, feeds[i].expected_title);
+
+		g_object_unref (feed);
+	}
+
+	gdata_mock_server_end_trace (mock_server);
+}
+
+static void
 test_query_standard_feed (gconstpointer service)
 {
 	GDataFeed *feed;
@@ -321,11 +358,178 @@ test_query_standard_feed (gconstpointer service)
 	g_assert (GDATA_IS_FEED (feed));
 	g_clear_error (&error);
 
-	/* TODO: check entries and feed properties */
+	g_assert_cmpstr (gdata_feed_get_title (feed), ==, "Top Rated");
 
 	g_object_unref (feed);
 
 	gdata_mock_server_end_trace (mock_server);
+}
+
+static void
+test_query_standard_feed_with_query (gconstpointer service)
+{
+	GDataYouTubeQuery *query;
+	GDataFeed *feed;
+	GError *error = NULL;
+
+	gdata_test_mock_server_start_trace (mock_server, "query-standard-feed-with-query");
+
+	query = gdata_youtube_query_new (NULL);
+	gdata_youtube_query_set_language (query, "fr");
+
+	feed = gdata_youtube_service_query_standard_feed (GDATA_YOUTUBE_SERVICE (service), GDATA_YOUTUBE_TOP_RATED_FEED, GDATA_QUERY (query), NULL, NULL, NULL, &error);
+	g_assert_no_error (error);
+	g_assert (GDATA_IS_FEED (feed));
+	g_clear_error (&error);
+
+	g_assert_cmpstr (gdata_feed_get_title (feed), ==, "Top Rated");
+
+	g_object_unref (query);
+	g_object_unref (feed);
+
+	gdata_mock_server_end_trace (mock_server);
+}
+
+/* TODO: Document me. */
+static const RequestErrorData query_standard_feed_errors[] = {
+	/* Generic network errors. */
+	{ SOUP_STATUS_BAD_REQUEST, "Bad Request", "Invalid parameter ‘foobar’.",
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	{ SOUP_STATUS_NOT_FOUND, "Not Found", "Login page wasn't found for no good reason at all.",
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_NOT_FOUND },
+	{ SOUP_STATUS_PRECONDITION_FAILED, "Precondition Failed", "Not allowed to log in at this time, possibly.",
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_CONFLICT },
+	{ SOUP_STATUS_INTERNAL_SERVER_ERROR, "Internal Server Error", "Whoops.",
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	/* Specific query errors. */
+	{ SOUP_STATUS_FORBIDDEN, "Too Many Calls",
+	  "<?xml version='1.0' encoding='UTF-8'?><errors><error><domain>yt:quota</domain><code>too_many_recent_calls</code></error></errors>",
+	  gdata_youtube_service_error_quark, GDATA_YOUTUBE_SERVICE_ERROR_API_QUOTA_EXCEEDED },
+	{ SOUP_STATUS_FORBIDDEN, "Too Many Entries",
+	  "<?xml version='1.0' encoding='UTF-8'?><errors><error><domain>yt:quota</domain><code>too_many_entries</code></error></errors>",
+	  gdata_youtube_service_error_quark, GDATA_YOUTUBE_SERVICE_ERROR_ENTRY_QUOTA_EXCEEDED },
+	{ SOUP_STATUS_SERVICE_UNAVAILABLE, "Maintenance",
+	  "<?xml version='1.0' encoding='UTF-8'?><errors><error><domain>yt:service</domain><code>disabled_in_maintenance_mode</code></error></errors>",
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_UNAVAILABLE },
+	{ SOUP_STATUS_FORBIDDEN, "YouTube Signup Required",
+	  "<?xml version='1.0' encoding='UTF-8'?><errors><error><domain>yt:service</domain><code>youtube_signup_required</code></error></errors>",
+	  gdata_youtube_service_error_quark, GDATA_YOUTUBE_SERVICE_ERROR_CHANNEL_REQUIRED },
+	{ SOUP_STATUS_FORBIDDEN, "Forbidden",
+	  "<?xml version='1.0' encoding='UTF-8'?><errors><error><domain>yt:authentication</domain><code>TokenExpired</code>"
+	  "<location type='header'>Authorization: GoogleLogin</location></error></errors>",
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_AUTHENTICATION_REQUIRED },
+	/* Malformed YouTube errors to test parser error handling. */
+	{ SOUP_STATUS_INTERNAL_SERVER_ERROR, "Malformed XML",
+	  "<?xml version='1.0' encoding='UTF-8'?><errors>",
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	{ SOUP_STATUS_FORBIDDEN, "Empty Response", "",
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_AUTHENTICATION_REQUIRED },
+	{ SOUP_STATUS_INTERNAL_SERVER_ERROR, "Unknown Element",
+	  "<?xml version='1.0' encoding='UTF-8'?><errors> <error> <foobar /> </error> </errors>",
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	{ SOUP_STATUS_INTERNAL_SERVER_ERROR, "Wrong Top-Level Element",
+	  "<?xml version='1.0' encoding='UTF-8'?><nonerrors></nonerrors>",
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	{ SOUP_STATUS_FORBIDDEN, "Unknown Error Code (Service)",
+	  "<?xml version='1.0' encoding='UTF-8'?><errors><error><domain>yt:service</domain><code>UnknownCode</code></error></errors>",
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	{ SOUP_STATUS_FORBIDDEN, "Unknown Error Code (Quota)",
+	  "<?xml version='1.0' encoding='UTF-8'?><errors><error><domain>yt:quota</domain><code>UnknownCode</code></error></errors>",
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+	{ SOUP_STATUS_FORBIDDEN, "Unknown Error Domain",
+	  "<?xml version='1.0' encoding='UTF-8'?><errors><error><domain>yt:foobaz</domain><code>TokenExpired</code></error></errors>",
+	  gdata_service_error_quark, GDATA_SERVICE_ERROR_PROTOCOL_ERROR },
+};
+
+/* TODO: Factor this out */
+static gboolean
+query_standard_feed_error_cb (GDataMockServer *self, SoupMessage *message, SoupClientContext *client, gpointer user_data)
+{
+	const RequestErrorData *data = user_data;
+
+	soup_message_set_status_full (message, data->status_code, data->reason_phrase);
+	soup_message_body_append (message->response_body, SOUP_MEMORY_STATIC, data->message_body, strlen (data->message_body));
+
+	return TRUE;
+}
+
+static void
+test_query_standard_feed_error (gconstpointer service)
+{
+	GDataFeed *feed;
+	GError *error = NULL;
+	gulong handler_id;
+	guint i;
+
+	if (gdata_mock_server_get_enable_logging (mock_server) == TRUE) {
+		g_test_message ("Ignoring test due to logging being enabled.");
+		return;
+	} else if (gdata_mock_server_get_enable_online (mock_server) == TRUE) {
+		g_test_message ("Ignoring test due to running online and test not being reproducible.");
+		return;
+	}
+
+	for (i = 0; i < G_N_ELEMENTS (query_standard_feed_errors); i++) {
+		const RequestErrorData *data = &query_standard_feed_errors[i];
+
+		handler_id = g_signal_connect (mock_server, "handle-message", (GCallback) query_standard_feed_error_cb, (gpointer) data);
+		gdata_mock_server_run (mock_server);
+		gdata_test_set_https_port (mock_server);
+
+		/* Query the feed. */
+		feed = gdata_youtube_service_query_standard_feed (GDATA_YOUTUBE_SERVICE (service), GDATA_YOUTUBE_TOP_RATED_FEED, NULL, NULL, NULL, NULL, &error);
+		g_assert_error (error, data->error_domain_func (), data->error_code);
+		g_assert (feed == NULL);
+		g_clear_error (&error);
+
+		gdata_mock_server_stop (mock_server);
+		g_signal_handler_disconnect (mock_server, handler_id);
+	}
+}
+
+/* TODO: factor this out */
+static gboolean
+query_standard_feed_timeout_cb (GDataMockServer *self, SoupMessage *message, SoupClientContext *client, gpointer user_data)
+{
+	/* Sleep for longer than the timeout, set below. */
+	g_usleep (2 * G_USEC_PER_SEC);
+
+	soup_message_set_status_full (message, SOUP_STATUS_REQUEST_TIMEOUT, "Request Timeout");
+	soup_message_body_append (message->response_body, SOUP_MEMORY_STATIC, "Request timed out.", strlen ("Request timed out."));
+
+	return TRUE;
+}
+
+static void
+test_query_standard_feed_timeout (gconstpointer service)
+{
+	GDataFeed *feed;
+	GError *error = NULL;
+	gulong handler_id;
+
+	if (gdata_mock_server_get_enable_logging (mock_server) == TRUE) {
+		g_test_message ("Ignoring test due to logging being enabled.");
+		return;
+	} else if (gdata_mock_server_get_enable_online (mock_server) == TRUE) {
+		g_test_message ("Ignoring test due to running online and test not being reproducible.");
+		return;
+	}
+
+	handler_id = g_signal_connect (mock_server, "handle-message", (GCallback) query_standard_feed_timeout_cb, NULL);
+	gdata_mock_server_run (mock_server);
+	gdata_test_set_https_port (mock_server);
+
+	/* Set the service's timeout as low as possible (1 second). */
+	gdata_service_set_timeout (GDATA_SERVICE (service), 1);
+
+	/* Query the feed. */
+	feed = gdata_youtube_service_query_standard_feed (GDATA_YOUTUBE_SERVICE (service), GDATA_YOUTUBE_TOP_RATED_FEED, NULL, NULL, NULL, NULL, &error);
+	g_assert_error (error, GDATA_SERVICE_ERROR, GDATA_SERVICE_ERROR_NETWORK_ERROR);
+	g_assert (feed == NULL);
+	g_clear_error (&error);
+
+	gdata_mock_server_stop (mock_server);
+	g_signal_handler_disconnect (mock_server, handler_id);
 }
 
 GDATA_ASYNC_TEST_FUNCTIONS (query_standard_feed, void,
@@ -2212,7 +2416,11 @@ main (int argc, char *argv[])
 	g_test_add ("/youtube/authentication/async/cancellation", GDataAsyncTestData, NULL, gdata_set_up_async_test_data,
 	            test_authentication_async_cancellation, gdata_tear_down_async_test_data);
 
+	g_test_add_data_func ("/youtube/query/standard_feeds", service, test_query_standard_feeds);
 	g_test_add_data_func ("/youtube/query/standard_feed", service, test_query_standard_feed);
+	g_test_add_data_func ("/youtube/query/standard_feed/with_query", service, test_query_standard_feed_with_query);
+	g_test_add_data_func ("/youtube/query/standard_feed/error", service, test_query_standard_feed_error);
+	g_test_add_data_func ("/youtube/query/standard_feed/timeout", service, test_query_standard_feed_timeout);
 	g_test_add ("/youtube/query/standard_feed/async", GDataAsyncTestData, service, gdata_set_up_async_test_data,
 	            test_query_standard_feed_async, gdata_tear_down_async_test_data);
 	g_test_add_data_func ("/youtube/query/standard_feed/async/progress_closure", service, test_query_standard_feed_async_progress_closure);

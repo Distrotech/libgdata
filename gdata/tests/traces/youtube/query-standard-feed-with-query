@@ -1,0 +1,30 @@
+> GET /feeds/api/standardfeeds/top_rated?time=all_time&safeSearch=none&location=0,0&location-radius=0m&lr=fr HTTP/1.1
+> Soup-Debug-Timestamp: 1373293538
+> Soup-Debug: SoupSession 1 (0x6652c0), SoupMessage 20 (0x71b470), SoupSocket 3 (0x94a600)
+> Host: gdata.youtube.com
+> X-GData-Key: key=AI39si7Me3Q7zYs6hmkFvpRBD2nrkVjYYsUO5lh_3HdOkGRc9g6Z4nzxZatk_aAo2EsA21k7vrda0OO6oFg2rnhMedZXPyXoEw
+> Authorization: GoogleLogin auth=DQAAAM8AAAC3Hkt53AkE4RTSAVN_wR6OeCvW0UAWtozq3E3MkneAoXtT-aXHxn7LxiKW03YHXIK5H-YRfMSMFfX_00iH8Tjo8eSF2xSD9pncrOjsBgiX2L2UKMZRjKIkVlNv-GgzYP4EYtiRARuqaqgP2jr2vlVthX4a-2armsrtAxoA_AEMN7fZMrc0_xnL28F7WZeMtPtaW5R3JD1eZbsWGE9eZExDf3C5R7IkxTJBPF9CcwNKZ8XKliQpVgZpqBCDde_n5ByEdhSNk_ukXgkWBOuQxnIr
+> GData-Version: 2
+> Accept-Encoding: gzip, deflate
+> Connection: Keep-Alive
+  
+< HTTP/1.1 200 OK
+< Soup-Debug-Timestamp: 1373293538
+< Soup-Debug: SoupMessage 20 (0x71b470)
+< X-GData-User-Country: GB
+< Content-Type: application/atom+xml; charset=UTF-8; type=feed
+< Expires: Mon, 08 Jul 2013 14:25:38 GMT
+< Date: Mon, 08 Jul 2013 14:25:38 GMT
+< Cache-control: private, max-age=0, must-revalidate, no-transform
+< Vary: *
+< GData-Version: 2.1
+< ETag: W/"CUIHSXc4eCp7I2A9WhFQEkQ."
+< Last-Modified: Mon, 08 Jul 2013 14:25:38 GMT
+< Transfer-Encoding: chunked
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Server: GSE
+< 
+< <?xml version='1.0' encoding='UTF-8'?><feed xmlns='http://www.w3.org/2005/Atom' xmlns:openSearch='http://a9.com/-/spec/opensearch/1.1/' xmlns:gd='http://schemas.google.com/g/2005' gd:etag='W/&quot;CUIHSXc4eCp7I2A9WhFQEkQ.&quot;'><id>tag:youtube.com,2008:standardfeed:global:top_rated</id><updated>2013-07-08T14:25:38.930Z</updated><category scheme='http://schemas.google.com/g/2005#kind' term='http://gdata.youtube.com/schemas/2007#video'/><title>Top Rated</title><logo>http://www.youtube.com/img/pic_youtubelogo_123x63.gif</logo><link rel='alternate' type='text/html' href='https://www.youtube.com/channel/HCWKQJPHqP4J0'/><link rel='http://schemas.google.com/g/2005#feed' type='application/atom+xml' href='https://gdata.youtube.com/feeds/api/standardfeeds/top_rated'/><link rel='http://schemas.google.com/g/2005#batch' type='application/atom+xml' href='https://gdata.youtube.com/feeds/api/standardfeeds/top_rated/batch'/><link rel='self' type='application/atom+xml' href='https://gdata.youtube.com/feeds/api/standardfeeds/top_rated?start-index=1&amp;max-results=25&amp;location=0,0&amp;location-radius=0m&amp;time=all_time&amp;safeSearch=none'/><link rel='service' type='application/atomsvc+xml' href='https://gdata.youtube.com/feeds/api/standardfeeds/top_rated?alt=atom-service'/><author><name>YouTube</name><uri>http://www.youtube.com/</uri></author><generator version='2.1' uri='http://gdata.youtube.com'>YouTube data API</generator><openSearch:totalResults>0</openSearch:totalResults><openSearch:startIndex>1</openSearch:startIndex><openSearch:itemsPerPage>25</openSearch:itemsPerPage></feed>
+  
