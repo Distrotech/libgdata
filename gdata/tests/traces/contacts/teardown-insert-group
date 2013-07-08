@@ -1,0 +1,25 @@
+> DELETE /m8/feeds/groups/libgdata.test%40googlemail.com/full/345d441d8dfd18f6 HTTP/1.1
+> Soup-Debug-Timestamp: 1373311852
+> Soup-Debug: SoupSession 1 (0x66d2c0), SoupMessage 43 (0x7d1c80), SoupSocket 21 (0x992490)
+> Host: www.google.com
+> Authorization: GoogleLogin auth=DQAAAM8AAADUIsmllK1ALe2vLL7iZp4-TWTBczUexky6FpXJjMt7HK5CD0eWFKdqh0VyZ5qD3fAGKINEUkWiLYm2a-YLWu7nw9s-TcMNY8tSyLyzRwnRC8oOxCVVzrjklpaEKhz9sb7dYHHkigKuu-f6zfuMMdsh4O6uhpc81Dmn_kKKCRjs7JtZ3NHyWq7Bw8qJ075hd5Uo6qUfqRIW_MsJt7CSwbrVtI81GXtbXC4cYkvKiYTEyDb7PfFuv6ytkXScGCsMbYVnmGN5jE3eK7Ce6yhoHBUa
+> GData-Version: 3
+> If-Match: "Q3w7eDVSLSt7I2A9WhFQE0wLTwE."
+> Accept-Encoding: gzip, deflate
+> Connection: Keep-Alive
+  
+< HTTP/1.1 404 Not Found
+< Soup-Debug-Timestamp: 1373311852
+< Soup-Debug: SoupMessage 43 (0x7d1c80)
+< Content-Type: text/html; charset=UTF-8
+< Date: Mon, 08 Jul 2013 19:30:52 GMT
+< Expires: Mon, 08 Jul 2013 19:30:52 GMT
+< Cache-control: private, max-age=0
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Server: GSE
+< Transfer-Encoding: chunked
+< 
+< Group not found
+  
