@@ -48,6 +48,9 @@ static GFile *trace_dir = NULL;
 /* TRUE if tests should be run online and a trace file written for each; FALSE if tests should run offline against existing trace files. */
 static gboolean write_traces = FALSE;
 
+/* TRUE if tests should be run online and the server's responses compared to the existing trace file for each; FALSE if tests should run offline without comparison. */
+static gboolean compare_traces = FALSE;
+
 /* Global mock server instance used by all tests. */
 static GDataMockServer *mock_server = NULL;
 
@@ -82,6 +85,9 @@ gdata_test_init (int argc, char **argv)
 		} else if (strcmp ("--write-traces", argv[i]) == 0 || strcmp ("-w", argv[i]) == 0) {
 			write_traces = TRUE;
 			argv[i] = (char*) "";
+		} else if (strcmp ("--compare-traces", argv[i]) == 0 || strcmp ("-c", argv[i]) == 0) {
+			compare_traces = TRUE;
+			argv[i] = (char*) "";
 		} else if (strcmp ("-?", argv[i]) == 0 || strcmp ("--help", argv[i]) == 0 || strcmp ("-h" , argv[i]) == 0) {
 			/* We have to override --help in order to document --no-internet and --no-interactive */
 			printf ("Usage:\n"
@@ -100,10 +106,17 @@ gdata_test_init (int argc, char **argv)
 			          "  -n, --no-internet              Only execute tests which don't require Internet connectivity\n"
 			          "  -i, --no-interactive           Only execute tests which don't require user interaction\n"
 			          "  -t, --trace-dir [directory]    Read/Write trace files in the specified directory\n"
-			          "  -w, --write-traces             Work online and write trace files to --trace-dir\n",
+			          "  -w, --write-traces             Work online and write trace files to --trace-dir\n"
+			          "  -c, --compare-traces           Work online and compare with existing trace files in --trace-dir\n",
 			          argv[0]);
 			exit (0);
 		}
+	}
+
+	/* --[write|compare]-traces are mutually exclusive. */
+	if (write_traces == TRUE && compare_traces == TRUE) {
+		fprintf (stderr, "Error: --write-traces and --compare-traces are mutually exclusive.\n");
+		exit (1);
 	}
 
 	g_test_init (&argc, &argv, NULL);
@@ -121,7 +134,7 @@ gdata_test_init (int argc, char **argv)
 
 	mock_server = gdata_mock_server_new ();
 	gdata_mock_server_set_enable_logging (mock_server, write_traces);
-	gdata_mock_server_set_enable_online (mock_server, write_traces);
+	gdata_mock_server_set_enable_online (mock_server, write_traces || compare_traces);
 }
 
 /*
@@ -757,8 +770,8 @@ gdata_test_debug_handler (const gchar *log_domain, GLogLevelFlags log_level, con
 	message_list = g_slist_append (message_list, g_strdup (message));
 
 	/* Log to the trace file. */
-	if (write_traces == TRUE && message != NULL && (*message == '<' || *message == '>' || *message == ' ') && *(message + 1) == ' ') {
-		gdata_mock_server_log_message_chunk (mock_server, message);
+	if (message != NULL && (*message == '<' || *message == '>' || *message == ' ') && *(message + 1) == ' ') {
+		gdata_mock_server_received_message_chunk (mock_server, message);
 	}
 }
 

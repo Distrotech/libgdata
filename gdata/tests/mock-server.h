@@ -60,6 +60,7 @@ GDataMockServer *gdata_mock_server_new (void) G_GNUC_MALLOC G_GNUC_WARN_UNUSED_R
 void gdata_mock_server_load_trace (GDataMockServer *self, GFile *trace_file, GCancellable *cancellable, GError **error);
 void gdata_mock_server_load_trace_async (GDataMockServer *self, GFile *trace_file, GCancellable *cancellable, GAsyncReadyCallback callback, gpointer user_data);
 void gdata_mock_server_load_trace_finish (GDataMockServer *self, GAsyncResult *result, GError **error);
+void gdata_mock_server_unload_trace (GDataMockServer *self);
 
 void gdata_mock_server_run (GDataMockServer *self);
 void gdata_mock_server_stop (GDataMockServer *self);
@@ -77,7 +78,7 @@ void gdata_mock_server_set_enable_online (GDataMockServer *self, gboolean enable
 gboolean gdata_mock_server_get_enable_logging (GDataMockServer *self) G_GNUC_WARN_UNUSED_RESULT;
 void gdata_mock_server_set_enable_logging (GDataMockServer *self, gboolean enable_logging);
 
-void gdata_mock_server_log_message_chunk (GDataMockServer *self, const gchar *message_chunk);
+void gdata_mock_server_received_message_chunk (GDataMockServer *self, const gchar *message_chunk);
 
 SoupAddress *gdata_mock_server_get_address (GDataMockServer *self);
 guint gdata_mock_server_get_port (GDataMockServer *self);

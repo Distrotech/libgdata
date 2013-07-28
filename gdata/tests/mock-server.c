@@ -30,6 +30,14 @@
  * The mock server currently only operates on a single network interface, on HTTPS only. This may change in future. A dummy TLS certificate is used
  * to authenticate the server. This certificate is not signed by a CA, so the SoupSession:ssl-strict property must be set to %FALSE in client code
  * during (and only during!) testing.
+ *
+ * The server can operate in three modes: logging, testing, and comparing. These are set by #GDataMockServer:enable-logging and #GDataMockServer:enable-online.
+ *  • Logging mode (#GDataMockServer:enable-logging: %TRUE, #GDataMockServer:enable-online: %TRUE): Requests are sent to the real server online, and the
+ *    request–response pairs recorded to a log file.
+ *  • Testing mode (#GDataMockServer:enable-logging: %FALSE, #GDataMockServer:enable-online: %FALSE): Requests are sent to the mock server, which responds
+ *    from the trace file.
+ *  • Comparing mode (#GDataMockServer:enable-logging: %FALSE, #GDataMockServer:enable-online: %TRUE): Requests are sent to the real server online, and
+ *    the request–response pairs are compared against those in an existing log file to see if the log file is up-to-date.
  */
 
 #include <glib.h>
@@ -74,6 +82,9 @@ struct _GDataMockServerPrivate {
 	GFile *trace_directory;
 	gboolean enable_online;
 	gboolean enable_logging;
+
+	GString *comparison_message;
+	gboolean comparison_message_seen_request;
 };
 
 enum {
@@ -211,6 +222,10 @@ gdata_mock_server_dispose (GObject *object)
 	g_clear_object (&priv->trace_directory);
 	g_clear_pointer (&priv->server_thread, g_thread_unref);
 
+	if (priv->comparison_message != NULL) {
+		g_string_free (priv->comparison_message, TRUE);
+	}
+
 	/* Chain up to the parent class */
 	G_OBJECT_CLASS (gdata_mock_server_parent_class)->dispose (object);
 }
@@ -284,10 +299,16 @@ load_file_iteration_data_free (LoadFileIterationData *data)
 static SoupURI * /* transfer full */
 build_base_uri (GDataMockServer *self)
 {
+	GDataMockServerPrivate *priv = self->priv;
 	gchar *base_uri_string;
 	SoupURI *base_uri;
 
-	base_uri_string = g_strdup_printf ("https://%s:%u", soup_address_get_physical (self->priv->address), self->priv->port);
+	if (priv->enable_online == FALSE) {
+		base_uri_string = g_strdup_printf ("https://%s:%u", soup_address_get_physical (self->priv->address), self->priv->port);
+	} else {
+		base_uri_string = g_strdup ("https://localhost"); /* FIXME */
+	}
+
 	base_uri = soup_uri_new (base_uri_string);
 	g_free (base_uri_string);
 
@@ -842,6 +863,28 @@ load_file_iteration_thread_cb (GTask *task, gpointer source_object, gpointer tas
 }
 
 /**
+ * gdata_mock_server_unload_trace:
+ * @self: a #GDataMockServer
+ *
+ * Unloads the current trace file of network messages, as loaded by gdata_mock_server_load_trace() or gdata_mock_server_load_trace_async().
+ */
+void
+gdata_mock_server_unload_trace (GDataMockServer *self)
+{
+	GDataMockServerPrivate *priv = self->priv;
+
+	g_return_if_fail (GDATA_IS_MOCK_SERVER (self));
+
+	g_clear_object (&priv->next_message);
+	g_clear_object (&priv->input_stream);
+	g_clear_object (&priv->trace_file);
+
+	g_string_free (priv->comparison_message, TRUE);
+	priv->comparison_message = NULL;
+	priv->comparison_message_seen_request = FALSE;
+}
+
+/**
  * gdata_mock_server_load_trace:
  * @self: a #GDataMockServer
  * @trace_file: trace file to load
@@ -877,6 +920,8 @@ gdata_mock_server_load_trace (GDataMockServer *self, GFile *trace_file, GCancell
 		GError *child_error = NULL;
 
 		priv->next_message = load_file_iteration (priv->input_stream, base_uri, cancellable, &child_error);
+		priv->comparison_message = g_string_new (NULL);
+		priv->comparison_message_seen_request = FALSE;
 
 		if (child_error != NULL) {
 			g_clear_object (&priv->trace_file);
@@ -983,6 +1028,8 @@ gdata_mock_server_load_trace_finish (GDataMockServer *self, GAsyncResult *result
 	g_return_if_fail (g_task_is_valid (result, self));
 
 	self->priv->next_message = g_task_propagate_pointer (G_TASK (result), error);
+	self->priv->comparison_message = g_string_new (NULL);
+	self->priv->comparison_message_seen_request = FALSE;
 }
 
 static gpointer
@@ -1106,9 +1153,7 @@ gdata_mock_server_stop (GDataMockServer *self)
 	g_object_thaw_notify (G_OBJECT (self));
 
 	/* Reset the trace file. */
-	g_clear_object (&priv->next_message);
-	g_clear_object (&priv->input_stream);
-	g_clear_object (&priv->trace_file);
+	gdata_mock_server_unload_trace (self);
 }
 
 /**
@@ -1218,7 +1263,7 @@ gdata_mock_server_start_trace_full (GDataMockServer *self, GFile *trace_file)
 		}
 	}
 
-	/* Start reading from a trace file if online testing is disabled. */
+	/* Start reading from a trace file if online testing is disabled or if we need to compare server responses to the trace file. */
 	if (priv->enable_online == FALSE) {
 		gdata_mock_server_run (self);
 		gdata_mock_server_load_trace (self, trace_file, NULL, &child_error);
@@ -1231,6 +1276,18 @@ gdata_mock_server_start_trace_full (GDataMockServer *self, GFile *trace_file)
 			g_error_free (child_error);
 
 			gdata_mock_server_stop (self);
+
+			return;
+		}
+	} else if (priv->enable_online == TRUE && priv->enable_logging == FALSE) {
+		gdata_mock_server_load_trace (self, trace_file, NULL, &child_error);
+
+		if (child_error != NULL) {
+			gchar *trace_file_path = g_file_get_path (trace_file);
+			g_error ("Error loading trace file ‘%s’: %s", trace_file_path, child_error->message);
+			g_free (trace_file_path);
+
+			g_error_free (child_error);
 
 			return;
 		}
@@ -1255,6 +1312,8 @@ gdata_mock_server_end_trace (GDataMockServer *self)
 
 	if (priv->enable_online == FALSE) {
 		gdata_mock_server_stop (self);
+	} else if (priv->enable_online == TRUE && priv->enable_logging == FALSE) {
+		gdata_mock_server_unload_trace (self);
 	}
 
 	if (priv->enable_logging == TRUE) {
@@ -1327,19 +1386,19 @@ gdata_mock_server_set_enable_logging (GDataMockServer *self, gboolean enable_log
 }
 
 /**
- * gdata_mock_server_log_message_chunk:
+ * gdata_mock_server_received_message_chunk:
  * @self: a #GDataMockServer
- * @message_chunk: single line of a message to log
+ * @message_chunk: single line of a message which was received
  *
- * Appends a single new line of a message to the current trace file, adding a newline character at the end.
- *
- * This function is a no-op if the mock server is not in logging mode (i.e. if #GDataMockServer:enable-logging is %FALSE),
- * or if a trace file has not been specified using gdata_mock_server_start_trace().
+ * Indicates to the mock server that a single new line of a message was received from the real server. The message line may be
+ * appended to the current trace file if logging is enabled (#GDataMockServer:enable-logging is %TRUE), adding a newline character
+ * at the end. If logging is disabled but online mode is enabled (#GDataMockServer:enable-online is %TRUE), the message line will
+ * be compared to the next expected line in the existing trace file. Otherwise, this function is a no-op.
  *
  * On error, a warning will be printed. FIXME: That's icky.
  */
 void
-gdata_mock_server_log_message_chunk (GDataMockServer *self, const gchar *message_chunk)
+gdata_mock_server_received_message_chunk (GDataMockServer *self, const gchar *message_chunk)
 {
 	GDataMockServerPrivate *priv = self->priv;
 	GError *child_error = NULL;
@@ -1347,14 +1406,15 @@ gdata_mock_server_log_message_chunk (GDataMockServer *self, const gchar *message
 	g_return_if_fail (GDATA_IS_MOCK_SERVER (self));
 	g_return_if_fail (message_chunk != NULL);
 
-	/* Silently ignore the call if logging is disabled or if a trace file hasn't been specified. */
-	if (priv->enable_logging == FALSE || priv->output_stream == NULL) {
+	/* Silently ignore the call if logging is disabled and we're offline, or if a trace file hasn't been specified. */
+	if ((priv->enable_logging == FALSE && priv->enable_online == FALSE) || (priv->enable_logging == TRUE && priv->output_stream == NULL)) {
 		return;
 	}
 
 	/* Append to the trace file. */
-	if (g_output_stream_write_all (G_OUTPUT_STREAM (priv->output_stream), message_chunk, strlen (message_chunk), NULL, NULL, &child_error) == FALSE ||
-	    g_output_stream_write_all (G_OUTPUT_STREAM (priv->output_stream), "\n", 1, NULL, NULL, &child_error) == FALSE) {
+	if (priv->enable_logging == TRUE &&
+	    (g_output_stream_write_all (G_OUTPUT_STREAM (priv->output_stream), message_chunk, strlen (message_chunk), NULL, NULL, &child_error) == FALSE ||
+	     g_output_stream_write_all (G_OUTPUT_STREAM (priv->output_stream), "\n", 1, NULL, NULL, &child_error) == FALSE)) {
 		gchar *trace_file_path = g_file_get_path (priv->trace_file);
 		g_warning ("Error appending to log file ‘%s’: %s", trace_file_path, child_error->message);
 		g_free (trace_file_path);
@@ -1362,6 +1422,49 @@ gdata_mock_server_log_message_chunk (GDataMockServer *self, const gchar *message
 		g_error_free (child_error);
 
 		return;
+	}
+
+	/* Or compare to the existing trace file. */
+	if (priv->enable_logging == FALSE && priv->enable_online == TRUE) {
+		/* Build up the message to compare. */
+		g_string_append (priv->comparison_message, message_chunk);
+		g_string_append_c (priv->comparison_message, '\n');
+
+		if (strcmp (message_chunk, "  ") == 0 && priv->comparison_message_seen_request == FALSE) {
+			/* Need to capture both the request and the response before processing; both are terminated by a single “  ” chunk. */
+			priv->comparison_message_seen_request = TRUE;
+		} else if (strcmp (message_chunk, "  ") == 0) {
+			/* Received the last chunk of the response, so compare the message from the trace file and that from online. */
+			SoupMessage *online_message;
+			SoupURI *base_uri;
+
+			/* End of a message. */
+			base_uri = soup_uri_new ("https://localhost/"); /* FIXME */
+			online_message = trace_to_soup_message (priv->comparison_message->str, base_uri);
+			soup_uri_free (base_uri);
+
+			g_string_truncate (priv->comparison_message, 0);
+			priv->comparison_message_seen_request = FALSE;
+
+			g_assert (priv->next_message != NULL);
+
+			/* Compare the message from the server with the message in the log file. */
+			if (compare_incoming_message (online_message, priv->next_message, NULL) != 0) {
+				gchar *next_uri, *actual_uri;
+
+				next_uri = soup_uri_to_string (soup_message_get_uri (priv->next_message), TRUE);
+				actual_uri = soup_uri_to_string (soup_message_get_uri (online_message), TRUE);
+				g_warning ("Expected URI ‘%s’, but got ‘%s’.", next_uri, actual_uri);
+				g_free (actual_uri);
+				g_free (next_uri);
+
+				g_object_unref (online_message);
+
+				return;
+			}
+
+			g_object_unref (online_message);
+		}
 	}
 }
 
