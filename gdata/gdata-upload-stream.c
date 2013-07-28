@@ -1059,8 +1059,6 @@ write_next_chunk (GDataUploadStream *self, SoupMessage *message)
 	}
 
 	g_mutex_unlock (&(priv->write_mutex));
-
-	soup_session_unpause_message (priv->session, priv->message);
 }
 
 static void
