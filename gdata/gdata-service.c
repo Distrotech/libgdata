@@ -2150,7 +2150,15 @@ _gdata_service_get_log_level (void)
 SoupSession *
 _gdata_service_build_session (void)
 {
-	SoupSession *session = soup_session_new_with_options ("ssl-strict", TRUE, NULL);
+	SoupSession *session;
+	gboolean ssl_strict = TRUE;
+
+	/* Iff LIBGDATA_LAX_SSL_CERTIFICATES=1, relax SSL certificate validation to allow using invalid/unsigned certificates for testing. */
+	if (g_strcmp0 (g_getenv ("LIBGDATA_LAX_SSL_CERTIFICATES"), "1") == 0) {
+		ssl_strict = FALSE;
+	}
+
+	session = soup_session_new_with_options ("ssl-strict", ssl_strict, NULL);
 
 #ifdef HAVE_GNOME
 	soup_session_add_feature_by_type (session, SOUP_TYPE_GNOME_FEATURES_2_26);

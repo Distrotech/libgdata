@@ -1244,6 +1244,9 @@ gdata_mock_server_start_trace_full (GDataMockServer *self, GFile *trace_file)
 	g_return_if_fail (GDATA_IS_MOCK_SERVER (self));
 	g_return_if_fail (G_IS_FILE (trace_file));
 
+	if (priv->output_stream != NULL) {
+		g_warning ("%s: Nested trace files are not supported. Call gdata_mock_server_end_trace() before calling %s again.", G_STRFUNC, G_STRFUNC);
+	}
 	g_return_if_fail (priv->output_stream == NULL);
 
 	/* Start writing out a trace file if logging is enabled. */

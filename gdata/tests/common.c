@@ -131,6 +131,7 @@ gdata_test_init (int argc, char **argv)
 	/* Enable full debugging */
 	g_setenv ("LIBGDATA_DEBUG", "4" /* GDATA_LOG_FULL */, FALSE); /* TODO */
 	g_setenv ("G_MESSAGES_DEBUG", "libgdata", FALSE);
+	g_setenv ("LIBGDATA_LAX_SSL_CERTIFICATES", "1", FALSE);
 
 	mock_server = gdata_mock_server_new ();
 	gdata_mock_server_set_enable_logging (mock_server, write_traces);
