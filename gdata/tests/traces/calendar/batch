@@ -1,0 +1,284 @@
+> POST /calendar/feeds/default/private/full/batch HTTP/1.1
+> Soup-Debug-Timestamp: 1375107885
+> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 1 (0x6d14a0), SoupSocket 1 (0x8dea20)
+> Host: www.google.com
+> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> GData-Version: 2
+> Content-Type: application/atom+xml
+> Accept-Encoding: gzip, deflate
+> Connection: Keep-Alive
+> 
+> <?xml version='1.0' encoding='UTF-8'?><feed xmlns='http://www.w3.org/2005/Atom' xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:gCal='http://schemas.google.com/gCal/2005' xmlns:gd='http://schemas.google.com/g/2005' xmlns:app='http://www.w3.org/2007/app'><title type='text'>Batch operation feed</title><id>batch1</id><updated>2013-07-29T14:24:45Z</updated><entry><title type='text'>Fooish Bar</title><category term='http://schemas.google.com/g/2005#event' scheme='http://schemas.google.com/g/2005#kind'/><batch:id>1</batch:id><batch:operation type='insert'/><gCal:guestsCanModify value='false'/><gCal:guestsCanInviteOthers value='false'/><gCal:guestsCanSeeGuests value='false'/><gCal:anyoneCanAddSelf value='false'/></entry></feed>
+  
+< HTTP/1.1 302 Moved Temporarily
+< Soup-Debug-Timestamp: 1375107885
+< Soup-Debug: SoupMessage 1 (0x6d14a0)
+< Update-Client-Auth: DQAAAM8AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXThTgckY3-hSb61OvnzXxSJ7d2jzDTq4SYJOcXEK19cfN8WmIspK2CGATjYnx3q1Fz9ZgntzaOCi00pQJhkctNT
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:24:46 GMT
+< Set-Cookie: S=calendar=3HsAclt2rEH3g7DEpDWTVg;Expires=Mon, 12-Aug-2013 00:48:12 GMT;Secure
+< Expires: Mon, 29 Jul 2013 14:24:45 GMT
+< Date: Mon, 29 Jul 2013 14:24:45 GMT
+< Location: https://www.google.com/calendar/feeds/default/private/full/batch?gsessionid=3HsAclt2rEH3g7DEpDWTVg
+< Content-Type: text/html; charset=UTF-8
+< Cache-control: private, max-age=0
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Server: GSE
+< Transfer-Encoding: chunked
+< 
+< <HTML>
+< <HEAD>
+< <TITLE>Moved Temporarily</TITLE>
+< </HEAD>
+< <BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+< <H1>Moved Temporarily</H1>
+< The document has moved <A HREF="https://www.google.com/calendar/feeds/default/private/full/batch?gsessionid=3HsAclt2rEH3g7DEpDWTVg">here</A>.
+< </BODY>
+< </HTML>
+  
+> POST /calendar/feeds/default/private/full/batch?gsessionid=3HsAclt2rEH3g7DEpDWTVg HTTP/1.1
+> Soup-Debug-Timestamp: 1375107885
+> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 1 (0x6d14a0), SoupSocket 2 (0x8deae0), restarted
+> Host: www.google.com
+> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> GData-Version: 2
+> Content-Type: application/atom+xml
+> Accept-Encoding: gzip, deflate
+> Connection: Keep-Alive
+> Content-Length: 740
+> 
+> <?xml version='1.0' encoding='UTF-8'?><feed xmlns='http://www.w3.org/2005/Atom' xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:gCal='http://schemas.google.com/gCal/2005' xmlns:gd='http://schemas.google.com/g/2005' xmlns:app='http://www.w3.org/2007/app'><title type='text'>Batch operation feed</title><id>batch1</id><updated>2013-07-29T14:24:45Z</updated><entry><title type='text'>Fooish Bar</title><category term='http://schemas.google.com/g/2005#event' scheme='http://schemas.google.com/g/2005#kind'/><batch:id>1</batch:id><batch:operation type='insert'/><gCal:guestsCanModify value='false'/><gCal:guestsCanInviteOthers value='false'/><gCal:guestsCanSeeGuests value='false'/><gCal:anyoneCanAddSelf value='false'/></entry></feed>
+  
+< HTTP/1.1 200 OK
+< Soup-Debug-Timestamp: 1375107887
+< Soup-Debug: SoupMessage 1 (0x6d14a0)
+< Update-Client-Auth: DQAAANAAAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXQ13oqRh_2p87WcrWeAQnJZpM9mi1et5TBGe84GimS7yuU_utQqgxo_ARltmYbhyQQy5oR9U-3hGYR8T6bNTF75
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:24:46 GMT
+< Set-Cookie: S=calendar=ThCc8FQOIiaDKtlMSD8PFg;Expires=Wed, 07-Aug-2013 22:34:33 GMT;Secure
+< Expires: Mon, 29 Jul 2013 14:24:46 GMT
+< Date: Mon, 29 Jul 2013 14:24:46 GMT
+< Content-Type: application/atom+xml; charset=UTF-8; type=feed
+< GData-Version: 2.6
+< Cache-control: private, max-age=0
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Server: GSE
+< Transfer-Encoding: chunked
+< 
+< <?xml version='1.0' encoding='UTF-8'?><feed xmlns='http://www.w3.org/2005/Atom' xmlns:gd='http://schemas.google.com/g/2005' gd:kind='calendar#eventFeed'><id>https://www.google.com/calendar/feeds/default/events/batch/1375107885947</id><updated>2013-07-29T14:24:46.927Z</updated><category scheme='http://schemas.google.com/g/2005#kind' term='http://schemas.google.com/g/2005#event'/><title type='text'>Batch operation feed</title><entry xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:app='http://www.w3.org/2007/app' xmlns:gCal='http://schemas.google.com/gCal/2005' gd:etag='&quot;EEoDRgRJeyp7JGA6WhNS&quot;' gd:kind='calendar#event'><id>http://www.google.com/calendar/feeds/default/events/omgelpvl4j9iuvhl15ben77pqk</id><published>2013-07-29T14:24:45.000Z</published><updated>2013-07-29T14:24:45.000Z</updated><app:edited>2013-07-29T14:24:45.000Z</app:edited><category scheme='http://schemas.google.com/g/2005#kind' term='http://schemas.google.com/g/2005#event'/><title>Fooish Bar</title><content/><link rel='alternate' type='text/html' href='https://www.google.com/calendar/event?eid=b21nZWxwdmw0ajlpdXZobDE1YmVuNzdwcWsgbGliZ2RhdGEudGVzdEBnb29nbGVtYWlsLmNvbQ' title='alternate'/><link rel='self' type='application/atom+xml' href='https://www.google.com/calendar/feeds/default/private/full/omgelpvl4j9iuvhl15ben77pqk'/><link rel='edit' type='application/atom+xml' href='https://www.google.com/calendar/feeds/default/private/full/omgelpvl4j9iuvhl15ben77pqk'/><author><name>GData Test</name><email>libgdata.test@googlemail.com</email></author><gd:comments><gd:feedLink href='https://www.google.com/calendar/feeds/default/private/full/omgelpvl4j9iuvhl15ben77pqk/comments'/></gd:comments><gd:eventStatus value='http://schemas.google.com/g/2005#event.confirmed'/><gd:where valueString=''/><gd:who email='libgdata.test@googlemail.com' rel='http://schemas.google.com/g/2005#event.organizer' valueString='GData Test'/><gd:when endTime='2013-07-29T15:24:45.000+01:00' startTime='2013-07-29T15:24:45.000+01:00'/><gd:transparency value='http://schemas.google.com/g/2005#event.opaque'/><gd:visibility value='http://schemas.google.com/g/2005#event.default'/><gCal:anyoneCanAddSelf value='false'/><batch:id>1</batch:id><batch:operation type='insert'/><batch:status code='201' reason='Created'/><gCal:guestsCanInviteOthers value='false'/><gCal:guestsCanModify value='false'/><gCal:guestsCanSeeGuests value='false'/><gCal:sequence value='0'/><gCal:uid value='omgelpvl4j9iuvhl15ben77pqk@google.com'/></entry></feed>
+  
+> POST /calendar/feeds/default/private/full/batch HTTP/1.1
+> Soup-Debug-Timestamp: 1375107887
+> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 2 (0x6d12c0), SoupSocket 3 (0x8dec60)
+> Host: www.google.com
+> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> GData-Version: 2
+> Content-Type: application/atom+xml
+> Accept-Encoding: gzip, deflate
+> Connection: Keep-Alive
+> 
+> <?xml version='1.0' encoding='UTF-8'?><feed xmlns='http://www.w3.org/2005/Atom' xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:gCal='http://schemas.google.com/gCal/2005' xmlns:gd='http://schemas.google.com/g/2005' xmlns:app='http://www.w3.org/2007/app'><title type='text'>Batch operation feed</title><id>batch1</id><updated>2013-07-29T14:24:47Z</updated><entry><title type='text'>Batch operation query</title><id>http://www.google.com/calendar/feeds/default/events/omgelpvl4j9iuvhl15ben77pqk</id><updated>2013-07-29T14:24:47Z</updated><batch:id>2</batch:id><batch:operation type='query'/></entry><entry><title type='text'>Cow Lunch</title><category term='http://schemas.google.com/g/2005#event' scheme='http://schemas.google.com/g/2005#kind'/><batch:id>1</batch:id><batch:operation type='insert'/><gCal:guestsCanModify value='false'/><gCal:guestsCanInviteOthers value='false'/><gCal:guestsCanSeeGuests value='false'/><gCal:anyoneCanAddSelf value='false'/></entry></feed>
+  
+< HTTP/1.1 302 Moved Temporarily
+< Soup-Debug-Timestamp: 1375107887
+< Soup-Debug: SoupMessage 2 (0x6d12c0)
+< Update-Client-Auth: DQAAAM8AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXThTgckY3-hSb61OvnzXxSJ7d2jzDTq4SYJOcXEK19cfN8WmIspK2CGATjYnx3q1Fz9ZgntzaOCi00pQJhkctNT
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:24:48 GMT
+< Set-Cookie: S=calendar=CujX8p6FM3Qnlw7aQbGpug;Expires=Fri, 09-Aug-2013 14:01:17 GMT;Secure
+< Expires: Mon, 29 Jul 2013 14:24:47 GMT
+< Date: Mon, 29 Jul 2013 14:24:47 GMT
+< Location: https://www.google.com/calendar/feeds/default/private/full/batch?gsessionid=CujX8p6FM3Qnlw7aQbGpug
+< Content-Type: text/html; charset=UTF-8
+< Cache-control: private, max-age=0
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Server: GSE
+< Transfer-Encoding: chunked
+< 
+< <HTML>
+< <HEAD>
+< <TITLE>Moved Temporarily</TITLE>
+< </HEAD>
+< <BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+< <H1>Moved Temporarily</H1>
+< The document has moved <A HREF="https://www.google.com/calendar/feeds/default/private/full/batch?gsessionid=CujX8p6FM3Qnlw7aQbGpug">here</A>.
+< </BODY>
+< </HTML>
+  
+> POST /calendar/feeds/default/private/full/batch?gsessionid=CujX8p6FM3Qnlw7aQbGpug HTTP/1.1
+> Soup-Debug-Timestamp: 1375107887
+> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 2 (0x6d12c0), SoupSocket 4 (0x8ded20), restarted
+> Host: www.google.com
+> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> GData-Version: 2
+> Content-Type: application/atom+xml
+> Accept-Encoding: gzip, deflate
+> Connection: Keep-Alive
+> Content-Length: 981
+> 
+> <?xml version='1.0' encoding='UTF-8'?><feed xmlns='http://www.w3.org/2005/Atom' xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:gCal='http://schemas.google.com/gCal/2005' xmlns:gd='http://schemas.google.com/g/2005' xmlns:app='http://www.w3.org/2007/app'><title type='text'>Batch operation feed</title><id>batch1</id><updated>2013-07-29T14:24:47Z</updated><entry><title type='text'>Batch operation query</title><id>http://www.google.com/calendar/feeds/default/events/omgelpvl4j9iuvhl15ben77pqk</id><updated>2013-07-29T14:24:47Z</updated><batch:id>2</batch:id><batch:operation type='query'/></entry><entry><title type='text'>Cow Lunch</title><category term='http://schemas.google.com/g/2005#event' scheme='http://schemas.google.com/g/2005#kind'/><batch:id>1</batch:id><batch:operation type='insert'/><gCal:guestsCanModify value='false'/><gCal:guestsCanInviteOthers value='false'/><gCal:guestsCanSeeGuests value='false'/><gCal:anyoneCanAddSelf value='false'/></entry></feed>
+  
+< HTTP/1.1 200 OK
+< Soup-Debug-Timestamp: 1375107888
+< Soup-Debug: SoupMessage 2 (0x6d12c0)
+< Update-Client-Auth: DQAAAM8AAAAlDUC-WQgltDHdndYDddr-ODYysS96Taaw1NaIYtJAAHEXCZ_GMPV8cwrWmi_-pskMkzDa8yS5h3Lx6BUX8K1OQLMPBV7rpZGHtUa1jYE1jA_4X05rZ800eKz2vNaGdZYoiYJwGnkqCe72OBS-ReHTEtvQtr7VG9ZYkAslaj0Tffvz8pB9ItwBfiM3-4oLSkIEFXx8_eyUlfeNChSfSAvSSqTyG58No5P6HZMRKSJtwsyLwtxAl4BhBMfGX_Uh_z0XCyGMW8beXiNXZ4h5XkwP
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:24:48 GMT
+< Set-Cookie: S=calendar=K-m2CP3pmitK3c--keFR5A;Expires=Sat, 10-Aug-2013 02:10:29 GMT;Secure
+< Expires: Mon, 29 Jul 2013 14:24:48 GMT
+< Date: Mon, 29 Jul 2013 14:24:48 GMT
+< Content-Type: application/atom+xml; charset=UTF-8; type=feed
+< GData-Version: 2.6
+< Cache-control: private, max-age=0
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Server: GSE
+< Transfer-Encoding: chunked
+< 
+< <?xml version='1.0' encoding='UTF-8'?><feed xmlns='http://www.w3.org/2005/Atom' xmlns:gd='http://schemas.google.com/g/2005' gd:kind='calendar#eventFeed'><id>https://www.google.com/calendar/feeds/default/events/batch/1375107887376</id><updated>2013-07-29T14:24:48.719Z</updated><category scheme='http://schemas.google.com/g/2005#kind' term='http://schemas.google.com/g/2005#event'/><title type='text'>Batch operation feed</title><entry xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:app='http://www.w3.org/2007/app' xmlns:gCal='http://schemas.google.com/gCal/2005' gd:etag='&quot;EEoDRgRJeyp7JGA6WhNS&quot;' gd:kind='calendar#event'><id>http://www.google.com/calendar/feeds/default/events/omgelpvl4j9iuvhl15ben77pqk</id><published>2013-07-29T14:24:45.000Z</published><updated>2013-07-29T14:24:45.000Z</updated><app:edited>2013-07-29T14:24:45.000Z</app:edited><category scheme='http://schemas.google.com/g/2005#kind' term='http://schemas.google.com/g/2005#event'/><title>Fooish Bar</title><content/><link rel='alternate' type='text/html' href='https://www.google.com/calendar/event?eid=b21nZWxwdmw0ajlpdXZobDE1YmVuNzdwcWsgbGliZ2RhdGEudGVzdEBnb29nbGVtYWlsLmNvbQ' title='alternate'/><link rel='self' type='application/atom+xml' href='https://www.google.com/calendar/feeds/default/private/full/omgelpvl4j9iuvhl15ben77pqk'/><link rel='edit' type='application/atom+xml' href='https://www.google.com/calendar/feeds/default/private/full/omgelpvl4j9iuvhl15ben77pqk'/><author><name>GData Test</name><email>libgdata.test@googlemail.com</email></author><gd:comments><gd:feedLink href='https://www.google.com/calendar/feeds/default/private/full/omgelpvl4j9iuvhl15ben77pqk/comments'/></gd:comments><gd:eventStatus value='http://schemas.google.com/g/2005#event.confirmed'/><gd:where valueString=''/><gd:who email='libgdata.test@googlemail.com' rel='http://schemas.google.com/g/2005#event.organizer' valueString='GData Test'/><gd:when endTime='2013-07-29T15:24:45.000+01:00' startTime='2013-07-29T15:24:45.000+01:00'/><gd:transparency value='http://schemas.google.com/g/2005#event.opaque'/><gd:visibility value='http://schemas.google.com/g/2005#event.default'/><gCal:anyoneCanAddSelf value='false'/><batch:id>2</batch:id><batch:operation type='query'/><batch:status code='200' reason='Success'/><gCal:guestsCanInviteOthers value='false'/><gCal:guestsCanModify value='false'/><gCal:guestsCanSeeGuests value='false'/><gCal:sequence value='0'/><gCal:uid value='omgelpvl4j9iuvhl15ben77pqk@google.com'/></entry><entry xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:app='http://www.w3.org/2007/app' xmlns:gCal='http://schemas.google.com/gCal/2005' gd:etag='&quot;EEoDRgRJeSp7JGA6WhNS&quot;' gd:kind='calendar#event'><id>http://www.google.com/calendar/feeds/default/events/a0q500sd2r1vjodbdulbeilupo</id><published>2013-07-29T14:24:47.000Z</published><updated>2013-07-29T14:24:47.000Z</updated><app:edited>2013-07-29T14:24:47.000Z</app:edited><category scheme='http://schemas.google.com/g/2005#kind' term='http://schemas.google.com/g/2005#event'/><title>Cow Lunch</title><content/><link rel='alternate' type='text/html' href='https://www.google.com/calendar/event?eid=YTBxNTAwc2QycjF2am9kYmR1bGJlaWx1cG8gbGliZ2RhdGEudGVzdEBnb29nbGVtYWlsLmNvbQ' title='alternate'/><link rel='self' type='application/atom+xml' href='https://www.google.com/calendar/feeds/default/private/full/a0q500sd2r1vjodbdulbeilupo'/><link rel='edit' type='application/atom+xml' href='https://www.google.com/calendar/feeds/default/private/full/a0q500sd2r1vjodbdulbeilupo'/><author><name>GData Test</name><email>libgdata.test@googlemail.com</email></author><gd:comments><gd:feedLink href='https://www.google.com/calendar/feeds/default/private/full/a0q500sd2r1vjodbdulbeilupo/comments'/></gd:comments><gd:eventStatus value='http://schemas.google.com/g/2005#event.confirmed'/><gd:where valueString=''/><gd:who email='libgdata.test@googlemail.com' rel='http://schemas.google.com/g/2005#event.organizer' valueString='GData Test'/><gd:when endTime='2013-07-29T15:24:47.000+01:00' startTime='2013-07-29T15:24:47.000+01:00'/><gd:transparency value='http://schemas.google.com/g/2005#event.opaque'/><gd:visibility value='http://schemas.google.com/g/2005#event.default'/><gCal:anyoneCanAddSelf value='false'/><batch:id>1</batch:id><batch:operation type='insert'/><batch:status code='201' reason='Created'/><gCal:guestsCanInviteOthers value='false'/><gCal:guestsCanModify value='false'/><gCal:guestsCanSeeGuests value='false'/><gCal:sequence value='0'/><gCal:uid value='a0q500sd2r1vjodbdulbeilupo@google.com'/></entry></feed>
+  
+> POST /calendar/feeds/default/private/full/batch HTTP/1.1
+> Soup-Debug-Timestamp: 1375107888
+> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 3 (0x6d11d0), SoupSocket 5 (0x8dede0)
+> Host: www.google.com
+> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> GData-Version: 2
+> Content-Type: application/atom+xml
+> Accept-Encoding: gzip, deflate
+> Connection: Keep-Alive
+> 
+> <?xml version='1.0' encoding='UTF-8'?><feed xmlns='http://www.w3.org/2005/Atom' xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:gCal='http://schemas.google.com/gCal/2005' xmlns:gd='http://schemas.google.com/g/2005' xmlns:app='http://www.w3.org/2007/app'><title type='text'>Batch operation feed</title><id>batch1</id><updated>2013-07-29T14:24:48Z</updated><entry xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:gCal='http://schemas.google.com/gCal/2005' xmlns:app='http://www.w3.org/2007/app' xmlns:gd='http://schemas.google.com/g/2005' gd:etag='&quot;EEoDRgRJeSp7JGA6WhNS&quot;'><title type='text'>Toby</title><id>http://www.google.com/calendar/feeds/default/events/a0q500sd2r1vjodbdulbeilupo</id><updated>2013-07-29T14:24:47Z</updated><published>2013-07-29T14:24:47Z</published><category term='http://schemas.google.com/g/2005#event' scheme='http://schemas.google.com/g/2005#kind'/><link href='https://www.google.com/calendar/event?eid=YTBxNTAwc2QycjF2am9kYmR1bGJlaWx1cG8gbGliZ2RhdGEudGVzdEBnb29nbGVtYWlsLmNvbQ' title='alternate' rel='http://www.iana.org/assignments/relation/alternate' type='text/html'/><link href='https://www.google.com/calendar/feeds/default/private/full/a0q500sd2r1vjodbdulbeilupo' rel='http://www.iana.org/assignments/relation/self' type='application/atom+xml'/><link href='https://www.google.com/calendar/feeds/default/private/full/a0q500sd2r1vjodbdulbeilupo' rel='http://www.iana.org/assignments/relation/edit' type='application/atom+xml'/><author><name>GData Test</name><email>libgdata.test@googlemail.com</email></author><batch:id>3</batch:id><batch:operation type='update'/><gd:eventStatus value='http://schemas.google.com/g/2005#event.confirmed'/><gd:visibility value='http://schemas.google.com/g/2005#event.default'/><gd:transparency value='http://schemas.google.com/g/2005#event.opaque'/><gCal:uid value='a0q500sd2r1vjodbdulbeilupo@google.com'/><gCal:guestsCanModify value='false'/><gCal:guestsCanInviteOthers value='false'/><gCal:guestsCanSeeGuests value='false'/><gCal:anyoneCanAddSelf value='false'/><gd:when startTime='2013-07-29T14:24:47Z' endTime='2013-07-29T14:24:47Z'/><gd:who email='libgdata.test@googlemail.com' rel='http://schemas.google.com/g/2005#event.organizer' valueString='GData Test'/><gd:where valueString=''/><gd:comments><gd:feedLink href="https://www.google.com/calendar/feeds/default/private/full/a0q500sd2r1vjodbdulbeilupo/comments"/></gd:comments></entry><entry><title type='text'></title><id>foobar</id><category term='http://schemas.google.com/g/2005#event' scheme='http://schemas.google.com/g/2005#kind'/><batch:id>2</batch:id><batch:operation type='delete'/><gCal:guestsCanModify value='false'/><gCal:guestsCanInviteOthers value='false'/><gCal:guestsCanSeeGuests value='false'/><gCal:anyoneCanAddSelf value='false'/></entry><entry xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:gCal='http://schemas.google.com/gCal/2005' xmlns:app='http://www.w3.org/2007/app' xmlns:gd='http://schemas.google.com/g/2005' gd:etag='&quot;EEoDRgRJeyp7JGA6WhNS&quot;'><title type='text'>Fooish Bar</title><id>http://www.google.com/calendar/feeds/default/events/omgelpvl4j9iuvhl15ben77pqk</id><updated>2013-07-29T14:24:45Z</updated><published>2013-07-29T14:24:45Z</published><category term='http://schemas.google.com/g/2005#event' scheme='http://schemas.google.com/g/2005#kind'/><link href='https://www.google.com/calendar/event?eid=b21nZWxwdmw0ajlpdXZobDE1YmVuNzdwcWsgbGliZ2RhdGEudGVzdEBnb29nbGVtYWlsLmNvbQ' title='alternate' rel='http://www.iana.org/assignments/relation/alternate' type='text/html'/><link href='https://www.google.com/calendar/feeds/default/private/full/omgelpvl4j9iuvhl15ben77pqk' rel='http://www.iana.org/assignments/relation/self' type='application/atom+xml'/><link href='https://www.google.com/calendar/feeds/default/private/full/omgelpvl4j9iuvhl15ben77pqk' rel='http://www.iana.org/assignments/relation/edit' type='application/atom+xml'/><author><name>GData Test</name><email>libgdata.test@googlemail.com</email></author><batch:id>1</batch:id><batch:operation type='delete'/><gd:eventStatus value='http://schemas.google.com/g/2005#event.confirmed'/><gd:visibility value='http://schemas.google.com/g/2005#event.default'/><gd:transparency value='http://schemas.google.com/g/2005#event.opaque'/><gCal:uid value='omgelpvl4j9iuvhl15ben77pqk@google.com'/><gCal:guestsCanModify value='false'/><gCal:guestsCanInviteOthers value='false'/><gCal:guestsCanSeeGuests value='false'/><gCal:anyoneCanAddSelf value='false'/><gd:when startTime='2013-07-29T14:24:45Z' endTime='2013-07-29T14:24:45Z'/><gd:who email='libgdata.test@googlemail.com' rel='http://schemas.google.com/g/2005#event.organizer' valueString='GData Test'/><gd:where valueString=''/><gd:comments><gd:feedLink href="https://www.google.com/calendar/feeds/default/private/full/omgelpvl4j9iuvhl15ben77pqk/comments"/></gd:comments></entry></feed>
+  
+< HTTP/1.1 302 Moved Temporarily
+< Soup-Debug-Timestamp: 1375107888
+< Soup-Debug: SoupMessage 3 (0x6d11d0)
+< Update-Client-Auth: DQAAAM8AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXThTgckY3-hSb61OvnzXxSJ7d2jzDTq4SYJOcXEK19cfN8WmIspK2CGATjYnx3q1Fz9ZgntzaOCi00pQJhkctNT
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:24:49 GMT
+< Set-Cookie: S=calendar=M5nBPwbGlSMIv_wYfi2Q1g;Expires=Mon, 12-Aug-2013 04:31:46 GMT;Secure
+< Expires: Mon, 29 Jul 2013 14:24:48 GMT
+< Date: Mon, 29 Jul 2013 14:24:48 GMT
+< Location: https://www.google.com/calendar/feeds/default/private/full/batch?gsessionid=M5nBPwbGlSMIv_wYfi2Q1g
+< Content-Type: text/html; charset=UTF-8
+< Cache-control: private, max-age=0
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Server: GSE
+< Transfer-Encoding: chunked
+< 
+< <HTML>
+< <HEAD>
+< <TITLE>Moved Temporarily</TITLE>
+< </HEAD>
+< <BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+< <H1>Moved Temporarily</H1>
+< The document has moved <A HREF="https://www.google.com/calendar/feeds/default/private/full/batch?gsessionid=M5nBPwbGlSMIv_wYfi2Q1g">here</A>.
+< </BODY>
+< </HTML>
+  
+> POST /calendar/feeds/default/private/full/batch?gsessionid=M5nBPwbGlSMIv_wYfi2Q1g HTTP/1.1
+> Soup-Debug-Timestamp: 1375107889
+> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 3 (0x6d11d0), SoupSocket 6 (0x8dec60), restarted
+> Host: www.google.com
+> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> GData-Version: 2
+> Content-Type: application/atom+xml
+> Accept-Encoding: gzip, deflate
+> Connection: Keep-Alive
+> Content-Length: 4885
+> 
+> <?xml version='1.0' encoding='UTF-8'?><feed xmlns='http://www.w3.org/2005/Atom' xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:gCal='http://schemas.google.com/gCal/2005' xmlns:gd='http://schemas.google.com/g/2005' xmlns:app='http://www.w3.org/2007/app'><title type='text'>Batch operation feed</title><id>batch1</id><updated>2013-07-29T14:24:48Z</updated><entry xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:gCal='http://schemas.google.com/gCal/2005' xmlns:app='http://www.w3.org/2007/app' xmlns:gd='http://schemas.google.com/g/2005' gd:etag='&quot;EEoDRgRJeSp7JGA6WhNS&quot;'><title type='text'>Toby</title><id>http://www.google.com/calendar/feeds/default/events/a0q500sd2r1vjodbdulbeilupo</id><updated>2013-07-29T14:24:47Z</updated><published>2013-07-29T14:24:47Z</published><category term='http://schemas.google.com/g/2005#event' scheme='http://schemas.google.com/g/2005#kind'/><link href='https://www.google.com/calendar/event?eid=YTBxNTAwc2QycjF2am9kYmR1bGJlaWx1cG8gbGliZ2RhdGEudGVzdEBnb29nbGVtYWlsLmNvbQ' title='alternate' rel='http://www.iana.org/assignments/relation/alternate' type='text/html'/><link href='https://www.google.com/calendar/feeds/default/private/full/a0q500sd2r1vjodbdulbeilupo' rel='http://www.iana.org/assignments/relation/self' type='application/atom+xml'/><link href='https://www.google.com/calendar/feeds/default/private/full/a0q500sd2r1vjodbdulbeilupo' rel='http://www.iana.org/assignments/relation/edit' type='application/atom+xml'/><author><name>GData Test</name><email>libgdata.test@googlemail.com</email></author><batch:id>3</batch:id><batch:operation type='update'/><gd:eventStatus value='http://schemas.google.com/g/2005#event.confirmed'/><gd:visibility value='http://schemas.google.com/g/2005#event.default'/><gd:transparency value='http://schemas.google.com/g/2005#event.opaque'/><gCal:uid value='a0q500sd2r1vjodbdulbeilupo@google.com'/><gCal:guestsCanModify value='false'/><gCal:guestsCanInviteOthers value='false'/><gCal:guestsCanSeeGuests value='false'/><gCal:anyoneCanAddSelf value='false'/><gd:when startTime='2013-07-29T14:24:47Z' endTime='2013-07-29T14:24:47Z'/><gd:who email='libgdata.test@googlemail.com' rel='http://schemas.google.com/g/2005#event.organizer' valueString='GData Test'/><gd:where valueString=''/><gd:comments><gd:feedLink href="https://www.google.com/calendar/feeds/default/private/full/a0q500sd2r1vjodbdulbeilupo/comments"/></gd:comments></entry><entry><title type='text'></title><id>foobar</id><category term='http://schemas.google.com/g/2005#event' scheme='http://schemas.google.com/g/2005#kind'/><batch:id>2</batch:id><batch:operation type='delete'/><gCal:guestsCanModify value='false'/><gCal:guestsCanInviteOthers value='false'/><gCal:guestsCanSeeGuests value='false'/><gCal:anyoneCanAddSelf value='false'/></entry><entry xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:gCal='http://schemas.google.com/gCal/2005' xmlns:app='http://www.w3.org/2007/app' xmlns:gd='http://schemas.google.com/g/2005' gd:etag='&quot;EEoDRgRJeyp7JGA6WhNS&quot;'><title type='text'>Fooish Bar</title><id>http://www.google.com/calendar/feeds/default/events/omgelpvl4j9iuvhl15ben77pqk</id><updated>2013-07-29T14:24:45Z</updated><published>2013-07-29T14:24:45Z</published><category term='http://schemas.google.com/g/2005#event' scheme='http://schemas.google.com/g/2005#kind'/><link href='https://www.google.com/calendar/event?eid=b21nZWxwdmw0ajlpdXZobDE1YmVuNzdwcWsgbGliZ2RhdGEudGVzdEBnb29nbGVtYWlsLmNvbQ' title='alternate' rel='http://www.iana.org/assignments/relation/alternate' type='text/html'/><link href='https://www.google.com/calendar/feeds/default/private/full/omgelpvl4j9iuvhl15ben77pqk' rel='http://www.iana.org/assignments/relation/self' type='application/atom+xml'/><link href='https://www.google.com/calendar/feeds/default/private/full/omgelpvl4j9iuvhl15ben77pqk' rel='http://www.iana.org/assignments/relation/edit' type='application/atom+xml'/><author><name>GData Test</name><email>libgdata.test@googlemail.com</email></author><batch:id>1</batch:id><batch:operation type='delete'/><gd:eventStatus value='http://schemas.google.com/g/2005#event.confirmed'/><gd:visibility value='http://schemas.google.com/g/2005#event.default'/><gd:transparency value='http://schemas.google.com/g/2005#event.opaque'/><gCal:uid value='omgelpvl4j9iuvhl15ben77pqk@google.com'/><gCal:guestsCanModify value='false'/><gCal:guestsCanInviteOthers value='false'/><gCal:guestsCanSeeGuests value='false'/><gCal:anyoneCanAddSelf value='false'/><gd:when startTime='2013-07-29T14:24:45Z' endTime='2013-07-29T14:24:45Z'/><gd:who email='libgdata.test@googlemail.com' rel='http://schemas.google.com/g/2005#event.organizer' valueString='GData Test'/><gd:where valueString=''/><gd:comments><gd:feedLink href="https://www.google.com/calendar/feeds/default/private/full/omgelpvl4j9iuvhl15ben77pqk/comments"/></gd:comments></entry></feed>
+  
+< HTTP/1.1 200 OK
+< Soup-Debug-Timestamp: 1375107889
+< Soup-Debug: SoupMessage 3 (0x6d11d0)
+< Update-Client-Auth: DQAAANAAAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXQ13oqRh_2p87WcrWeAQnJZpM9mi1et5TBGe84GimS7yuU_utQqgxo_ARltmYbhyQQy5oR9U-3hGYR8T6bNTF75
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:24:50 GMT
+< Set-Cookie: S=calendar=vRQp_qGRI4O1mqmBWfaIdg;Expires=Thu, 08-Aug-2013 10:18:12 GMT;Secure
+< Expires: Mon, 29 Jul 2013 14:24:49 GMT
+< Date: Mon, 29 Jul 2013 14:24:49 GMT
+< Content-Type: application/atom+xml; charset=UTF-8; type=feed
+< GData-Version: 2.6
+< Cache-control: private, max-age=0
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Server: GSE
+< Transfer-Encoding: chunked
+< 
+< <?xml version='1.0' encoding='UTF-8'?><feed xmlns='http://www.w3.org/2005/Atom' xmlns:gd='http://schemas.google.com/g/2005' gd:kind='calendar#eventFeed'><id>https://www.google.com/calendar/feeds/default/events/batch/1375107889156</id><updated>2013-07-29T14:24:49.157Z</updated><category scheme='http://schemas.google.com/g/2005#kind' term='http://schemas.google.com/g/2005#event'/><title type='text'>Batch operation feed</title><entry xmlns:batch='http://schemas.google.com/gdata/batch'><id>foobar</id><updated>2013-07-29T14:24:49.157Z</updated><title>Error</title><content>Invalid entry Id/Uri</content><batch:id>2</batch:id><batch:operation type='delete'/><batch:status code='400' reason='Invalid entry Id/Uri'/></entry><entry xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:app='http://www.w3.org/2007/app' xmlns:gCal='http://schemas.google.com/gCal/2005' gd:etag='&quot;EEoDRgRJdyp7JGA6WhNS&quot;' gd:kind='calendar#event'><id>http://www.google.com/calendar/feeds/default/events/a0q500sd2r1vjodbdulbeilupo</id><published>2013-07-29T14:24:47.000Z</published><updated>2013-07-29T14:24:49.000Z</updated><app:edited>2013-07-29T14:24:49.000Z</app:edited><category scheme='http://schemas.google.com/g/2005#kind' term='http://schemas.google.com/g/2005#event'/><title>Toby</title><content/><link rel='alternate' type='text/html' href='https://www.google.com/calendar/event?eid=YTBxNTAwc2QycjF2am9kYmR1bGJlaWx1cG8gbGliZ2RhdGEudGVzdEBnb29nbGVtYWlsLmNvbQ' title='alternate'/><link rel='self' type='application/atom+xml' href='https://www.google.com/calendar/feeds/default/private/full/a0q500sd2r1vjodbdulbeilupo'/><link rel='edit' type='application/atom+xml' href='https://www.google.com/calendar/feeds/default/private/full/a0q500sd2r1vjodbdulbeilupo'/><author><name>GData Test</name><email>libgdata.test@googlemail.com</email></author><gd:comments><gd:feedLink href='https://www.google.com/calendar/feeds/default/private/full/a0q500sd2r1vjodbdulbeilupo/comments'/></gd:comments><gd:eventStatus value='http://schemas.google.com/g/2005#event.confirmed'/><gd:where valueString=''/><gd:who email='libgdata.test@googlemail.com' rel='http://schemas.google.com/g/2005#event.organizer' valueString='GData Test'/><gd:when endTime='2013-07-29T15:24:47.000+01:00' startTime='2013-07-29T15:24:47.000+01:00'/><gd:transparency value='http://schemas.google.com/g/2005#event.opaque'/><gd:visibility value='http://schemas.google.com/g/2005#event.default'/><gCal:anyoneCanAddSelf value='false'/><batch:id>3</batch:id><batch:operation type='update'/><batch:status code='200' reason='Success'/><gCal:guestsCanInviteOthers value='false'/><gCal:guestsCanModify value='false'/><gCal:guestsCanSeeGuests value='false'/><gCal:sequence value='0'/><gCal:uid value='a0q500sd2r1vjodbdulbeilupo@google.com'/></entry><entry xmlns:batch='http://schemas.google.com/gdata/batch'><id>http://www.google.com/calendar/feeds/default/events/omgelpvl4j9iuvhl15ben77pqk</id><updated>2013-07-29T14:24:49.298Z</updated><title type='text'>Fooish Bar</title><content>Deleted</content><batch:id>1</batch:id><batch:operation type='delete'/><batch:status code='200' reason='Success'/></entry></feed>
+  
+> POST /calendar/feeds/default/private/full/batch HTTP/1.1
+> Soup-Debug-Timestamp: 1375107889
+> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 4 (0x6d13b0), SoupSocket 7 (0x8ded20)
+> Host: www.google.com
+> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> GData-Version: 2
+> Content-Type: application/atom+xml
+> Accept-Encoding: gzip, deflate
+> Connection: Keep-Alive
+> 
+> <?xml version='1.0' encoding='UTF-8'?><feed xmlns='http://www.w3.org/2005/Atom' xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:gCal='http://schemas.google.com/gCal/2005' xmlns:gd='http://schemas.google.com/g/2005' xmlns:app='http://www.w3.org/2007/app'><title type='text'>Batch operation feed</title><id>batch1</id><updated>2013-07-29T14:24:49Z</updated><entry xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:gCal='http://schemas.google.com/gCal/2005' xmlns:app='http://www.w3.org/2007/app' xmlns:gd='http://schemas.google.com/g/2005' gd:etag='&quot;EEoDRgRJdyp7JGA6WhNS&quot;'><title type='text'>Toby</title><id>http://www.google.com/calendar/feeds/default/events/a0q500sd2r1vjodbdulbeilupo</id><updated>2013-07-29T14:24:49Z</updated><published>2013-07-29T14:24:47Z</published><category term='http://schemas.google.com/g/2005#event' scheme='http://schemas.google.com/g/2005#kind'/><link href='https://www.google.com/calendar/event?eid=YTBxNTAwc2QycjF2am9kYmR1bGJlaWx1cG8gbGliZ2RhdGEudGVzdEBnb29nbGVtYWlsLmNvbQ' title='alternate' rel='http://www.iana.org/assignments/relation/alternate' type='text/html'/><link href='https://www.google.com/calendar/feeds/default/private/full/a0q500sd2r1vjodbdulbeilupo' rel='http://www.iana.org/assignments/relation/self' type='application/atom+xml'/><link href='https://www.google.com/calendar/feeds/default/private/full/a0q500sd2r1vjodbdulbeilupo' rel='http://www.iana.org/assignments/relation/edit' type='application/atom+xml'/><author><name>GData Test</name><email>libgdata.test@googlemail.com</email></author><batch:id>1</batch:id><batch:operation type='delete'/><gd:eventStatus value='http://schemas.google.com/g/2005#event.confirmed'/><gd:visibility value='http://schemas.google.com/g/2005#event.default'/><gd:transparency value='http://schemas.google.com/g/2005#event.opaque'/><gCal:uid value='a0q500sd2r1vjodbdulbeilupo@google.com'/><gCal:guestsCanModify value='false'/><gCal:guestsCanInviteOthers value='false'/><gCal:guestsCanSeeGuests value='false'/><gCal:anyoneCanAddSelf value='false'/><gd:when startTime='2013-07-29T14:24:47Z' endTime='2013-07-29T14:24:47Z'/><gd:who email='libgdata.test@googlemail.com' rel='http://schemas.google.com/g/2005#event.organizer' valueString='GData Test'/><gd:where valueString=''/><gd:comments><gd:feedLink href="https://www.google.com/calendar/feeds/default/private/full/a0q500sd2r1vjodbdulbeilupo/comments"/></gd:comments></entry></feed>
+  
+< HTTP/1.1 302 Moved Temporarily
+< Soup-Debug-Timestamp: 1375107889
+< Soup-Debug: SoupMessage 4 (0x6d13b0)
+< Update-Client-Auth: DQAAAM8AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXThTgckY3-hSb61OvnzXxSJ7d2jzDTq4SYJOcXEK19cfN8WmIspK2CGATjYnx3q1Fz9ZgntzaOCi00pQJhkctNT
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:24:50 GMT
+< Set-Cookie: S=calendar=0CviaWR2FKKmcsnE0zh42g;Expires=Fri, 09-Aug-2013 22:01:38 GMT;Secure
+< Expires: Mon, 29 Jul 2013 14:24:49 GMT
+< Date: Mon, 29 Jul 2013 14:24:49 GMT
+< Location: https://www.google.com/calendar/feeds/default/private/full/batch?gsessionid=0CviaWR2FKKmcsnE0zh42g
+< Content-Type: text/html; charset=UTF-8
+< Cache-control: private, max-age=0
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Server: GSE
+< Transfer-Encoding: chunked
+< 
+< <HTML>
+< <HEAD>
+< <TITLE>Moved Temporarily</TITLE>
+< </HEAD>
+< <BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+< <H1>Moved Temporarily</H1>
+< The document has moved <A HREF="https://www.google.com/calendar/feeds/default/private/full/batch?gsessionid=0CviaWR2FKKmcsnE0zh42g">here</A>.
+< </BODY>
+< </HTML>
+  
+> POST /calendar/feeds/default/private/full/batch?gsessionid=0CviaWR2FKKmcsnE0zh42g HTTP/1.1
+> Soup-Debug-Timestamp: 1375107889
+> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 4 (0x6d13b0), SoupSocket 8 (0x8deae0), restarted
+> Host: www.google.com
+> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> GData-Version: 2
+> Content-Type: application/atom+xml
+> Accept-Encoding: gzip, deflate
+> Connection: Keep-Alive
+> Content-Length: 2439
+> 
+> <?xml version='1.0' encoding='UTF-8'?><feed xmlns='http://www.w3.org/2005/Atom' xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:gCal='http://schemas.google.com/gCal/2005' xmlns:gd='http://schemas.google.com/g/2005' xmlns:app='http://www.w3.org/2007/app'><title type='text'>Batch operation feed</title><id>batch1</id><updated>2013-07-29T14:24:49Z</updated><entry xmlns:batch='http://schemas.google.com/gdata/batch' xmlns:gCal='http://schemas.google.com/gCal/2005' xmlns:app='http://www.w3.org/2007/app' xmlns:gd='http://schemas.google.com/g/2005' gd:etag='&quot;EEoDRgRJdyp7JGA6WhNS&quot;'><title type='text'>Toby</title><id>http://www.google.com/calendar/feeds/default/events/a0q500sd2r1vjodbdulbeilupo</id><updated>2013-07-29T14:24:49Z</updated><published>2013-07-29T14:24:47Z</published><category term='http://schemas.google.com/g/2005#event' scheme='http://schemas.google.com/g/2005#kind'/><link href='https://www.google.com/calendar/event?eid=YTBxNTAwc2QycjF2am9kYmR1bGJlaWx1cG8gbGliZ2RhdGEudGVzdEBnb29nbGVtYWlsLmNvbQ' title='alternate' rel='http://www.iana.org/assignments/relation/alternate' type='text/html'/><link href='https://www.google.com/calendar/feeds/default/private/full/a0q500sd2r1vjodbdulbeilupo' rel='http://www.iana.org/assignments/relation/self' type='application/atom+xml'/><link href='https://www.google.com/calendar/feeds/default/private/full/a0q500sd2r1vjodbdulbeilupo' rel='http://www.iana.org/assignments/relation/edit' type='application/atom+xml'/><author><name>GData Test</name><email>libgdata.test@googlemail.com</email></author><batch:id>1</batch:id><batch:operation type='delete'/><gd:eventStatus value='http://schemas.google.com/g/2005#event.confirmed'/><gd:visibility value='http://schemas.google.com/g/2005#event.default'/><gd:transparency value='http://schemas.google.com/g/2005#event.opaque'/><gCal:uid value='a0q500sd2r1vjodbdulbeilupo@google.com'/><gCal:guestsCanModify value='false'/><gCal:guestsCanInviteOthers value='false'/><gCal:guestsCanSeeGuests value='false'/><gCal:anyoneCanAddSelf value='false'/><gd:when startTime='2013-07-29T14:24:47Z' endTime='2013-07-29T14:24:47Z'/><gd:who email='libgdata.test@googlemail.com' rel='http://schemas.google.com/g/2005#event.organizer' valueString='GData Test'/><gd:where valueString=''/><gd:comments><gd:feedLink href="https://www.google.com/calendar/feeds/default/private/full/a0q500sd2r1vjodbdulbeilupo/comments"/></gd:comments></entry></feed>
+  
+< HTTP/1.1 200 OK
+< Soup-Debug-Timestamp: 1375107889
+< Soup-Debug: SoupMessage 4 (0x6d13b0)
+< Update-Client-Auth: DQAAAM8AAAAlDUC-WQgltDHdndYDddr-ODYysS96Taaw1NaIYtJAAHEXCZ_GMPV8cwrWmi_-pskMkzDa8yS5h3Lx6BUX8K1OQLMPBV7rpZGHtUa1jYE1jA_4X05rZ800eKz2vNaGdZYoiYJwGnkqCe72OBS-ReHTEtvQtr7VG9ZYkAslaj0Tffvz8pB9ItwBfiM3-4oLSkIEFXx8_eyUlfeNChSfSAvSSqTyG58No5P6HZMRKSJtwsyLwtxAl4BhBMfGX_Uh_z0XCyGMW8beXiNXZ4h5XkwP
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:24:50 GMT
+< Set-Cookie: S=calendar=57lC8kqJlFkLJ6la9bFD5Q;Expires=Thu, 08-Aug-2013 05:16:04 GMT;Secure
+< Expires: Mon, 29 Jul 2013 14:24:49 GMT
+< Date: Mon, 29 Jul 2013 14:24:49 GMT
+< Content-Type: application/atom+xml; charset=UTF-8; type=feed
+< GData-Version: 2.6
+< Cache-control: private, max-age=0
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Server: GSE
+< Transfer-Encoding: chunked
+< 
+< <?xml version='1.0' encoding='UTF-8'?><feed xmlns='http://www.w3.org/2005/Atom' xmlns:gd='http://schemas.google.com/g/2005' gd:kind='calendar#eventFeed'><id>https://www.google.com/calendar/feeds/default/events/batch/1375107889724</id><updated>2013-07-29T14:24:49.866Z</updated><category scheme='http://schemas.google.com/g/2005#kind' term='http://schemas.google.com/g/2005#event'/><title type='text'>Batch operation feed</title><entry xmlns:batch='http://schemas.google.com/gdata/batch'><id>http://www.google.com/calendar/feeds/default/events/a0q500sd2r1vjodbdulbeilupo</id><updated>2013-07-29T14:24:49.866Z</updated><title type='text'>Toby</title><content>Deleted</content><batch:id>1</batch:id><batch:operation type='delete'/><batch:status code='200' reason='Success'/></entry></feed>
+  

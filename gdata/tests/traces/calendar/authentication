@@ -1,0 +1,27 @@
+> POST /accounts/ClientLogin HTTP/1.1
+> Soup-Debug-Timestamp: 1375107885
+> Soup-Debug: SoupSession 1 (0x6593d0), SoupMessage 1 (0x6d12c0), SoupSocket 1 (0x8de960)
+> Host: www.google.com
+> Content-Type: application/x-www-form-urlencoded
+> Accept-Encoding: gzip, deflate
+> Connection: Keep-Alive
+> 
+> accountType=HOSTED%5FOR%5FGOOGLE&Email=libgdata%2Etest%40gmail%2Ecom&Passwd=gdata%2Dgdata&service=cl&source=ytapi%2DGNOME%2Dlibgdata%2D444fubtt%2D0
+  
+< HTTP/1.1 200 OK
+< Soup-Debug-Timestamp: 1375107885
+< Soup-Debug: SoupMessage 1 (0x6d12c0)
+< Content-Type: text/plain
+< Cache-control: no-cache, no-store
+< Pragma: no-cache
+< Expires: Mon, 01-Jan-1990 00:00:00 GMT
+< Date: Mon, 29 Jul 2013 14:24:45 GMT
+< X-Content-Type-Options: nosniff
+< X-XSS-Protection: 1; mode=block
+< Content-Length: 881
+< Server: GSE
+< 
+< SID=DQAAAMwAAAD9rHT8bdmpTU7a5LMsfA65u0Fh_6QRM8DUsQJg-EXklmdoDGIUPR23EasVPqLlDdq5-h165wdCF1-yae7a9se27qpQWghp20n2A9MWTZvdXT5UirX3_OM-KK5xht4lTNyBfY6eys0ZKPeBp8JgeSDkKkRfnGgqUEyEfgFzl4k7fc41mELCJcuSpXt-VBj1tAFngGbm7K5AIphLfWHvciv5aNU_K4Al5bVgJ-bQVpG2UCF_EVfhAKuoaMm28cL0EJH-EBb_C9vEywIMUpsMmSKP
+< LSID=DQAAANAAAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvCXQQiHyfN4mK1PbqfHpTiFEH6sXqSUP12PbW1JMOGTevMpDhLVWyaMHswUip1j1eHNnJHFyDkHJ7gloLcr1N69MmjhE7H2iDBHjq3klaZsH21fTuoQ0Cx69v4mlRZJxZYGWlJdkXLErmqRH6ps5gLWA5lOP8Cl9brsBXmLmXaQqkPk8iw3kEEPnnQvbqecRLLrbfaLfr3OoqbLWlEUrxLP
+< Auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDThxDEBfooOF9UIr6fneXVrmcawxCW-EksN7D6c7CIdQBQhKJPUz9QqAGWZHfJ5rwn
+  

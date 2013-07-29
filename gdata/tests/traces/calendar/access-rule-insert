@@ -1,0 +1,75 @@
+> POST /calendar/feeds/b1om61kv040k1j2oe5nhsbe7f8%40group.calendar.google.com/acl/full HTTP/1.1
+> Soup-Debug-Timestamp: 1375108036
+> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 112 (0x7fffd804b0b0), SoupSocket 104 (0x8deea0)
+> Host: www.google.com
+> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> GData-Version: 2
+> Content-Type: application/atom+xml
+> Accept-Encoding: gzip, deflate
+> Connection: Keep-Alive
+> 
+> <?xml version='1.0' encoding='UTF-8'?><entry xmlns='http://www.w3.org/2005/Atom' xmlns:gAcl='http://schemas.google.com/acl/2007' xmlns:gd='http://schemas.google.com/g/2005'><title type='text'>http://schemas.google.com/gCal/2005#editor</title><category term='http://schemas.google.com/acl/2007#accessRule' scheme='http://schemas.google.com/g/2005#kind'/><gAcl:role value='http://schemas.google.com/gCal/2005#editor'/><gAcl:scope type='user' value='darcy@gmail.com'/></entry>
+  
+< HTTP/1.1 302 Moved Temporarily
+< Soup-Debug-Timestamp: 1375108036
+< Soup-Debug: SoupMessage 112 (0x7fffd804b0b0)
+< Update-Client-Auth: DQAAAM8AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXThTgckY3-hSb61OvnzXxSJ7d2jzDTq4SYJOcXEK19cfN8WmIspK2CGATjYnx3q1Fz9ZgntzaOCi00pQJhkctNT
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:27:17 GMT
+< Set-Cookie: S=calendar=LUv63T9cZ1F3Wc0c1LOPLA;Expires=Tue, 06-Aug-2013 14:38:54 GMT;Secure
+< Expires: Mon, 29 Jul 2013 14:27:16 GMT
+< Date: Mon, 29 Jul 2013 14:27:16 GMT
+< Location: https://www.google.com/calendar/feeds/b1om61kv040k1j2oe5nhsbe7f8%40group.calendar.google.com/acl/full?gsessionid=LUv63T9cZ1F3Wc0c1LOPLA
+< Content-Type: text/html; charset=UTF-8
+< Cache-control: private, max-age=0
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Server: GSE
+< Transfer-Encoding: chunked
+< 
+< <HTML>
+< <HEAD>
+< <TITLE>Moved Temporarily</TITLE>
+< </HEAD>
+< <BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+< <H1>Moved Temporarily</H1>
+< The document has moved <A HREF="https://www.google.com/calendar/feeds/b1om61kv040k1j2oe5nhsbe7f8%40group.calendar.google.com/acl/full?gsessionid=LUv63T9cZ1F3Wc0c1LOPLA">here</A>.
+< </BODY>
+< </HTML>
+  
+> POST /calendar/feeds/b1om61kv040k1j2oe5nhsbe7f8%40group.calendar.google.com/acl/full?gsessionid=LUv63T9cZ1F3Wc0c1LOPLA HTTP/1.1
+> Soup-Debug-Timestamp: 1375108036
+> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 112 (0x7fffd804b0b0), SoupSocket 105 (0x8dea20), restarted
+> Host: www.google.com
+> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> GData-Version: 2
+> Content-Type: application/atom+xml
+> Accept-Encoding: gzip, deflate
+> Connection: Keep-Alive
+> Content-Length: 473
+> 
+> <?xml version='1.0' encoding='UTF-8'?><entry xmlns='http://www.w3.org/2005/Atom' xmlns:gAcl='http://schemas.google.com/acl/2007' xmlns:gd='http://schemas.google.com/g/2005'><title type='text'>http://schemas.google.com/gCal/2005#editor</title><category term='http://schemas.google.com/acl/2007#accessRule' scheme='http://schemas.google.com/g/2005#kind'/><gAcl:role value='http://schemas.google.com/gCal/2005#editor'/><gAcl:scope type='user' value='darcy@gmail.com'/></entry>
+  
+< HTTP/1.1 201 Created
+< Soup-Debug-Timestamp: 1375108036
+< Soup-Debug: SoupMessage 112 (0x7fffd804b0b0)
+< Update-Client-Auth: DQAAAM4AAAAlDUC-WQgltDHdndYDddr-geSwqup450dH73A2Cl-8pGWAz5Jr6k15x7ETDyyX-gKH9mQLgT8NgpcJeZVMLjIXm1EbZt7eOlczQvHw9uMmD40XUvTc3VuOvT58GOMc7bcR5a-xUVuHMkbEU3g2rCp7Fw3q3lP_QFTWqE59LQAuIJ1V1Mzrj5l73ZloZnprjZsoS6V737LE84MKS3EbUJwdhONiAUU1jBHCL_yAoimGEtnElJMGcEXxs1Pl3YW3Ceub90HJ43ybw11aZdO1mFDL
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:27:17 GMT
+< Set-Cookie: S=calendar=MGwq8cAp3Jus5E6mG_mldg;Expires=Wed, 07-Aug-2013 10:11:52 GMT;Secure
+< Expires: Mon, 29 Jul 2013 14:27:16 GMT
+< Date: Mon, 29 Jul 2013 14:27:16 GMT
+< Content-Type: application/atom+xml; charset=UTF-8; type=entry
+< Cache-control: private, max-age=0, must-revalidate, no-transform
+< Vary: Accept, X-GData-Authorization, GData-Version
+< GData-Version: 2.6
+< ETag: W/"AkcHR3oyfip7JGA9WhFWEU0."
+< Location: https://www.google.com/calendar/feeds/b1om61kv040k1j2oe5nhsbe7f8%40group.calendar.google.com/acl/full/user%3Adarcy%40gmail.com
+< Content-Location: https://www.google.com/calendar/feeds/b1om61kv040k1j2oe5nhsbe7f8%40group.calendar.google.com/acl/full/user%3Adarcy%40gmail.com
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Server: GSE
+< Transfer-Encoding: chunked
+< 
+< <?xml version='1.0' encoding='UTF-8'?><entry xmlns='http://www.w3.org/2005/Atom' xmlns:app='http://www.w3.org/2007/app' xmlns:gd='http://schemas.google.com/g/2005' xmlns:gAcl='http://schemas.google.com/acl/2007' gd:etag='W/&quot;AkcHR3oyfip7JGA9WhFWEU0.&quot;' gd:kind='calendar#acl'><id>http://www.google.com/calendar/feeds/b1om61kv040k1j2oe5nhsbe7f8%40group.calendar.google.com/acl/user%3Adarcy%40gmail.com</id><published>2013-07-29T14:27:16.496Z</published><updated>2013-07-29T14:27:16.000Z</updated><app:edited>2013-07-29T14:27:16.496Z</app:edited><category scheme='http://schemas.google.com/g/2005#kind' term='http://schemas.google.com/acl/2007#accessRule'/><title>editor</title><content/><link rel='self' type='application/atom+xml' href='https://www.google.com/calendar/feeds/b1om61kv040k1j2oe5nhsbe7f8%40group.calendar.google.com/acl/full/user%3Adarcy%40gmail.com'/><link rel='edit' type='application/atom+xml' href='https://www.google.com/calendar/feeds/b1om61kv040k1j2oe5nhsbe7f8%40group.calendar.google.com/acl/full/user%3Adarcy%40gmail.com'/><author><name>Temp Test Calendar</name><email>b1om61kv040k1j2oe5nhsbe7f8@group.calendar.google.com</email></author><gAcl:role value='http://schemas.google.com/gCal/2005#editor'/><gAcl:scope type='user' value='darcy@gmail.com'/></entry>
+  

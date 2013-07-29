@@ -1,0 +1,75 @@
+> POST /calendar/feeds/default/private/full HTTP/1.1
+> Soup-Debug-Timestamp: 1375108054
+> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 127 (0x7fffd804b0b0), SoupSocket 118 (0x8deae0)
+> Host: www.google.com
+> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> GData-Version: 2
+> Content-Type: application/atom+xml
+> Accept-Encoding: gzip, deflate
+> Connection: Keep-Alive
+> 
+> <?xml version='1.0' encoding='UTF-8'?><entry xmlns='http://www.w3.org/2005/Atom' xmlns:gCal='http://schemas.google.com/gCal/2005' xmlns:gd='http://schemas.google.com/g/2005' xmlns:app='http://www.w3.org/2007/app'><title type='text'>Party &apos;Til You Puke</title><category term='http://schemas.google.com/g/2005#event' scheme='http://schemas.google.com/g/2005#kind'/><gCal:guestsCanModify value='false'/><gCal:guestsCanInviteOthers value='false'/><gCal:guestsCanSeeGuests value='false'/><gCal:anyoneCanAddSelf value='false'/></entry>
+  
+< HTTP/1.1 302 Moved Temporarily
+< Soup-Debug-Timestamp: 1375108055
+< Soup-Debug: SoupMessage 127 (0x7fffd804b0b0)
+< Update-Client-Auth: DQAAAM8AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXThTgckY3-hSb61OvnzXxSJ7d2jzDTq4SYJOcXEK19cfN8WmIspK2CGATjYnx3q1Fz9ZgntzaOCi00pQJhkctNT
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:27:36 GMT
+< Set-Cookie: S=calendar=sy7IlZQc0xDwS-SGGuG6Lg;Expires=Sun, 11-Aug-2013 21:01:05 GMT;Secure
+< Expires: Mon, 29 Jul 2013 14:27:35 GMT
+< Date: Mon, 29 Jul 2013 14:27:35 GMT
+< Location: https://www.google.com/calendar/feeds/default/private/full?gsessionid=sy7IlZQc0xDwS-SGGuG6Lg
+< Content-Type: text/html; charset=UTF-8
+< Cache-control: private, max-age=0
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Server: GSE
+< Transfer-Encoding: chunked
+< 
+< <HTML>
+< <HEAD>
+< <TITLE>Moved Temporarily</TITLE>
+< </HEAD>
+< <BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+< <H1>Moved Temporarily</H1>
+< The document has moved <A HREF="https://www.google.com/calendar/feeds/default/private/full?gsessionid=sy7IlZQc0xDwS-SGGuG6Lg">here</A>.
+< </BODY>
+< </HTML>
+  
+> POST /calendar/feeds/default/private/full?gsessionid=sy7IlZQc0xDwS-SGGuG6Lg HTTP/1.1
+> Soup-Debug-Timestamp: 1375108055
+> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 127 (0x7fffd804b0b0), SoupSocket 119 (0x8dede0), restarted
+> Host: www.google.com
+> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> GData-Version: 2
+> Content-Type: application/atom+xml
+> Accept-Encoding: gzip, deflate
+> Connection: Keep-Alive
+> Content-Length: 534
+> 
+> <?xml version='1.0' encoding='UTF-8'?><entry xmlns='http://www.w3.org/2005/Atom' xmlns:gCal='http://schemas.google.com/gCal/2005' xmlns:gd='http://schemas.google.com/g/2005' xmlns:app='http://www.w3.org/2007/app'><title type='text'>Party &apos;Til You Puke</title><category term='http://schemas.google.com/g/2005#event' scheme='http://schemas.google.com/g/2005#kind'/><gCal:guestsCanModify value='false'/><gCal:guestsCanInviteOthers value='false'/><gCal:guestsCanSeeGuests value='false'/><gCal:anyoneCanAddSelf value='false'/></entry>
+  
+< HTTP/1.1 201 Created
+< Soup-Debug-Timestamp: 1375108055
+< Soup-Debug: SoupMessage 127 (0x7fffd804b0b0)
+< Update-Client-Auth: DQAAAM8AAAAlDUC-WQgltDHdndYDddr-ODYysS96Taaw1NaIYtJAAHEXCZ_GMPV8cwrWmi_-pskMkzDa8yS5h3Lx6BUX8K1OQLMPBV7rpZGHtUa1jYE1jA_4X05rZ800eKz2vNaGdZYoiYJwGnkqCe72OBS-ReHTEtvQtr7VG9ZYkAslaj0Tffvz8pB9ItwBfiM3-4oLSkIEFXx8_eyUlfeNChSfSAvSSqTyG58No5P6HZMRKSJtwsyLwtxAl4BhBMfGX_Uh_z0XCyGMW8beXiNXZ4h5XkwP
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:27:36 GMT
+< Set-Cookie: S=calendar=RMChu5TZknrfgaA3fRZZng;Expires=Wed, 07-Aug-2013 12:29:20 GMT;Secure
+< Expires: Mon, 29 Jul 2013 14:27:35 GMT
+< Date: Mon, 29 Jul 2013 14:27:35 GMT
+< Content-Type: application/atom+xml; charset=UTF-8; type=entry
+< Cache-control: private, max-age=0, must-revalidate, no-transform
+< Vary: Accept, X-GData-Authorization, GData-Version
+< GData-Version: 2.6
+< ETag: "EEoDRgZEeyp7JGA6WhNS"
+< Location: https://www.google.com/calendar/feeds/default/private/full/4vj237jguoan48oeum6m3lhqss
+< Content-Location: https://www.google.com/calendar/feeds/default/private/full/4vj237jguoan48oeum6m3lhqss
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-XSS-Protection: 1; mode=block
+< Server: GSE
+< Transfer-Encoding: chunked
+< 
+< <?xml version='1.0' encoding='UTF-8'?><entry xmlns='http://www.w3.org/2005/Atom' xmlns:app='http://www.w3.org/2007/app' xmlns:gCal='http://schemas.google.com/gCal/2005' xmlns:gd='http://schemas.google.com/g/2005' gd:etag='&quot;EEoDRgZEeyp7JGA6WhNS&quot;' gd:kind='calendar#event'><id>http://www.google.com/calendar/feeds/default/events/4vj237jguoan48oeum6m3lhqss</id><published>2013-07-29T14:27:35.000Z</published><updated>2013-07-29T14:27:35.000Z</updated><app:edited>2013-07-29T14:27:35.000Z</app:edited><category scheme='http://schemas.google.com/g/2005#kind' term='http://schemas.google.com/g/2005#event'/><title>Party 'Til You Puke</title><content/><link rel='alternate' type='text/html' href='https://www.google.com/calendar/event?eid=NHZqMjM3amd1b2FuNDhvZXVtNm0zbGhxc3MgbGliZ2RhdGEudGVzdEBnb29nbGVtYWlsLmNvbQ' title='alternate'/><link rel='self' type='application/atom+xml' href='https://www.google.com/calendar/feeds/default/private/full/4vj237jguoan48oeum6m3lhqss'/><link rel='edit' type='application/atom+xml' href='https://www.google.com/calendar/feeds/default/private/full/4vj237jguoan48oeum6m3lhqss'/><author><name>GData Test</name><email>libgdata.test@googlemail.com</email></author><gd:comments><gd:feedLink href='https://www.google.com/calendar/feeds/default/private/full/4vj237jguoan48oeum6m3lhqss/comments'/></gd:comments><gd:eventStatus value='http://schemas.google.com/g/2005#event.confirmed'/><gd:where valueString=''/><gd:who email='libgdata.test@googlemail.com' rel='http://schemas.google.com/g/2005#event.organizer' valueString='GData Test'/><gd:when endTime='2013-07-29T15:27:35.000+01:00' startTime='2013-07-29T15:27:35.000+01:00'/><gd:transparency value='http://schemas.google.com/g/2005#event.opaque'/><gd:visibility value='http://schemas.google.com/g/2005#event.default'/><gCal:anyoneCanAddSelf value='false'/><gCal:guestsCanInviteOthers value='false'/><gCal:guestsCanModify value='false'/><gCal:guestsCanSeeGuests value='false'/><gCal:sequence value='0'/><gCal:uid value='4vj237jguoan48oeum6m3lhqss@google.com'/></entry>
+  
