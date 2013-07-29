@@ -1109,6 +1109,7 @@ gdata_mock_server_run (GDataMockServer *self)
 	gdata_mock_resolver_add_A (priv->resolver, "www.google.com", ip_address);
 	gdata_mock_resolver_add_A (priv->resolver, "gdata.youtube.com", ip_address);
 	gdata_mock_resolver_add_A (priv->resolver, "uploads.gdata.youtube.com", ip_address);
+	gdata_mock_resolver_add_A (priv->resolver, "picasaweb.google.com", ip_address);
 
 	g_resolver_set_default (G_RESOLVER (priv->resolver));
 
