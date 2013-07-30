@@ -144,8 +144,6 @@ GDATA_ASYNC_TEST_FUNCTIONS (authentication, void,
 G_STMT_START {
 	GDataClientLoginAuthorizer *authorizer;
 
-	gdata_test_mock_server_start_trace (mock_server, "authentication-async");
-
 	/* Create an authorizer */
 	authorizer = gdata_client_login_authorizer_new (CLIENT_ID, GDATA_TYPE_DOCUMENTS_SERVICE);
 
@@ -184,8 +182,6 @@ G_STMT_START {
 		g_assert (gdata_authorizer_is_authorized_for_domain (GDATA_AUTHORIZER (authorizer),
 		                                                     gdata_documents_service_get_spreadsheet_authorization_domain ()) == FALSE);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 typedef struct {
@@ -535,8 +531,6 @@ GDATA_ASYNC_CLOSURE_FUNCTIONS (temp_documents, TempDocumentsData);
 
 GDATA_ASYNC_TEST_FUNCTIONS (query_all_documents, TempDocumentsData,
 G_STMT_START {
-	gdata_test_mock_server_start_trace (mock_server, "query-all-documents-async");
-
 	gdata_documents_service_query_documents_async (GDATA_DOCUMENTS_SERVICE (service), NULL, cancellable, NULL, NULL,
 	                                               NULL, async_ready_callback, async_data);
 } G_STMT_END,
@@ -553,8 +547,6 @@ G_STMT_START {
 	} else {
 		g_assert (feed == NULL);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 static void
@@ -1274,8 +1266,6 @@ GDATA_ASYNC_CLOSURE_FUNCTIONS (folders_add_to_folder, FoldersData);
 
 GDATA_ASYNC_TEST_FUNCTIONS (folders_add_to_folder, FoldersData,
 G_STMT_START {
-	gdata_test_mock_server_start_trace (mock_server, "folders-add-to-folder-async");
-
 	/* Add the document to the folder asynchronously */
 	gdata_documents_service_add_entry_to_folder_async (GDATA_DOCUMENTS_SERVICE (service), GDATA_DOCUMENTS_ENTRY (data->document),
 	                                                   data->folder, cancellable, async_ready_callback, async_data);
@@ -1296,8 +1286,6 @@ G_STMT_START {
 	} else {
 		g_assert (entry == NULL);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 static void
@@ -1340,8 +1328,6 @@ GDATA_ASYNC_CLOSURE_FUNCTIONS (folders_remove_from_folder, FoldersData);
 
 GDATA_ASYNC_TEST_FUNCTIONS (folders_remove_from_folder, FoldersData,
 G_STMT_START {
-	gdata_test_mock_server_start_trace (mock_server, "folders-remove-from-folder-async");
-
 	/* Remove the document from the folder asynchronously */
 	gdata_documents_service_remove_entry_from_folder_async (GDATA_DOCUMENTS_SERVICE (service), GDATA_DOCUMENTS_ENTRY (data->document),
 	                                                        data->folder, cancellable, async_ready_callback, async_data);
@@ -1362,8 +1348,6 @@ G_STMT_START {
 	} else {
 		g_assert (entry == NULL);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 static void
