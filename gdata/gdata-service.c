@@ -2158,7 +2158,9 @@ _gdata_service_build_session (void)
 		ssl_strict = FALSE;
 	}
 
-	session = soup_session_new_with_options ("ssl-strict", ssl_strict, NULL);
+	session = soup_session_new_with_options ("ssl-strict", ssl_strict,
+	                                         "timeout", 0,
+	                                         NULL);
 
 #ifdef HAVE_GNOME
 	soup_session_add_feature_by_type (session, SOUP_TYPE_GNOME_FEATURES_2_26);
