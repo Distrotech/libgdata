@@ -24,6 +24,8 @@
 #include <glib-object.h>
 #include <gio/gio.h>
 
+#include "mock-resolver.h"
+
 G_BEGIN_DECLS
 
 #define GDATA_TYPE_MOCK_SERVER		(gdata_mock_server_get_type ())
@@ -82,6 +84,8 @@ void gdata_mock_server_received_message_chunk (GDataMockServer *self, const gcha
 
 SoupAddress *gdata_mock_server_get_address (GDataMockServer *self);
 guint gdata_mock_server_get_port (GDataMockServer *self);
+
+GDataMockResolver *gdata_mock_server_get_resolver (GDataMockServer *self) G_GNUC_WARN_UNUSED_RESULT;
 
 G_END_DECLS
 

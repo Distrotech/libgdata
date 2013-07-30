@@ -93,6 +93,7 @@ enum {
 	PROP_ENABLE_LOGGING,
 	PROP_ADDRESS,
 	PROP_PORT,
+	PROP_RESOLVER,
 };
 
 enum {
@@ -161,7 +162,7 @@ gdata_mock_server_class_init (GDataMockServerClass *klass)
 	 * gdata_mock_server_stop().
 	 *
 	 * This should not normally need to be passed into client code under test, unless the code references IP addresses specifically. The mock server
-	 * runs a DNS resolver which automatically redirects client requests for known domain names to this address.
+	 * runs a DNS resolver which automatically redirects client requests for known domain names to this address (#GDataMockServer:resolver).
 	 */
 	g_object_class_install_property (gobject_class, PROP_ADDRESS,
 	                                 g_param_spec_object ("address",
@@ -183,6 +184,22 @@ gdata_mock_server_class_init (GDataMockServerClass *klass)
 	                                                    "Server Port", "Port of the local mock server if it's running",
 	                                                    0, G_MAXUINT, 0,
 	                                                    G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+	/**
+	 * GDataMockServer:resolver:
+	 *
+	 * Mock resolver used to redirect HTTP requests from specified domain names to the local mock server instance. This will always be set while the
+	 * server is running (between calls to gdata_mock_server_run() and gdata_mock_server_stop()), and is %NULL otherwise.
+	 *
+	 * Use the resolver specified in this property to add domain names which are expected to be requested by the current trace. Domain names not added
+	 * to the resolver will be rejected by the mock server. The set of domain names in the resolver will be reset when gdata_mock_server_stop() is
+	 * called.
+	 */
+	g_object_class_install_property (gobject_class, PROP_RESOLVER,
+	                                 g_param_spec_object ("resolver",
+	                                                      "Resolver", "Mock resolver used to redirect HTTP requests to the local mock server instance.",
+	                                                      GDATA_TYPE_MOCK_RESOLVER,
+	                                                      G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
 	/**
 	 * GDataMockServer::handle-message:
@@ -251,6 +268,9 @@ gdata_mock_server_get_property (GObject *object, guint property_id, GValue *valu
 		case PROP_PORT:
 			g_value_set_uint (value, priv->port);
 			break;
+		case PROP_RESOLVER:
+			g_value_set_object (value, priv->resolver);
+			break;
 		default:
 			/* We don't have any other property... */
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -275,6 +295,7 @@ gdata_mock_server_set_property (GObject *object, guint property_id, const GValue
 			break;
 		case PROP_ADDRESS:
 		case PROP_PORT:
+		case PROP_RESOLVER:
 			/* Read-only. */
 		default:
 			/* We don't have any other property... */
@@ -1050,7 +1071,7 @@ server_thread_cb (gpointer user_data)
  *
  * Runs the mock server, binding to a loopback TCP/IP interface and preparing a HTTPS server which is ready to accept requests.
  * The TCP/IP address and port number are chosen randomly out of the loopback addresses, and are exposed as #GDataMockServer:address and #GDataMockServer:port
- * once this function has returned.
+ * once this function has returned. A #GDataMockResolver (exposed as #GDataMockServer:resolver) is set as the default #GResolver while the server is running.
  *
  * The server is started in a worker thread, so this function returns immediately and the server continues to run in the background. Use gdata_mock_server_stop()
  * to shut it down.
@@ -1064,7 +1085,6 @@ gdata_mock_server_run (GDataMockServer *self)
 	struct sockaddr_in sock;
 	SoupAddress *addr;
 	GMainContext *thread_context;
-	const gchar *ip_address;
 
 	g_return_if_fail (GDATA_IS_MOCK_SERVER (self));
 	g_return_if_fail (priv->resolver == NULL);
@@ -1102,15 +1122,10 @@ gdata_mock_server_run (GDataMockServer *self)
 	g_object_notify (G_OBJECT (self), "port");
 	g_object_thaw_notify (G_OBJECT (self));
 
-	ip_address = soup_address_get_physical (priv->address);
-
-	/* Set up the resolver, adding some expected hostnames. TODO: Do this dynamically. */
+	/* Set up the resolver. It is expected that callers will grab the resolver (by calling gdata_mock_server_get_resolver())
+	 * immediately after this function returns, and add some expected hostnames by calling gdata_mock_resolver_add_A() one or
+	 * more times, before starting the next test. */
 	priv->resolver = gdata_mock_resolver_new ();
-	gdata_mock_resolver_add_A (priv->resolver, "www.google.com", ip_address);
-	gdata_mock_resolver_add_A (priv->resolver, "gdata.youtube.com", ip_address);
-	gdata_mock_resolver_add_A (priv->resolver, "uploads.gdata.youtube.com", ip_address);
-	gdata_mock_resolver_add_A (priv->resolver, "picasaweb.google.com", ip_address);
-
 	g_resolver_set_default (G_RESOLVER (priv->resolver));
 
 	/* Start the network thread. */
@@ -1123,7 +1138,8 @@ gdata_mock_server_run (GDataMockServer *self)
  *
  * Stops a mock server started by calling gdata_mock_server_run(). This shuts down the server's worker thread and unbinds it from its TCP/IP socket.
  *
- * This unloads any trace file loaded by calling gdata_mock_server_load_trace() (or its asynchronous counterpart).
+ * This unloads any trace file loaded by calling gdata_mock_server_load_trace() (or its asynchronous counterpart). It also resets the set of domain
+ * names loaded into the #GDataMockServer:resolver.
  *
  * This function always succeeds.
  */
@@ -1502,4 +1518,20 @@ gdata_mock_server_get_port (GDataMockServer *self)
 	g_return_val_if_fail (GDATA_IS_MOCK_SERVER (self), 0);
 
 	return self->priv->port;
+}
+
+/**
+ * gdata_mock_server_get_resolver:
+ * @self: a #GDataMockServer
+ *
+ * Gets the value of the #GDataMockServer:resolver property.
+ *
+ * Return value: (allow-none) (transfer none): the mock resolver in use by the mock server, or %NULL if no resolver is active
+ */
+GDataMockResolver *
+gdata_mock_server_get_resolver (GDataMockServer *self)
+{
+	g_return_val_if_fail (GDATA_IS_MOCK_SERVER (self), NULL);
+
+	return self->priv->resolver;
 }

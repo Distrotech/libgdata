@@ -121,8 +121,8 @@ gdata_test_init (int argc, char **argv)
 	/* Set handler for printerr */
 	g_set_printerr_handler ((GPrintFunc) gdata_test_assert_handler);
 
-	/* Enable full debugging */
-	g_setenv ("LIBGDATA_DEBUG", "4" /* GDATA_LOG_FULL */, FALSE); /* TODO */
+	/* Enable full debugging. These options are seriously unsafe, but we don't care for test cases. */
+	g_setenv ("LIBGDATA_DEBUG", "4" /* GDATA_LOG_FULL_UNREDACTED */, FALSE);
 	g_setenv ("G_MESSAGES_DEBUG", "libgdata", FALSE);
 	g_setenv ("LIBGDATA_LAX_SSL_CERTIFICATES", "1", FALSE);
 
@@ -791,8 +791,22 @@ gdata_test_set_https_port (GDataMockServer *server)
 void
 gdata_test_mock_server_start_trace (GDataMockServer *server, const gchar *trace_filename)
 {
+	const gchar *ip_address;
+	GDataMockResolver *resolver;
+
 	gdata_mock_server_start_trace (server, trace_filename);
 	gdata_test_set_https_port (server);
+
+	/* Set up the expected domain names here. This should technically be split up between
+	 * the different unit test suites, but that's too much effort. */
+	ip_address = soup_address_get_physical (gdata_mock_server_get_address (server));
+	resolver = gdata_mock_server_get_resolver (server);
+
+	gdata_mock_resolver_add_A (resolver, "www.google.com", ip_address);
+	gdata_mock_resolver_add_A (resolver, "gdata.youtube.com", ip_address);
+	gdata_mock_resolver_add_A (resolver, "uploads.gdata.youtube.com", ip_address);
+	gdata_mock_resolver_add_A (resolver, "picasaweb.google.com", ip_address);
+	gdata_mock_resolver_add_A (resolver, "docs.google.com", ip_address);
 }
 
 /**
