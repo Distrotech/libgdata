@@ -28,6 +28,28 @@
 
 static GDataMockServer *mock_server = NULL;
 
+/* Effectively gdata_test_mock_server_start_trace() but calling gdata_mock_server_run() instead of gdata_mock_server_start_trace(). */
+static void
+gdata_test_mock_server_run (GDataMockServer *server)
+{
+	const gchar *ip_address;
+	GDataMockResolver *resolver;
+
+	gdata_mock_server_run (server);
+	gdata_test_set_https_port (server);
+
+	if (gdata_mock_server_get_enable_online (server) == FALSE) {
+		/* Set up the expected domain names here. This should technically be split up between
+		 * the different unit test suites, but that's too much effort. */
+		ip_address = soup_address_get_physical (gdata_mock_server_get_address (server));
+		resolver = gdata_mock_server_get_resolver (server);
+
+		gdata_mock_resolver_add_A (resolver, "www.google.com", ip_address);
+		gdata_mock_resolver_add_A (resolver, "gdata.youtube.com", ip_address);
+		gdata_mock_resolver_add_A (resolver, "uploads.gdata.youtube.com", ip_address);
+	}
+}
+
 static void
 test_authentication (void)
 {
@@ -128,8 +150,7 @@ test_authentication_error (void)
 		const GDataTestRequestErrorData *data = &authentication_errors[i];
 
 		handler_id = g_signal_connect (mock_server, "handle-message", (GCallback) gdata_test_mock_server_handle_message_error, (gpointer) data);
-		gdata_mock_server_run (mock_server);
-		gdata_test_set_https_port (mock_server);
+		gdata_test_mock_server_run (mock_server);
 
 		/* Create an authorizer */
 		authorizer = gdata_client_login_authorizer_new (CLIENT_ID, GDATA_TYPE_YOUTUBE_SERVICE);
@@ -415,8 +436,7 @@ test_query_standard_feed_error (gconstpointer service)
 		const GDataTestRequestErrorData *data = &query_standard_feed_errors[i];
 
 		handler_id = g_signal_connect (mock_server, "handle-message", (GCallback) gdata_test_mock_server_handle_message_error, (gpointer) data);
-		gdata_mock_server_run (mock_server);
-		gdata_test_set_https_port (mock_server);
+		gdata_test_mock_server_run (mock_server);
 
 		/* Query the feed. */
 		feed = gdata_youtube_service_query_standard_feed (GDATA_YOUTUBE_SERVICE (service), GDATA_YOUTUBE_TOP_RATED_FEED, NULL, NULL, NULL, NULL, &error);
@@ -445,8 +465,7 @@ test_query_standard_feed_timeout (gconstpointer service)
 	}
 
 	handler_id = g_signal_connect (mock_server, "handle-message", (GCallback) gdata_test_mock_server_handle_message_timeout, NULL);
-	gdata_mock_server_run (mock_server);
-	gdata_test_set_https_port (mock_server);
+	gdata_test_mock_server_run (mock_server);
 
 	/* Set the service's timeout as low as possible (1 second). */
 	gdata_service_set_timeout (GDATA_SERVICE (service), 1);
