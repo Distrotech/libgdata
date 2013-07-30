@@ -797,16 +797,18 @@ gdata_test_mock_server_start_trace (GDataMockServer *server, const gchar *trace_
 	gdata_mock_server_start_trace (server, trace_filename);
 	gdata_test_set_https_port (server);
 
-	/* Set up the expected domain names here. This should technically be split up between
-	 * the different unit test suites, but that's too much effort. */
-	ip_address = soup_address_get_physical (gdata_mock_server_get_address (server));
-	resolver = gdata_mock_server_get_resolver (server);
+	if (gdata_mock_server_get_enable_online (server) == FALSE) {
+		/* Set up the expected domain names here. This should technically be split up between
+		 * the different unit test suites, but that's too much effort. */
+		ip_address = soup_address_get_physical (gdata_mock_server_get_address (server));
+		resolver = gdata_mock_server_get_resolver (server);
 
-	gdata_mock_resolver_add_A (resolver, "www.google.com", ip_address);
-	gdata_mock_resolver_add_A (resolver, "gdata.youtube.com", ip_address);
-	gdata_mock_resolver_add_A (resolver, "uploads.gdata.youtube.com", ip_address);
-	gdata_mock_resolver_add_A (resolver, "picasaweb.google.com", ip_address);
-	gdata_mock_resolver_add_A (resolver, "docs.google.com", ip_address);
+		gdata_mock_resolver_add_A (resolver, "www.google.com", ip_address);
+		gdata_mock_resolver_add_A (resolver, "gdata.youtube.com", ip_address);
+		gdata_mock_resolver_add_A (resolver, "uploads.gdata.youtube.com", ip_address);
+		gdata_mock_resolver_add_A (resolver, "picasaweb.google.com", ip_address);
+		gdata_mock_resolver_add_A (resolver, "docs.google.com", ip_address);
+	}
 }
 
 /**

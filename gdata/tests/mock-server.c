@@ -84,7 +84,13 @@ struct _GDataMockServerPrivate {
 	gboolean enable_logging;
 
 	GString *comparison_message;
-	gboolean comparison_message_seen_request;
+	enum {
+		UNKNOWN,
+		REQUEST_DATA,
+		REQUEST_TERMINATOR,
+		RESPONSE_DATA,
+		RESPONSE_TERMINATOR,
+	} received_message_state;
 };
 
 enum {
@@ -241,6 +247,7 @@ gdata_mock_server_dispose (GObject *object)
 
 	if (priv->comparison_message != NULL) {
 		g_string_free (priv->comparison_message, TRUE);
+		priv->comparison_message = NULL;
 	}
 
 	/* Chain up to the parent class */
@@ -380,6 +387,7 @@ server_process_message (GDataMockServer *self, SoupMessage *message, SoupClientC
 {
 	GDataMockServerPrivate *priv = self->priv;
 	SoupBuffer *message_body;
+	goffset expected_content_length;
 
 	g_assert (priv->next_message != NULL);
 
@@ -408,6 +416,17 @@ server_process_message (GDataMockServer *self, SoupMessage *message, SoupClientC
 	if (message_body->length > 0) {
 		soup_message_body_append_buffer (message->response_body, message_body);
 	}
+
+	/* If the log file doesn't contain the full response body (e.g. because it's a huge binary file containing a nul byte somewhere),
+	 * make one up (all zeros). */
+	expected_content_length = soup_message_headers_get_content_length (message->response_headers);
+	if (expected_content_length > 0 && message_body->length < (guint64) expected_content_length) {
+		guint8 *buf;
+
+		buf = g_malloc0 (expected_content_length - message_body->length);
+		soup_message_body_append_take (message->response_body, buf, expected_content_length - message_body->length);
+	}
+
 	soup_buffer_free (message_body);
 
 	soup_message_body_complete (message->response_body);
@@ -808,33 +827,58 @@ load_message_half (GFileInputStream *input_stream, GString *current_message, gch
 	return TRUE;
 }
 
+/* Returns TRUE iff the given message from a trace file should be ignored and not used by the mock server. */
+static gboolean
+should_ignore_soup_message (SoupMessage *message)
+{
+	switch (message->status_code) {
+		case SOUP_STATUS_NONE:
+		case SOUP_STATUS_CANCELLED:
+		case SOUP_STATUS_CANT_RESOLVE:
+		case SOUP_STATUS_CANT_RESOLVE_PROXY:
+		case SOUP_STATUS_CANT_CONNECT:
+		case SOUP_STATUS_CANT_CONNECT_PROXY:
+		case SOUP_STATUS_SSL_FAILED:
+		case SOUP_STATUS_IO_ERROR:
+		case SOUP_STATUS_MALFORMED:
+		case SOUP_STATUS_TRY_AGAIN:
+		case SOUP_STATUS_TOO_MANY_REDIRECTS:
+		case SOUP_STATUS_TLS_FAILED:
+			return TRUE;
+		default:
+			return FALSE;
+	}
+}
+
 static SoupMessage *
 load_file_iteration (GFileInputStream *input_stream, SoupURI *base_uri, GCancellable *cancellable, GError **error)
 {
 	SoupMessage *output_message = NULL;
 	GString *current_message = NULL;
 
-	/* Start loading from the stream. */
 	current_message = g_string_new (NULL);
 
-	/* We should be at the start of a request (>). Search for the start of the response (<), then for the start of the next request (>). */
-	if (load_message_half (input_stream, current_message, '<', cancellable, error) == FALSE ||
-	    load_message_half (input_stream, current_message, '>', cancellable, error) == FALSE) {
-		goto done;
-	}
+	do {
+		/* Start loading from the stream. */
+		g_string_truncate (current_message, 0);
 
-	if (current_message->len > 0) {
-		output_message = trace_to_soup_message (current_message->str, base_uri);
-	} else {
-		/* Reached the end of the file. */
-		output_message = NULL;
-	}
+		/* We should be at the start of a request (>). Search for the start of the response (<), then for the start of the next request (>). */
+		if (load_message_half (input_stream, current_message, '<', cancellable, error) == FALSE ||
+		    load_message_half (input_stream, current_message, '>', cancellable, error) == FALSE) {
+			goto done;
+		}
+
+		if (current_message->len > 0) {
+			output_message = trace_to_soup_message (current_message->str, base_uri);
+		} else {
+			/* Reached the end of the file. */
+			output_message = NULL;
+		}
+	} while (output_message != NULL && should_ignore_soup_message (output_message) == TRUE);
 
 done:
 	/* Tidy up. */
-	if (current_message != NULL) {
-		g_string_free (current_message, TRUE);
-	}
+	g_string_free (current_message, TRUE);
 
 	/* Postcondition: (output_message != NULL) => (*error == NULL). */
 	g_assert (output_message == NULL || (error == NULL || *error == NULL));
@@ -900,9 +944,12 @@ gdata_mock_server_unload_trace (GDataMockServer *self)
 	g_clear_object (&priv->input_stream);
 	g_clear_object (&priv->trace_file);
 
-	g_string_free (priv->comparison_message, TRUE);
-	priv->comparison_message = NULL;
-	priv->comparison_message_seen_request = FALSE;
+	if (priv->comparison_message != NULL) {
+		g_string_free (priv->comparison_message, TRUE);
+		priv->comparison_message = NULL;
+	}
+
+	priv->received_message_state = UNKNOWN;
 }
 
 /**
@@ -942,7 +989,7 @@ gdata_mock_server_load_trace (GDataMockServer *self, GFile *trace_file, GCancell
 
 		priv->next_message = load_file_iteration (priv->input_stream, base_uri, cancellable, &child_error);
 		priv->comparison_message = g_string_new (NULL);
-		priv->comparison_message_seen_request = FALSE;
+		priv->received_message_state = UNKNOWN;
 
 		if (child_error != NULL) {
 			g_clear_object (&priv->trace_file);
@@ -1050,7 +1097,7 @@ gdata_mock_server_load_trace_finish (GDataMockServer *self, GAsyncResult *result
 
 	self->priv->next_message = g_task_propagate_pointer (G_TASK (result), error);
 	self->priv->comparison_message = g_string_new (NULL);
-	self->priv->comparison_message_seen_request = FALSE;
+	self->priv->received_message_state = UNKNOWN;
 }
 
 static gpointer
@@ -1431,6 +1478,55 @@ gdata_mock_server_received_message_chunk (GDataMockServer *self, const gchar *me
 		return;
 	}
 
+	/* Simple state machine to track where we are in the soup log format. */
+	switch (priv->received_message_state) {
+		case UNKNOWN:
+			if (strncmp (message_chunk, "> ", 2) == 0) {
+				priv->received_message_state = REQUEST_DATA;
+			}
+			break;
+		case REQUEST_DATA:
+			if (strcmp (message_chunk, "  ") == 0) {
+				priv->received_message_state = REQUEST_TERMINATOR;
+			} else if (strncmp (message_chunk, "> ", 2) != 0) {
+				priv->received_message_state = UNKNOWN;
+			}
+			break;
+		case REQUEST_TERMINATOR:
+			if (strncmp (message_chunk, "< ", 2) == 0) {
+				priv->received_message_state = RESPONSE_DATA;
+			} else {
+				priv->received_message_state = UNKNOWN;
+			}
+			break;
+		case RESPONSE_DATA:
+			if (strcmp (message_chunk, "  ") == 0) {
+				priv->received_message_state = RESPONSE_TERMINATOR;
+			} else if (strncmp (message_chunk, "< ", 2) != 0) {
+				priv->received_message_state = UNKNOWN;
+			}
+			break;
+		case RESPONSE_TERMINATOR:
+			if (strncmp (message_chunk, "> ", 2) == 0) {
+				priv->received_message_state = REQUEST_DATA;
+			} else {
+				priv->received_message_state = UNKNOWN;
+			}
+			break;
+		default:
+			g_assert_not_reached ();
+	}
+
+	/* Silently ignore responses outputted by libsoup before the requests. This can happen when a SoupMessage is cancelled part-way through
+	 * sending the request; in which case libsoup logs only a response of the form:
+	 *     < HTTP/1.1 1 Cancelled
+	 *     < Soup-Debug-Timestamp: 1375190963
+	 *     < Soup-Debug: SoupMessage 0 (0x7fffe00261c0)
+	 */
+	if (priv->received_message_state == UNKNOWN) {
+		return;
+	}
+
 	/* Append to the trace file. */
 	if (priv->enable_logging == TRUE &&
 	    (g_output_stream_write_all (G_OUTPUT_STREAM (priv->output_stream), message_chunk, strlen (message_chunk), NULL, NULL, &child_error) == FALSE ||
@@ -1450,10 +1546,7 @@ gdata_mock_server_received_message_chunk (GDataMockServer *self, const gchar *me
 		g_string_append (priv->comparison_message, message_chunk);
 		g_string_append_c (priv->comparison_message, '\n');
 
-		if (strcmp (message_chunk, "  ") == 0 && priv->comparison_message_seen_request == FALSE) {
-			/* Need to capture both the request and the response before processing; both are terminated by a single “  ” chunk. */
-			priv->comparison_message_seen_request = TRUE;
-		} else if (strcmp (message_chunk, "  ") == 0) {
+		if (strcmp (message_chunk, "  ") == 0) {
 			/* Received the last chunk of the response, so compare the message from the trace file and that from online. */
 			SoupMessage *online_message;
 			SoupURI *base_uri;
@@ -1464,7 +1557,7 @@ gdata_mock_server_received_message_chunk (GDataMockServer *self, const gchar *me
 			soup_uri_free (base_uri);
 
 			g_string_truncate (priv->comparison_message, 0);
-			priv->comparison_message_seen_request = FALSE;
+			priv->received_message_state = UNKNOWN;
 
 			g_assert (priv->next_message != NULL);
 
