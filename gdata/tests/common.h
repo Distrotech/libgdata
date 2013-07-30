@@ -175,6 +175,10 @@ tear_down_##CLOSURE_NAME##_async (GDataAsyncTestData *async_data, gconstpointer 
  * <function>test_<replaceable>TEST_NAME</replaceable>_async</function> and
  * <function>test_<replaceable>TEST_NAME</replaceable>_async_cancellation</function>.
  *
+ * These functions assume the existence of a <varname>mock_server</varname> variable which points to the current #GDataMockServer instance. They
+ * will automatically use traces <varname><replaceable>TEST_NAME</replaceable>-async</varname> and
+ * <varname><replaceable>TEST_NAME</replaceable>-async-cancellation</varname>.
+ *
  * Since: 0.10.0
  */
 #define GDATA_ASYNC_TEST_FUNCTIONS(TEST_NAME, TestStructType, TEST_BEGIN_CODE, TEST_END_CODE) \
@@ -221,17 +225,23 @@ test_##TEST_NAME##_async (GDataAsyncTestData *async_data, gconstpointer service)
  \
 	g_test_message ("Running normal operation test…"); \
  \
+	gdata_test_mock_server_start_trace (mock_server, G_STRINGIFY (TEST_NAME) "-async"); \
+ \
 	{ \
 		TEST_BEGIN_CODE; \
 	} \
  \
 	g_main_loop_run (async_data->main_loop); \
+ \
+	gdata_mock_server_end_trace (mock_server); \
 } \
  \
 static void \
 test_##TEST_NAME##_async_cancellation (GDataAsyncTestData *async_data, gconstpointer service) \
 { \
 	async_data->cancellation_timeout = 0; \
+ \
+	gdata_test_mock_server_start_trace (mock_server, G_STRINGIFY (TEST_NAME) "-async-cancellation"); \
  \
 	/* Starting with a short timeout, repeatedly run the async. operation, cancelling it after the timeout and increasing the timeout until
 	 * the operation succeeds for the first time. We then finish the test. This guarantees that if, for example, the test creates an entry on
@@ -281,6 +291,8 @@ test_##TEST_NAME##_async_cancellation (GDataAsyncTestData *async_data, gconstpoi
 	if (async_data->cancellation_timeout_id != 0) { \
 		g_source_remove (async_data->cancellation_timeout_id); \
 	} \
+ \
+	gdata_mock_server_end_trace (mock_server); \
 }
 
 gboolean gdata_async_test_cancellation_cb (GDataAsyncTestData *async_data);
