@@ -804,11 +804,12 @@ tear_down_insert_album (InsertAlbumData *data, gconstpointer service)
 {
 	gdata_test_mock_server_start_trace (mock_server, "teardown-insert-album");
 
-	g_object_unref (data->album);
-
 	/* Clean up the evidence */
 	gdata_service_delete_entry (GDATA_SERVICE (service), gdata_picasaweb_service_get_primary_authorization_domain (),
 	                            GDATA_ENTRY (data->inserted_album), NULL, NULL);
+
+	g_object_unref (data->album);
+	g_object_unref (data->inserted_album);
 
 	gdata_mock_server_end_trace (mock_server);
 }
