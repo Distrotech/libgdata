@@ -1,21 +1,21 @@
-> DELETE /data/entry/api/user/libgdata.picasaweb/albumid/5905639529199279457?authkey=Gv1sRgCI_HnNDHxaOxzgE HTTP/1.1
-> Soup-Debug-Timestamp: 1375013857
-> Soup-Debug: SoupSession 1 (0x6672c0), SoupMessage 48 (0x9aa190), SoupSocket 22 (0x7fffe00266e0)
+> DELETE /data/entry/api/user/libgdata.picasaweb/albumid/5906409867090978209?authkey=Gv1sRgCMGwmsnnoJ6GgAE HTTP/1.1
+> Soup-Debug-Timestamp: 1375193216
+> Soup-Debug: SoupSession 1 (0x6682e0), SoupMessage 47 (0x78d190), SoupSocket 21 (0x7fffe0028620)
 > Host: picasaweb.google.com
-> Authorization: GoogleLogin auth=DQAAANwAAABO8c3pAaaVUCxhEHZTctsQgnxLh6jMWP315bmwkRhnvD5SifkoCbt7mj8UyPUyyKqNAO6yBngPU-dixfH9q6ykfJVnOBnlVbyhbkoB0m6XkNnyeRMCcfIZroZWnJ4RBlM3jiHKgngMCQLh8irqan-Z9M9EAMX6LctQZlzLvhzzqdsGFGYpS8ihOHsIsXzrxryARyV5dFs49yW8mVbAO0Hof8CG1k5Chc5GDHr-U3WJ91jN4jkGST1lXCsibCWcIbKD-f2uOZf0XfjpDnsCGuUFrgpVpU7-pyGOWZx0dMbSKg
+> Authorization: GoogleLogin auth=DQAAANsAAACBRkzDssWFvAbsJ__WhogKQOB1hOdZ-V7TTzopLOdrYUCoOa9HrmeNJp5iha8I-J-YTle_CcHcfDVOcXqR5x439iCm1fiMPcoABzsfdLTKLKU2avMGICiYQ4M8donG0cblZbUDOW31-6bwXScW_yvDNARuAj0KQcJBCLpc3-WqhraDgc6ELRTI5TxhGmwu4XUFs6hDSd5UH9c9b79Qin0no0kBdLyj1cKXI-l5tH_oWOVvZfXCB_XQd_dRkFL12iPvfKmjIfa18ETXQbhPwKBOl737cGye_Xd4emswaoB4Ew
 > GData-Version: 2
 > If-Match: "YD0qeyI."
 > Accept-Encoding: gzip, deflate
 > Connection: Keep-Alive
   
 < HTTP/1.1 200 OK
-< Soup-Debug-Timestamp: 1375013858
-< Soup-Debug: SoupMessage 48 (0x9aa190)
-< Expires: Sun, 28 Jul 2013 12:17:37 GMT
-< Date: Sun, 28 Jul 2013 12:17:37 GMT
+< Soup-Debug-Timestamp: 1375193217
+< Soup-Debug: SoupMessage 47 (0x78d190)
+< Expires: Tue, 30 Jul 2013 14:06:56 GMT
+< Date: Tue, 30 Jul 2013 14:06:56 GMT
 < Cache-control: private, max-age=0, must-revalidate
-< Set-Cookie: _rtok=35al8_TCIFmg; Path=/; Secure; HttpOnly
-< Set-Cookie: S=photos_html=swlYOpOIsDSX0FAaGCI3Rg; Domain=.google.com; Path=/; Secure; HttpOnly
+< Set-Cookie: _rtok=jidlGO74otNO; Path=/; Secure; HttpOnly
+< Set-Cookie: S=photos_html=y7RNVE_2yfziSmfv5s4SiA; Domain=.google.com; Path=/; Secure; HttpOnly
 < GData-Version: 2.0
 < X-Content-Type-Options: nosniff
 < X-Frame-Options: SAMEORIGIN
@@ -25,24 +25,24 @@
 < Content-Type: text/html; charset=UTF-8
 < 
   
-> DELETE /data/entry/api/user/libgdata.picasaweb/albumid/5905639533981554817?authkey=Gv1sRgCLyQw8yU1ouNsQE HTTP/1.1
-> Soup-Debug-Timestamp: 1375013858
-> Soup-Debug: SoupSession 1 (0x6672c0), SoupMessage 49 (0x9aa0a0), SoupSocket 22 (0x7fffe00266e0)
+> DELETE /data/entry/api/user/libgdata.picasaweb/albumid/5906409873513866033?authkey=Gv1sRgCMLm1Ljg2tqqIA HTTP/1.1
+> Soup-Debug-Timestamp: 1375193217
+> Soup-Debug: SoupSession 1 (0x6682e0), SoupMessage 48 (0x78d0a0), SoupSocket 21 (0x7fffe0028620)
 > Host: picasaweb.google.com
-> Authorization: GoogleLogin auth=DQAAANwAAABO8c3pAaaVUCxhEHZTctsQgnxLh6jMWP315bmwkRhnvD5SifkoCbt7mj8UyPUyyKqNAO6yBngPU-dixfH9q6ykfJVnOBnlVbyhbkoB0m6XkNnyeRMCcfIZroZWnJ4RBlM3jiHKgngMCQLh8irqan-Z9M9EAMX6LctQZlzLvhzzqdsGFGYpS8ihOHsIsXzrxryARyV5dFs49yW8mVbAO0Hof8CG1k5Chc5GDHr-U3WJ91jN4jkGST1lXCsibCWcIbKD-f2uOZf0XfjpDnsCGuUFrgpVpU7-pyGOWZx0dMbSKg
+> Authorization: GoogleLogin auth=DQAAANsAAACBRkzDssWFvAbsJ__WhogKQOB1hOdZ-V7TTzopLOdrYUCoOa9HrmeNJp5iha8I-J-YTle_CcHcfDVOcXqR5x439iCm1fiMPcoABzsfdLTKLKU2avMGICiYQ4M8donG0cblZbUDOW31-6bwXScW_yvDNARuAj0KQcJBCLpc3-WqhraDgc6ELRTI5TxhGmwu4XUFs6hDSd5UH9c9b79Qin0no0kBdLyj1cKXI-l5tH_oWOVvZfXCB_XQd_dRkFL12iPvfKmjIfa18ETXQbhPwKBOl737cGye_Xd4emswaoB4Ew
 > GData-Version: 2
 > If-Match: "YD0qeyI."
 > Accept-Encoding: gzip, deflate
 > Connection: Keep-Alive
   
 < HTTP/1.1 200 OK
-< Soup-Debug-Timestamp: 1375013859
-< Soup-Debug: SoupMessage 49 (0x9aa0a0)
-< Expires: Sun, 28 Jul 2013 12:17:38 GMT
-< Date: Sun, 28 Jul 2013 12:17:38 GMT
+< Soup-Debug-Timestamp: 1375193217
+< Soup-Debug: SoupMessage 48 (0x78d0a0)
+< Expires: Tue, 30 Jul 2013 14:06:57 GMT
+< Date: Tue, 30 Jul 2013 14:06:57 GMT
 < Cache-control: private, max-age=0, must-revalidate
-< Set-Cookie: _rtok=A-ovrjIIbIWs; Path=/; Secure; HttpOnly
-< Set-Cookie: S=photos_html=AVaY-dyCjkcFF4kD9oQMag; Domain=.google.com; Path=/; Secure; HttpOnly
+< Set-Cookie: _rtok=ervPcy0WRqj7; Path=/; Secure; HttpOnly
+< Set-Cookie: S=photos_html=oqxPfDw0j5QF3AgVSK1t9w; Domain=.google.com; Path=/; Secure; HttpOnly
 < GData-Version: 2.0
 < X-Content-Type-Options: nosniff
 < X-Frame-Options: SAMEORIGIN
@@ -52,24 +52,24 @@
 < Content-Type: text/html; charset=UTF-8
 < 
   
-> DELETE /data/entry/api/user/libgdata.picasaweb/albumid/5905639534651911457?authkey=Gv1sRgCIHrp_-g6Ob2vQE HTTP/1.1
-> Soup-Debug-Timestamp: 1375013859
-> Soup-Debug: SoupSession 1 (0x6672c0), SoupMessage 50 (0x9aa550), SoupSocket 22 (0x7fffe00266e0)
+> DELETE /data/entry/api/user/libgdata.picasaweb/albumid/5906409876619235281?authkey=Gv1sRgCPmiyez0rYT-Qg HTTP/1.1
+> Soup-Debug-Timestamp: 1375193217
+> Soup-Debug: SoupSession 1 (0x6682e0), SoupMessage 49 (0x78d550), SoupSocket 21 (0x7fffe0028620)
 > Host: picasaweb.google.com
-> Authorization: GoogleLogin auth=DQAAANwAAABO8c3pAaaVUCxhEHZTctsQgnxLh6jMWP315bmwkRhnvD5SifkoCbt7mj8UyPUyyKqNAO6yBngPU-dixfH9q6ykfJVnOBnlVbyhbkoB0m6XkNnyeRMCcfIZroZWnJ4RBlM3jiHKgngMCQLh8irqan-Z9M9EAMX6LctQZlzLvhzzqdsGFGYpS8ihOHsIsXzrxryARyV5dFs49yW8mVbAO0Hof8CG1k5Chc5GDHr-U3WJ91jN4jkGST1lXCsibCWcIbKD-f2uOZf0XfjpDnsCGuUFrgpVpU7-pyGOWZx0dMbSKg
+> Authorization: GoogleLogin auth=DQAAANsAAACBRkzDssWFvAbsJ__WhogKQOB1hOdZ-V7TTzopLOdrYUCoOa9HrmeNJp5iha8I-J-YTle_CcHcfDVOcXqR5x439iCm1fiMPcoABzsfdLTKLKU2avMGICiYQ4M8donG0cblZbUDOW31-6bwXScW_yvDNARuAj0KQcJBCLpc3-WqhraDgc6ELRTI5TxhGmwu4XUFs6hDSd5UH9c9b79Qin0no0kBdLyj1cKXI-l5tH_oWOVvZfXCB_XQd_dRkFL12iPvfKmjIfa18ETXQbhPwKBOl737cGye_Xd4emswaoB4Ew
 > GData-Version: 2
 > If-Match: "YD0qeyI."
 > Accept-Encoding: gzip, deflate
 > Connection: Keep-Alive
   
 < HTTP/1.1 200 OK
-< Soup-Debug-Timestamp: 1375013860
-< Soup-Debug: SoupMessage 50 (0x9aa550)
-< Expires: Sun, 28 Jul 2013 12:17:39 GMT
-< Date: Sun, 28 Jul 2013 12:17:39 GMT
+< Soup-Debug-Timestamp: 1375193218
+< Soup-Debug: SoupMessage 49 (0x78d550)
+< Expires: Tue, 30 Jul 2013 14:06:58 GMT
+< Date: Tue, 30 Jul 2013 14:06:58 GMT
 < Cache-control: private, max-age=0, must-revalidate
-< Set-Cookie: _rtok=DjgZSXSBmt9b; Path=/; Secure; HttpOnly
-< Set-Cookie: S=photos_html=3m7NV7NjAbuhf_P0L-yE9A; Domain=.google.com; Path=/; Secure; HttpOnly
+< Set-Cookie: _rtok=_pfVAP39nN2h; Path=/; Secure; HttpOnly
+< Set-Cookie: S=photos_html=bQ9rzDUYpZVSDdNVIw6FBg; Domain=.google.com; Path=/; Secure; HttpOnly
 < GData-Version: 2.0
 < X-Content-Type-Options: nosniff
 < X-Frame-Options: SAMEORIGIN
@@ -79,24 +79,24 @@
 < Content-Type: text/html; charset=UTF-8
 < 
   
-> DELETE /data/entry/api/user/libgdata.picasaweb/albumid/5905639542445656401?authkey=Gv1sRgCIi65tzhvtybNQ HTTP/1.1
-> Soup-Debug-Timestamp: 1375013860
-> Soup-Debug: SoupSession 1 (0x6672c0), SoupMessage 51 (0x9aa550), SoupSocket 22 (0x7fffe00266e0)
+> DELETE /data/entry/api/user/libgdata.picasaweb/albumid/5906409880413253681?authkey=Gv1sRgCOSEzMfX0feeQA HTTP/1.1
+> Soup-Debug-Timestamp: 1375193218
+> Soup-Debug: SoupSession 1 (0x6682e0), SoupMessage 50 (0x78d550), SoupSocket 21 (0x7fffe0028620)
 > Host: picasaweb.google.com
-> Authorization: GoogleLogin auth=DQAAANwAAABO8c3pAaaVUCxhEHZTctsQgnxLh6jMWP315bmwkRhnvD5SifkoCbt7mj8UyPUyyKqNAO6yBngPU-dixfH9q6ykfJVnOBnlVbyhbkoB0m6XkNnyeRMCcfIZroZWnJ4RBlM3jiHKgngMCQLh8irqan-Z9M9EAMX6LctQZlzLvhzzqdsGFGYpS8ihOHsIsXzrxryARyV5dFs49yW8mVbAO0Hof8CG1k5Chc5GDHr-U3WJ91jN4jkGST1lXCsibCWcIbKD-f2uOZf0XfjpDnsCGuUFrgpVpU7-pyGOWZx0dMbSKg
+> Authorization: GoogleLogin auth=DQAAANsAAACBRkzDssWFvAbsJ__WhogKQOB1hOdZ-V7TTzopLOdrYUCoOa9HrmeNJp5iha8I-J-YTle_CcHcfDVOcXqR5x439iCm1fiMPcoABzsfdLTKLKU2avMGICiYQ4M8donG0cblZbUDOW31-6bwXScW_yvDNARuAj0KQcJBCLpc3-WqhraDgc6ELRTI5TxhGmwu4XUFs6hDSd5UH9c9b79Qin0no0kBdLyj1cKXI-l5tH_oWOVvZfXCB_XQd_dRkFL12iPvfKmjIfa18ETXQbhPwKBOl737cGye_Xd4emswaoB4Ew
 > GData-Version: 2
 > If-Match: "YD0qeyI."
 > Accept-Encoding: gzip, deflate
 > Connection: Keep-Alive
   
 < HTTP/1.1 200 OK
-< Soup-Debug-Timestamp: 1375013860
-< Soup-Debug: SoupMessage 51 (0x9aa550)
-< Expires: Sun, 28 Jul 2013 12:17:40 GMT
-< Date: Sun, 28 Jul 2013 12:17:40 GMT
+< Soup-Debug-Timestamp: 1375193219
+< Soup-Debug: SoupMessage 50 (0x78d550)
+< Expires: Tue, 30 Jul 2013 14:06:58 GMT
+< Date: Tue, 30 Jul 2013 14:06:58 GMT
 < Cache-control: private, max-age=0, must-revalidate
-< Set-Cookie: _rtok=NjIWemszbKxt; Path=/; Secure; HttpOnly
-< Set-Cookie: S=photos_html=ptF41YN7qAK0JVqjEo8juQ; Domain=.google.com; Path=/; Secure; HttpOnly
+< Set-Cookie: _rtok=VJZ-_xK_wlKI; Path=/; Secure; HttpOnly
+< Set-Cookie: S=photos_html=hOZsX0JWekOZRLD1LMsu3w; Domain=.google.com; Path=/; Secure; HttpOnly
 < GData-Version: 2.0
 < X-Content-Type-Options: nosniff
 < X-Frame-Options: SAMEORIGIN

@@ -1,27 +1,27 @@
 > POST /accounts/ClientLogin HTTP/1.1
-> Soup-Debug-Timestamp: 1375013812
-> Soup-Debug: SoupSession 1 (0x6671b0), SoupMessage 1 (0x9aa0a0), SoupSocket 1 (0x8a40b0)
+> Soup-Debug-Timestamp: 1375193172
+> Soup-Debug: SoupSession 1 (0x6681d0), SoupMessage 1 (0x78d0a0), SoupSocket 1 (0x7cb8b0)
 > Host: www.google.com
 > Content-Type: application/x-www-form-urlencoded
 > Accept-Encoding: gzip, deflate
 > Connection: Keep-Alive
 > 
-> accountType=HOSTED%5FOR%5FGOOGLE&Email=libgdata%2Epicasaweb%40gmail%2Ecom&Passwd=libgdata%2Dgdata&service=lh2&source=ytapi%2DGNOME%2Dlibgdata%2D444fubtt%2D0
+> accountType=HOSTED%5FOR%5FGOOGLE&Email=libgdata%2Epicasaweb%40gmail%2Ecom&Passwd=gdata%2Dgdata&service=lh2&source=ytapi%2DGNOME%2Dlibgdata%2D444fubtt%2D0
   
 < HTTP/1.1 200 OK
-< Soup-Debug-Timestamp: 1375013812
-< Soup-Debug: SoupMessage 1 (0x9aa0a0)
+< Soup-Debug-Timestamp: 1375193172
+< Soup-Debug: SoupMessage 1 (0x78d0a0)
 < Content-Type: text/plain
 < Cache-control: no-cache, no-store
 < Pragma: no-cache
 < Expires: Mon, 01-Jan-1990 00:00:00 GMT
-< Date: Sun, 28 Jul 2013 12:16:52 GMT
+< Date: Tue, 30 Jul 2013 14:06:12 GMT
 < X-Content-Type-Options: nosniff
 < X-XSS-Protection: 1; mode=block
 < Content-Length: 947
 < Server: GSE
 < 
-< SID=DQAAANgAAAB6f0i4cZG8notHc2gg2TBrOCpuQj4LXCF9WxT89DpsagNCyFMm7Gj_Hi6_UAtKhM7FA92E6dVgsmSXIGcPVsm5OaEpAsHgqj15PdePm9ViKKIpzyR6lfY-OvmYntcqK-taGlk_uYjyX680C5tiHkJK7m5zitLxeuhxjSLHnFtYmVTZ-OSgBEFQAt0iUDU2ryd42LBFJCsc_AukMurdLnn6ZYKwah-06tnIvQBaXUPixNfkr9oPPAYQCwOh08vwLHw6yqdwMhbDJiz0xzDxD7s-8SJpqS6FiQqgI0jfm7abOg
-< LSID=DQAAANwAAABO8c3pAaaVUCxhEHZTctsQgnxLh6jMWP315bmwkRhnvD5SifkoCbt7mj8UyPUyyKraIcEop4yjhO93tpUeGjoMeLAyk4i2ZqG3f7OOUWl3Dbgj_LT_B3dq8ABZud7cKiNfitIdofZR1LKsT4davc8c7ZRo5kPNqrnfErbvAO0Hl2lSOoftEAkvtWaj2_Z8HgqipqQGmM12xG056ES4sk8N06c2uNXGVcQr1Ue9li2uuuGyOKJFqw8FAfDAxcN39XPtbNne4QgotHuI5S7VmLcpxMpbiQPBg3pWCMYHOCsKuA
-< Auth=DQAAANwAAABO8c3pAaaVUCxhEHZTctsQgnxLh6jMWP315bmwkRhnvD5SifkoCbt7mj8UyPUyyKqNAO6yBngPU-dixfH9q6ykfJVnOBnlVbyhbkoB0m6XkNnyeRMCcfIZroZWnJ4RBlM3jiHKgngMCQLh8irqan-Z9M9EAMX6LctQZlzLvhzzqdsGFGYpS8ihOHsIsXzrxryARyV5dFs49yW8mVbAO0Hof8CG1k5Chc5GDHr-U3WJ91jN4jkGST1lXCsibCWcIbKD-f2uOZf0XfjpDnsCGuUFrgpVpU7-pyGOWZx0dMbSKg
+< SID=DQAAANkAAAAm30JpMejldxrGZqDDBmyr9VzZMkWUTSlRiv_Sl1b5Nhv3adu8rz7j0dwxDtjA5M9sqauEWfWni0mRBPEIRJx8TLxjxcsXAfh9VoN5KWjIwCRevZYPM3QSoHHwFQK19y7Am4MNTa8NNPiYTkJJsJpltuX8e1XuNNg8PQiJ0_DkngQpWAsvU7dp9ZtiIP7cuDwq_7v_LoliaUmD-iX8xAyA3A-nBePxJIBuDkpre_bsB1zV6J5WmRYST7zJ_hdJ5vEoFwbf1mMmJK2kfIQpZm7Lldnb5N8kbAF1RBGxKOT1Zg
+< LSID=DQAAANoAAACBRkzDssWFvAbsJ__WhogKQOB1hOdZ-V7TTzopLOdrYUCoOa9HrmeNJp5iha8I-J_yWJILe434pnCflE8X2wjIpLFHaZPla_0jkC-0S2HV1LxQ2reZNPMHmM2hTxKUopLEBAVhKcarP8veCJxVScfrah5pCMob1GPgleDwnAvakA-KKzvkRbyErNM8XinL4whxINfDK6UTeLg_v_5_qQ4EIXtQA_VZQMgPgkF_bNqKLl_P8HWiHrFNqa3oMrEufunlCY-yH0fX6Myj4sAY2shJDIen-dHv5rsBHwyND_KCKw
+< Auth=DQAAANsAAACBRkzDssWFvAbsJ__WhogKQOB1hOdZ-V7TTzopLOdrYUCoOa9HrmeNJp5iha8I-J-YTle_CcHcfDVOcXqR5x439iCm1fiMPcoABzsfdLTKLKU2avMGICiYQ4M8donG0cblZbUDOW31-6bwXScW_yvDNARuAj0KQcJBCLpc3-WqhraDgc6ELRTI5TxhGmwu4XUFs6hDSd5UH9c9b79Qin0no0kBdLyj1cKXI-l5tH_oWOVvZfXCB_XQd_dRkFL12iPvfKmjIfa18ETXQbhPwKBOl737cGye_Xd4emswaoB4Ew
   

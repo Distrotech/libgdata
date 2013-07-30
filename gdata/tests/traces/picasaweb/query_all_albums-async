@@ -1,6 +1,6 @@
 > GET /data/feed/api/user/default HTTP/1.1
-> Soup-Debug-Timestamp: 1375193180
-> Soup-Debug: SoupSession 1 (0x6682e0), SoupMessage 5 (0x78d0a0), SoupSocket 4 (0x7cbc70)
+> Soup-Debug-Timestamp: 1375193198
+> Soup-Debug: SoupSession 1 (0x6682e0), SoupMessage 26 (0x7fffd800ebb0), SoupSocket 12 (0x7cba30)
 > Host: picasaweb.google.com
 > Authorization: GoogleLogin auth=DQAAANsAAACBRkzDssWFvAbsJ__WhogKQOB1hOdZ-V7TTzopLOdrYUCoOa9HrmeNJp5iha8I-J-YTle_CcHcfDVOcXqR5x439iCm1fiMPcoABzsfdLTKLKU2avMGICiYQ4M8donG0cblZbUDOW31-6bwXScW_yvDNARuAj0KQcJBCLpc3-WqhraDgc6ELRTI5TxhGmwu4XUFs6hDSd5UH9c9b79Qin0no0kBdLyj1cKXI-l5tH_oWOVvZfXCB_XQd_dRkFL12iPvfKmjIfa18ETXQbhPwKBOl737cGye_Xd4emswaoB4Ew
 > GData-Version: 2
@@ -8,18 +8,18 @@
 > Connection: Keep-Alive
   
 < HTTP/1.1 200 OK
-< Soup-Debug-Timestamp: 1375193181
-< Soup-Debug: SoupMessage 5 (0x78d0a0)
-< Expires: Tue, 30 Jul 2013 14:06:21 GMT
-< Date: Tue, 30 Jul 2013 14:06:21 GMT
+< Soup-Debug-Timestamp: 1375193199
+< Soup-Debug: SoupMessage 26 (0x7fffd800ebb0)
+< Expires: Tue, 30 Jul 2013 14:06:39 GMT
+< Date: Tue, 30 Jul 2013 14:06:39 GMT
 < Cache-control: private, max-age=0, must-revalidate, no-transform
-< Set-Cookie: _rtok=tAAF9Rvb-fVX; Path=/; Secure; HttpOnly
-< Set-Cookie: S=photos_html=zNYej99Oqg85v9BtB-ET4Q; Domain=.google.com; Path=/; Secure; HttpOnly
+< Set-Cookie: _rtok=qLrx0e6LARca; Path=/; Secure; HttpOnly
+< Set-Cookie: S=photos_html=fOi3cjU-PG96GUZZOxczRQ; Domain=.google.com; Path=/; Secure; HttpOnly
 < Content-Type: application/atom+xml; charset=UTF-8; type=feed
 < Vary: Accept, X-GData-Authorization, GData-Version, Cookie
 < GData-Version: 2.0
-< ETag: W/"CUYDSHc4fCp7ImA9WhFWEUQ."
-< Last-Modified: Tue, 30 Jul 2013 14:06:19 GMT
+< ETag: W/"CUYNRngzeCp7ImA9WhFWEUQ."
+< Last-Modified: Tue, 30 Jul 2013 14:06:37 GMT
 < X-Content-Type-Options: nosniff
 < X-Frame-Options: SAMEORIGIN
 < X-XSS-Protection: 1; mode=block

@@ -1,21 +1,21 @@
-> DELETE /data/entry/api/user/libgdata.picasaweb/albumid/5905639602363627073?authkey=Gv1sRgCMm47L7KqunRHA HTTP/1.1
-> Soup-Debug-Timestamp: 1375013870
-> Soup-Debug: SoupSession 1 (0x6672c0), SoupMessage 69 (0x7fffe00250d0), SoupSocket 32 (0x7fffe4017170)
+> DELETE /data/entry/api/user/libgdata.picasaweb/albumid/5906409948133134593?authkey=Gv1sRgCNOliffP6fuuCQ HTTP/1.1
+> Soup-Debug-Timestamp: 1375193230
+> Soup-Debug: SoupSession 1 (0x6682e0), SoupMessage 67 (0x7fffe40191d0), SoupSocket 30 (0x7fffdc0046c0)
 > Host: picasaweb.google.com
-> Authorization: GoogleLogin auth=DQAAANwAAABO8c3pAaaVUCxhEHZTctsQgnxLh6jMWP315bmwkRhnvD5SifkoCbt7mj8UyPUyyKqNAO6yBngPU-dixfH9q6ykfJVnOBnlVbyhbkoB0m6XkNnyeRMCcfIZroZWnJ4RBlM3jiHKgngMCQLh8irqan-Z9M9EAMX6LctQZlzLvhzzqdsGFGYpS8ihOHsIsXzrxryARyV5dFs49yW8mVbAO0Hof8CG1k5Chc5GDHr-U3WJ91jN4jkGST1lXCsibCWcIbKD-f2uOZf0XfjpDnsCGuUFrgpVpU7-pyGOWZx0dMbSKg
+> Authorization: GoogleLogin auth=DQAAANsAAACBRkzDssWFvAbsJ__WhogKQOB1hOdZ-V7TTzopLOdrYUCoOa9HrmeNJp5iha8I-J-YTle_CcHcfDVOcXqR5x439iCm1fiMPcoABzsfdLTKLKU2avMGICiYQ4M8donG0cblZbUDOW31-6bwXScW_yvDNARuAj0KQcJBCLpc3-WqhraDgc6ELRTI5TxhGmwu4XUFs6hDSd5UH9c9b79Qin0no0kBdLyj1cKXI-l5tH_oWOVvZfXCB_XQd_dRkFL12iPvfKmjIfa18ETXQbhPwKBOl737cGye_Xd4emswaoB4Ew
 > GData-Version: 2
 > If-Match: "YD0qeyI."
 > Accept-Encoding: gzip, deflate
 > Connection: Keep-Alive
   
 < HTTP/1.1 200 OK
-< Soup-Debug-Timestamp: 1375013871
-< Soup-Debug: SoupMessage 69 (0x7fffe00250d0)
-< Expires: Sun, 28 Jul 2013 12:17:50 GMT
-< Date: Sun, 28 Jul 2013 12:17:50 GMT
+< Soup-Debug-Timestamp: 1375193231
+< Soup-Debug: SoupMessage 67 (0x7fffe40191d0)
+< Expires: Tue, 30 Jul 2013 14:07:10 GMT
+< Date: Tue, 30 Jul 2013 14:07:10 GMT
 < Cache-control: private, max-age=0, must-revalidate
-< Set-Cookie: _rtok=-E8Xa3nEwax4; Path=/; Secure; HttpOnly
-< Set-Cookie: S=photos_html=YOA3clVv52F3sodQUPHDkg; Domain=.google.com; Path=/; Secure; HttpOnly
+< Set-Cookie: _rtok=r1_n-6BVLIsW; Path=/; Secure; HttpOnly
+< Set-Cookie: S=photos_html=3dBj2CkqejEkgZ1nrLkaGg; Domain=.google.com; Path=/; Secure; HttpOnly
 < GData-Version: 2.0
 < X-Content-Type-Options: nosniff
 < X-Frame-Options: SAMEORIGIN

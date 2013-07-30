@@ -373,8 +373,6 @@ GDATA_ASYNC_TEST_FUNCTIONS (authentication, void,
 G_STMT_START {
 	GDataClientLoginAuthorizer *authorizer;
 
-	gdata_test_mock_server_start_trace (mock_server, "authentication-async");
-
 	/* Create an authorizer */
 	authorizer = gdata_client_login_authorizer_new (CLIENT_ID, GDATA_TYPE_PICASAWEB_SERVICE);
 
@@ -409,8 +407,6 @@ G_STMT_START {
 		g_assert (gdata_authorizer_is_authorized_for_domain (GDATA_AUTHORIZER (authorizer),
 		                                                     gdata_picasaweb_service_get_primary_authorization_domain ()) == FALSE);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 typedef struct {
@@ -582,8 +578,6 @@ GDATA_ASYNC_CLOSURE_FUNCTIONS (query_files, QueryFilesData);
 /* Test that asynchronously querying for all photos in an album lists them correctly. */
 GDATA_ASYNC_TEST_FUNCTIONS (query_files, QueryFilesData,
 G_STMT_START {
-	gdata_test_mock_server_start_trace (mock_server, "query-files-async");
-
 	gdata_picasaweb_service_query_files_async (GDATA_PICASAWEB_SERVICE (service), data->album, NULL, cancellable, NULL, NULL, NULL,
 	                                           async_ready_callback, async_data);
 } G_STMT_END,
@@ -599,8 +593,6 @@ G_STMT_START {
 	} else {
 		g_assert (photo_feed == NULL);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 /* Test that the progress callbacks from gdata_picasaweb_service_query_files_async() are called correctly.
@@ -796,8 +788,6 @@ set_up_insert_album (InsertAlbumData *data, gconstpointer service)
 {
 	GTimeVal timestamp;
 
-	gdata_test_mock_server_start_trace (mock_server, "setup-insert-album");
-
 	data->album = gdata_picasaweb_album_new (NULL);
 	g_assert (GDATA_IS_PICASAWEB_ALBUM (data->album));
 
@@ -807,8 +797,6 @@ set_up_insert_album (InsertAlbumData *data, gconstpointer service)
 
 	g_time_val_from_iso8601 ("2002-10-14T09:58:59.643554Z", &timestamp);
 	gdata_picasaweb_album_set_timestamp (data->album, timestamp.tv_sec * 1000);
-
-	gdata_mock_server_end_trace (mock_server);
 }
 
 static void
@@ -863,8 +851,6 @@ GDATA_ASYNC_CLOSURE_FUNCTIONS (insert_album, InsertAlbumData);
 
 GDATA_ASYNC_TEST_FUNCTIONS (insert_album, InsertAlbumData,
 G_STMT_START {
-	gdata_test_mock_server_start_trace (mock_server, "insert-album-async");
-
 	gdata_picasaweb_service_insert_album_async (GDATA_PICASAWEB_SERVICE (service), data->album, cancellable,
 	                                            async_ready_callback, async_data);
 } G_STMT_END,
@@ -883,8 +869,6 @@ G_STMT_START {
 	} else {
 		g_assert (entry == NULL);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 typedef struct {
@@ -1109,8 +1093,6 @@ GDATA_ASYNC_CLOSURE_FUNCTIONS (query_all_albums, QueryAllAlbumsData);
 /* Test that asynchronously querying for all albums lists them correctly. */
 GDATA_ASYNC_TEST_FUNCTIONS (query_all_albums, QueryAllAlbumsData,
 G_STMT_START {
-	gdata_test_mock_server_start_trace (mock_server, "query-all-albums-async");
-
 	gdata_picasaweb_service_query_all_albums_async (GDATA_PICASAWEB_SERVICE (service), NULL, NULL, cancellable, NULL,
 	                                                NULL, NULL, async_ready_callback, async_data);
 } G_STMT_END,
@@ -1127,8 +1109,6 @@ G_STMT_START {
 	} else {
 		g_assert (album_feed == NULL);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 /* Test that the progress callbacks from gdata_picasaweb_service_query_all_albums_async() are called correctly.
@@ -1320,8 +1300,6 @@ GDATA_ASYNC_CLOSURE_FUNCTIONS (query_comments, QueryCommentsData);
 /* Test that asynchronously querying for all albums lists them correctly. */
 GDATA_ASYNC_TEST_FUNCTIONS (comment_query, QueryCommentsData,
 G_STMT_START {
-	gdata_test_mock_server_start_trace (mock_server, "comment-query-async");
-
 	gdata_commentable_query_comments_async (GDATA_COMMENTABLE (data->parent.file1), GDATA_SERVICE (service), NULL, cancellable, NULL, NULL, NULL,
 	                                        async_ready_callback, async_data);
 } G_STMT_END,
@@ -1338,8 +1316,6 @@ G_STMT_START {
 	} else {
 		g_assert (comments_feed == NULL);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 /* Test that the progress callbacks from gdata_commentable_query_comments_async() are called correctly.
@@ -1382,8 +1358,6 @@ set_up_insert_comment (InsertCommentData *data, gconstpointer service)
 {
 	set_up_query_files ((QueryFilesData*) data, service);
 
-	gdata_test_mock_server_start_trace (mock_server, "setup-insert-comment");
-
 	/* Create a test comment to be inserted. */
 	data->comment = gdata_picasaweb_comment_new (NULL);
 	g_assert (GDATA_IS_PICASAWEB_COMMENT (data->comment));
@@ -1391,8 +1365,6 @@ set_up_insert_comment (InsertCommentData *data, gconstpointer service)
 	gdata_entry_set_content (GDATA_ENTRY (data->comment), "This is a test comment.");
 
 	data->new_comment = NULL;
-
-	gdata_mock_server_end_trace (mock_server);
 }
 
 static void
@@ -1462,8 +1434,6 @@ GDATA_ASYNC_CLOSURE_FUNCTIONS (insert_comment, InsertCommentData);
 
 GDATA_ASYNC_TEST_FUNCTIONS (comment_insert, InsertCommentData,
 G_STMT_START {
-	gdata_test_mock_server_start_trace (mock_server, "comment-insert-async");
-
 	gdata_commentable_insert_comment_async (GDATA_COMMENTABLE (data->parent.file1), GDATA_SERVICE (service),
 	                                        GDATA_COMMENT (data->comment), cancellable, async_ready_callback, async_data);
 } G_STMT_END,
@@ -1479,8 +1449,6 @@ G_STMT_START {
 	} else {
 		g_assert (new_comment == NULL);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 static void
@@ -1505,8 +1473,6 @@ test_comment_delete (QueryCommentsData *data, gconstpointer service)
 
 GDATA_ASYNC_TEST_FUNCTIONS (comment_delete, QueryCommentsData,
 G_STMT_START {
-	gdata_test_mock_server_start_trace (mock_server, "comment-delete-async");
-
 	gdata_commentable_delete_comment_async (GDATA_COMMENTABLE (data->parent.file1), GDATA_SERVICE (service),
 	                                        GDATA_COMMENT (data->comment1), cancellable, async_ready_callback, async_data);
 } G_STMT_END,
@@ -1532,8 +1498,6 @@ G_STMT_START {
 			g_clear_error (&error);
 		}
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 static void
@@ -1558,8 +1522,6 @@ test_query_user (gconstpointer service)
 /* Check that asynchronously querying for the currently authenticated user's details works and returns the correct details. */
 GDATA_ASYNC_TEST_FUNCTIONS (query_user, void,
 G_STMT_START {
-	gdata_test_mock_server_start_trace (mock_server, "query-user-async");
-
 	gdata_picasaweb_service_get_user_async (GDATA_PICASAWEB_SERVICE (service), NULL, cancellable, async_ready_callback, async_data);
 } G_STMT_END,
 G_STMT_START {
@@ -1574,8 +1536,6 @@ G_STMT_START {
 	} else {
 		g_assert (user == NULL);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 /* Check that querying for a user other than the currently authenticated user, asynchronously, gives us an appropriate result. This result should,
@@ -1583,8 +1543,6 @@ G_STMT_START {
  * lack of information correctly.) */
 GDATA_ASYNC_TEST_FUNCTIONS (query_user_by_username, void,
 G_STMT_START {
-	gdata_test_mock_server_start_trace (mock_server, "query-user-by-username-async");
-
 	gdata_picasaweb_service_get_user_async (GDATA_PICASAWEB_SERVICE (service), "philip.withnall", cancellable, async_ready_callback, async_data);
 } G_STMT_END,
 G_STMT_START {
@@ -1607,8 +1565,6 @@ G_STMT_START {
 	} else {
 		g_assert (user == NULL);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 typedef struct {
@@ -1733,8 +1689,6 @@ G_STMT_START {
 	GDataUploadStream *upload_stream;
 	GError *error = NULL;
 
-	gdata_test_mock_server_start_trace (mock_server, "upload-default-album-async");
-
 	/* Prepare the upload stream */
 	upload_stream = gdata_picasaweb_service_upload_file (GDATA_PICASAWEB_SERVICE (service), NULL, data->photo, data->slug,
 	                                                     data->content_type, cancellable, &error);
@@ -1790,8 +1744,6 @@ G_STMT_START {
 	}
 
 	g_clear_error (&upload_error);
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 static void
