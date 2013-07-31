@@ -1,19 +1,19 @@
-> DELETE /m8/feeds/contacts/libgdata.test%40googlemail.com/full/2fe60f6f8bc0d692 HTTP/1.1
-> Soup-Debug-Timestamp: 1373312491
-> Soup-Debug: SoupSession 1 (0x66d2c0), SoupMessage 2 (0x992460), SoupSocket 1 (0x8f2250)
+> DELETE /m8/feeds/contacts/libgdata.test%40googlemail.com/full/669aee080ec47f33 HTTP/1.1
+> Soup-Debug-Timestamp: 1375253709
+> Soup-Debug: SoupSession 1 (0x66f2e0), SoupMessage 2 (0x7d2c80), SoupSocket 1 (0x72a250)
 > Host: www.google.com
-> Authorization: GoogleLogin auth=DQAAAM4AAABKUrSFzs8R87l64lxNJ2sdklhR-Xok8Cd28d10ttViz3pkeSosVgf5IXErmDHQMM9qajB6ZiW2R88u_SpE3SfL5uy_oNPB5Mlmte4X-TOdOSUGjIGRr6cv7JClAOlVBIxmkZVSWC_cCUFKRIuZ9VBkSIKSD9kCHJEBwWlhgcZsHSNAVuv9pIagsMR06K24PtAIO_VIRitw2VisJNxl3kqjDzobMqoyQypuTBXft5oOD2vHaJWkSI5JH5JM6zBxNnxLOUPt7oqUbLeJP8xe6FsF
+> Authorization: GoogleLogin auth=DQAAANUAAAAXK6VbKHFb8MrY8VDDk8TplfYU8Pl8OJ_JDJA5Ku7Q1SXgGXmiXXNSumd183YRnbThEZBRN5nYygedI2kQsVKzOFACPFEPo7ShQaRGycnxE3GLDfmMWN_zc43HzWPka0-WgOvpmqpxLFWh0EYyD3pF7Yebk_jLBxJEBWU9v8FZrljhbtK-g4kiiBeuNs4kYYLTu-vF7GCSIcSC2WuHSkxI091viwmbQhZY_6fi_MaY_qgOPss9HlAHeJ543JSjtRmsVtK_4aNWbmaz9VcCr9lXEksu1dUTvroRvtlr8XyvOg
 > GData-Version: 3
-> If-Match: "QXY-fDVSLyt7I2A9WhFQE0wIQw0."
+> If-Match: "SXcyfTVSLit7I2A9WhFWEkgJQAQ."
 > Accept-Encoding: gzip, deflate
 > Connection: Keep-Alive
   
 < HTTP/1.1 200 OK
-< Soup-Debug-Timestamp: 1373312491
-< Soup-Debug: SoupMessage 2 (0x992460)
+< Soup-Debug-Timestamp: 1375253709
+< Soup-Debug: SoupMessage 2 (0x7d2c80)
 < GData-Version: 3.1
-< Date: Mon, 08 Jul 2013 19:41:31 GMT
-< Expires: Mon, 08 Jul 2013 19:41:31 GMT
+< Date: Wed, 31 Jul 2013 06:55:09 GMT
+< Expires: Wed, 31 Jul 2013 06:55:09 GMT
 < Cache-control: private, max-age=0
 < X-Content-Type-Options: nosniff
 < X-Frame-Options: SAMEORIGIN

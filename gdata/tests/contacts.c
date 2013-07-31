@@ -113,8 +113,6 @@ GDATA_ASYNC_TEST_FUNCTIONS (authentication, void,
 G_STMT_START {
 	GDataClientLoginAuthorizer *authorizer;
 
-	gdata_test_mock_server_start_trace (mock_server, "authentication-async");
-
 	/* Create an authorizer */
 	authorizer = gdata_client_login_authorizer_new (CLIENT_ID, GDATA_TYPE_CONTACTS_SERVICE);
 
@@ -149,8 +147,6 @@ G_STMT_START {
 		g_assert (gdata_authorizer_is_authorized_for_domain (GDATA_AUTHORIZER (authorizer),
 		                                                     gdata_contacts_service_get_primary_authorization_domain ()) == FALSE);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 typedef struct {
@@ -230,8 +226,6 @@ GDATA_ASYNC_CLOSURE_FUNCTIONS (query_all_contacts, QueryAllContactsData);
 
 GDATA_ASYNC_TEST_FUNCTIONS (query_all_contacts, QueryAllContactsData,
 G_STMT_START {
-	gdata_test_mock_server_start_trace (mock_server, "query-all-contacts-async");
-
 	gdata_contacts_service_query_contacts_async (GDATA_CONTACTS_SERVICE (service), NULL, cancellable, NULL,
 	                                             NULL, NULL, async_ready_callback, async_data);
 } G_STMT_END,
@@ -248,8 +242,6 @@ G_STMT_START {
 	} else {
 		g_assert (feed == NULL);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 static void
@@ -684,8 +676,6 @@ GDATA_ASYNC_CLOSURE_FUNCTIONS (query_all_groups, QueryAllGroupsData);
 
 GDATA_ASYNC_TEST_FUNCTIONS (query_all_groups, QueryAllGroupsData,
 G_STMT_START {
-	gdata_test_mock_server_start_trace (mock_server, "query-all-groups-async");
-
 	gdata_contacts_service_query_groups_async (GDATA_CONTACTS_SERVICE (service), NULL, cancellable, NULL, NULL, NULL,
 	                                           async_ready_callback, async_data);
 } G_STMT_END,
@@ -702,8 +692,6 @@ G_STMT_START {
 	} else {
 		g_assert (feed == NULL);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 static void
@@ -805,8 +793,6 @@ GDATA_ASYNC_TEST_FUNCTIONS (group_insert, InsertGroupData,
 G_STMT_START {
 	GDataContactsGroup *group;
 
-	gdata_test_mock_server_start_trace (mock_server, "group-insert-async");
-
 	group = gdata_contacts_group_new (NULL);
 
 	/* Check the kind is present and correct */
@@ -834,8 +820,6 @@ G_STMT_START {
 	} else {
 		g_assert (entry == NULL);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 static void
@@ -2009,8 +1993,6 @@ G_STMT_START {
 	guint8 *photo_data;
 	gsize length;
 
-	gdata_test_mock_server_start_trace (mock_server, "photo-add-async");
-
 	/* Get the photo */
 	g_assert (g_file_get_contents (TEST_FILE_DIR "photo.jpg", (gchar**) &photo_data, &length, NULL) == TRUE);
 
@@ -2033,8 +2015,6 @@ G_STMT_START {
 		g_assert (success == FALSE);
 		g_assert (gdata_contacts_contact_get_photo_etag (contact) == NULL);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 static void
@@ -2102,8 +2082,6 @@ test_photo_get (TempContactData *data, gconstpointer service)
 
 GDATA_ASYNC_TEST_FUNCTIONS (photo_get, TempContactData,
 G_STMT_START {
-	gdata_test_mock_server_start_trace (mock_server, "photo-get-async");
-
 	g_assert (gdata_contacts_contact_get_photo_etag (data->contact) != NULL);
 
 	/* Get the photo from the network asynchronously */
@@ -2132,8 +2110,6 @@ G_STMT_START {
 
 	g_free (content_type);
 	g_free (photo_data);
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 static void
@@ -2158,8 +2134,6 @@ test_photo_delete (TempContactData *data, gconstpointer service)
 
 GDATA_ASYNC_TEST_FUNCTIONS (photo_delete, TempContactData,
 G_STMT_START {
-	gdata_test_mock_server_start_trace (mock_server, "photo-delete-async");
-
 	g_assert (gdata_contacts_contact_get_photo_etag (data->contact) != NULL);
 
 	/* Delete it from the contact asynchronously */
@@ -2179,8 +2153,6 @@ G_STMT_START {
 		g_assert (success == FALSE);
 		g_assert (gdata_contacts_contact_get_photo_etag (contact) != NULL);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 static void
