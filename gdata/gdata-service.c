@@ -694,6 +694,9 @@ _gdata_service_send_message (GDataService *self, SoupMessage *message, GCancella
 			return SOUP_STATUS_NONE;
 		}
 
+		/* Allow overriding the URI for testing. */
+		soup_uri_set_port (new_uri, _gdata_service_get_https_port ());
+
 		soup_message_set_uri (message, new_uri);
 		soup_uri_free (new_uri);
 
