@@ -241,8 +241,6 @@ test_##TEST_NAME##_async_cancellation (GDataAsyncTestData *async_data, gconstpoi
 { \
 	async_data->cancellation_timeout = 0; \
  \
-	gdata_test_mock_server_start_trace (mock_server, G_STRINGIFY (TEST_NAME) "-async-cancellation"); \
- \
 	/* Starting with a short timeout, repeatedly run the async. operation, cancelling it after the timeout and increasing the timeout until
 	 * the operation succeeds for the first time. We then finish the test. This guarantees that if, for example, the test creates an entry on
 	 * the server, it only ever creates one; because the test only ever succeeds once. (Of course, this assumes that the server does not change
@@ -251,6 +249,8 @@ test_##TEST_NAME##_async_cancellation (GDataAsyncTestData *async_data, gconstpoi
 		GCancellable *cancellable = async_data->cancellable; \
 		GAsyncReadyCallback async_ready_callback = (GAsyncReadyCallback) test_##TEST_NAME##_async_cb; \
 		TestStructType *data = (TestStructType*) async_data->test_data; \
+ \
+		gdata_test_mock_server_start_trace (mock_server, G_STRINGIFY (TEST_NAME) "-async-cancellation"); \
  \
 		(void) data; /* hide potential unused variable warning */ \
  \
@@ -285,14 +285,14 @@ test_##TEST_NAME##_async_cancellation (GDataAsyncTestData *async_data, gconstpoi
 		} else { \
 			async_data->cancellation_timeout *= GDATA_ASYNC_TIMEOUT_MULTIPLIER; \
 		} \
+ \
+		gdata_mock_server_end_trace (mock_server); \
 	} while (async_data->cancellation_successful == TRUE); \
  \
 	/* Clean up the last timeout callback */ \
 	if (async_data->cancellation_timeout_id != 0) { \
 		g_source_remove (async_data->cancellation_timeout_id); \
 	} \
- \
-	gdata_mock_server_end_trace (mock_server); \
 }
 
 gboolean gdata_async_test_cancellation_cb (GDataAsyncTestData *async_data);
