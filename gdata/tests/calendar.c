@@ -103,8 +103,6 @@ GDATA_ASYNC_TEST_FUNCTIONS (authentication, void,
 G_STMT_START {
 	GDataClientLoginAuthorizer *authorizer;
 
-	gdata_test_mock_server_start_trace (mock_server, "authentication-async");
-
 	/* Create an authorizer */
 	authorizer = gdata_client_login_authorizer_new (CLIENT_ID, GDATA_TYPE_CALENDAR_SERVICE);
 
@@ -139,8 +137,6 @@ G_STMT_START {
 		g_assert (gdata_authorizer_is_authorized_for_domain (GDATA_AUTHORIZER (authorizer),
 		                                                     gdata_calendar_service_get_primary_authorization_domain ()) == FALSE);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 typedef struct {
@@ -223,8 +219,6 @@ GDATA_ASYNC_CLOSURE_FUNCTIONS (query_calendars, QueryCalendarsData);
 
 GDATA_ASYNC_TEST_FUNCTIONS (query_all_calendars, QueryCalendarsData,
 G_STMT_START {
-	gdata_test_mock_server_start_trace (mock_server, "query-all-calendars-async");
-
 	gdata_calendar_service_query_all_calendars_async (GDATA_CALENDAR_SERVICE (service), NULL, cancellable, NULL,
 	                                                  NULL, NULL, async_ready_callback, async_data);
 } G_STMT_END,
@@ -241,8 +235,6 @@ G_STMT_START {
 	} else {
 		g_assert (feed == NULL);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 static void
@@ -293,8 +285,6 @@ test_query_own_calendars (QueryCalendarsData *data, gconstpointer service)
 
 GDATA_ASYNC_TEST_FUNCTIONS (query_own_calendars, QueryCalendarsData,
 G_STMT_START {
-	gdata_test_mock_server_start_trace (mock_server, "query-own-calendars-async");
-
 	gdata_calendar_service_query_own_calendars_async (GDATA_CALENDAR_SERVICE (service), NULL, cancellable, NULL,
 	                                                  NULL, NULL, async_ready_callback, async_data);
 } G_STMT_END,
@@ -311,8 +301,6 @@ G_STMT_START {
 	} else {
 		g_assert (feed == NULL);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 static void
@@ -429,8 +417,6 @@ GDATA_ASYNC_CLOSURE_FUNCTIONS (query_events, QueryEventsData);
 
 GDATA_ASYNC_TEST_FUNCTIONS (query_events, QueryEventsData,
 G_STMT_START {
-	gdata_test_mock_server_start_trace (mock_server, "query-events-async");
-
 	gdata_calendar_service_query_events_async (GDATA_CALENDAR_SERVICE (service), data->parent.calendar, NULL, cancellable, NULL, NULL, NULL,
 	                                           async_ready_callback, async_data);
 } G_STMT_END,
@@ -446,8 +432,6 @@ G_STMT_START {
 	} else {
 		g_assert (feed == NULL);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 static void
@@ -558,8 +542,6 @@ G_STMT_START {
 	GTimeVal start_time;
 	GTimeVal end_time;
 
-	gdata_test_mock_server_start_trace (mock_server, "event-insert-async");
-
 	event = gdata_calendar_event_new (NULL);
 
 	gdata_entry_set_title (GDATA_ENTRY (event), "Tennis with Beth");
@@ -593,8 +575,6 @@ G_STMT_START {
 	} else {
 		g_assert (event == NULL);
 	}
-
-	gdata_mock_server_end_trace (mock_server);
 } G_STMT_END);
 
 static void

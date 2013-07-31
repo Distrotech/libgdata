@@ -1,22 +1,22 @@
-> DELETE /calendar/feeds/default/private/full/nc5gdt040m67ol63hf0h71v79s HTTP/1.1
-> Soup-Debug-Timestamp: 1375108003
-> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 88 (0x7fffe003a9d0), SoupSocket 82 (0x8dea20)
+> DELETE /calendar/feeds/default/private/full/tc791pjf1ndnicqvb2jgorvdj8 HTTP/1.1
+> Soup-Debug-Timestamp: 1375202791
+> Soup-Debug: SoupSession 1 (0x65a2e0), SoupMessage 88 (0x7fffe003f550), SoupSocket 82 (0x775490)
 > Host: www.google.com
-> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> Authorization: GoogleLogin auth=DQAAANUAAACtQA4YYe986jGVKTRKjvf_LQKCUZ-IrhGFxQuS1Zfjc3yd5y6Y5AHV3CUuKKT-NheGlvH_Hh7TOXLccehoG2zbN5TDNxZ-TDfe29rhXBteyCMVj5DvD7eNA2g8k8tM1sbnqitPfsPs-kbfR6iXisr9Yp_3Vt3LqvpmmxJI6AKoXpC08YhV24rZiqJZMMHhxxFr_TeYYtgiPL9vOqjnfhJJI6rGgNQ6eYvVaKo7TzLgbhWkg6Sikn3hbkowxi8_rA9_Bvwwxs77T15OWlsObAigagTJyjsQoAUGISPhESplZQ
 > GData-Version: 2
-> If-Match: "EEoDRgVIdyp7JGA6WhNS"
+> If-Match: "EEUCQg1JeSp7JGA6WhNS"
 > Accept-Encoding: gzip, deflate
 > Connection: Keep-Alive
   
 < HTTP/1.1 302 Moved Temporarily
-< Soup-Debug-Timestamp: 1375108004
-< Soup-Debug: SoupMessage 88 (0x7fffe003a9d0)
-< Update-Client-Auth: DQAAAM8AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXThTgckY3-hSb61OvnzXxSJ7d2jzDTq4SYJOcXEK19cfN8WmIspK2CGATjYnx3q1Fz9ZgntzaOCi00pQJhkctNT
-< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:26:44 GMT
-< Set-Cookie: S=calendar=9PSjBL1PzvH9owYHeo38xw;Expires=Thu, 08-Aug-2013 07:10:46 GMT;Secure
-< Expires: Mon, 29 Jul 2013 14:26:43 GMT
-< Date: Mon, 29 Jul 2013 14:26:43 GMT
-< Location: https://www.google.com/calendar/feeds/default/private/full/nc5gdt040m67ol63hf0h71v79s?gsessionid=9PSjBL1PzvH9owYHeo38xw
+< Soup-Debug-Timestamp: 1375202791
+< Soup-Debug: SoupMessage 88 (0x7fffe003f550)
+< Update-Client-Auth: DQAAANYAAACtQA4YYe986jGVKTRKjvf_lzf1dm9Ue8N3SJp2J6o695WrE5nMbNLIXgO1GwYSOH0dinvA7V6dAhAIAEim2gLMsmbC2ddMnDUzaVKIGr3_JWCh97kMTIAR1M2IeSsu02b7EZA-X4HjICLw-x5pMnXhR8i08nLbVHSLT_No8fvB518lPWszfELKmW9TYG0-BAxXFzn9IKi_SmDnEv70WeTVk9AKBXEZK8GgbVvG2jwg9IxQwwSgxxH2Am-wKlw1Xh28Ocyi9bXsxw2zvbHLluu_emFBzQJ8Ds6aIurEQIryfg
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Tue, 30-Jul-2013 16:46:32 GMT
+< Set-Cookie: S=calendar=aAwoDFpNOS9GdVMKHXee_A;Expires=Sun, 11-Aug-2013 17:31:00 GMT;Secure
+< Expires: Tue, 30 Jul 2013 16:46:31 GMT
+< Date: Tue, 30 Jul 2013 16:46:31 GMT
+< Location: https://www.google.com/calendar/feeds/default/private/full/tc791pjf1ndnicqvb2jgorvdj8?gsessionid=aAwoDFpNOS9GdVMKHXee_A
 < Content-Type: text/html; charset=UTF-8
 < Cache-control: private, max-age=0
 < X-Content-Type-Options: nosniff
@@ -31,28 +31,28 @@
 < </HEAD>
 < <BODY BGCOLOR="#FFFFFF" TEXT="#000000">
 < <H1>Moved Temporarily</H1>
-< The document has moved <A HREF="https://www.google.com/calendar/feeds/default/private/full/nc5gdt040m67ol63hf0h71v79s?gsessionid=9PSjBL1PzvH9owYHeo38xw">here</A>.
+< The document has moved <A HREF="https://www.google.com/calendar/feeds/default/private/full/tc791pjf1ndnicqvb2jgorvdj8?gsessionid=aAwoDFpNOS9GdVMKHXee_A">here</A>.
 < </BODY>
 < </HTML>
   
-> DELETE /calendar/feeds/default/private/full/nc5gdt040m67ol63hf0h71v79s?gsessionid=9PSjBL1PzvH9owYHeo38xw HTTP/1.1
-> Soup-Debug-Timestamp: 1375108004
-> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 88 (0x7fffe003a9d0), SoupSocket 82 (0x8dea20), restarted
+> DELETE /calendar/feeds/default/private/full/tc791pjf1ndnicqvb2jgorvdj8?gsessionid=aAwoDFpNOS9GdVMKHXee_A HTTP/1.1
+> Soup-Debug-Timestamp: 1375202791
+> Soup-Debug: SoupSession 1 (0x65a2e0), SoupMessage 88 (0x7fffe003f550), SoupSocket 82 (0x775490), restarted
 > Host: www.google.com
-> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> Authorization: GoogleLogin auth=DQAAANUAAACtQA4YYe986jGVKTRKjvf_LQKCUZ-IrhGFxQuS1Zfjc3yd5y6Y5AHV3CUuKKT-NheGlvH_Hh7TOXLccehoG2zbN5TDNxZ-TDfe29rhXBteyCMVj5DvD7eNA2g8k8tM1sbnqitPfsPs-kbfR6iXisr9Yp_3Vt3LqvpmmxJI6AKoXpC08YhV24rZiqJZMMHhxxFr_TeYYtgiPL9vOqjnfhJJI6rGgNQ6eYvVaKo7TzLgbhWkg6Sikn3hbkowxi8_rA9_Bvwwxs77T15OWlsObAigagTJyjsQoAUGISPhESplZQ
 > GData-Version: 2
-> If-Match: "EEoDRgVIdyp7JGA6WhNS"
+> If-Match: "EEUCQg1JeSp7JGA6WhNS"
 > Accept-Encoding: gzip, deflate
 > Connection: Keep-Alive
   
 < HTTP/1.1 200 OK
-< Soup-Debug-Timestamp: 1375108004
-< Soup-Debug: SoupMessage 88 (0x7fffe003a9d0)
-< Update-Client-Auth: DQAAANAAAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXQ13oqRh_2p87WcrWeAQnJZpM9mi1et5TBGe84GimS7yuU_utQqgxo_ARltmYbhyQQy5oR9U-3hGYR8T6bNTF75
-< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:26:45 GMT
-< Set-Cookie: S=calendar=nhNSNKTrVRcNM9gw_a2f0w;Expires=Sun, 11-Aug-2013 15:51:20 GMT;Secure
-< Expires: Mon, 29 Jul 2013 14:26:44 GMT
-< Date: Mon, 29 Jul 2013 14:26:44 GMT
+< Soup-Debug-Timestamp: 1375202791
+< Soup-Debug: SoupMessage 88 (0x7fffe003f550)
+< Update-Client-Auth: DQAAANYAAACtQA4YYe986jGVKTRKjvf_q4NwI2V8UT-SSEMjiblkY8jTSCIGQJCo_ZFavemirrG0G2jzg3jjEVC3CQauPSZoNTFtDCw6Eu1-1S6nOyDK2J9zwLcpKLPHGuWk8fzL5JjKgN0Z0HbdhVtGaldMU2XCoc4_I0dsAZNFNzMl12pQ2IhlOpKYk_syrjXgbEIFWB07e6wSu6Mp1XswtWQL95nokCfWJkTHf4YGsR2zpy2736UplfLIVHDJLz7fiJzKG-5nUmoz2a5jdwopbkQ6flW44tTL7okPm_2Y6nqlPi74Mg
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Tue, 30-Jul-2013 16:46:32 GMT
+< Set-Cookie: S=calendar=G2GNRSBusQjhDmPzsRBTew;Expires=Thu, 08-Aug-2013 21:38:35 GMT;Secure
+< Expires: Tue, 30 Jul 2013 16:46:31 GMT
+< Date: Tue, 30 Jul 2013 16:46:31 GMT
 < GData-Version: 2.6
 < Cache-control: private, max-age=0
 < X-Content-Type-Options: nosniff
@@ -63,25 +63,25 @@
 < Content-Type: text/html; charset=UTF-8
 < 
   
-> DELETE /calendar/feeds/default/private/full/fp1j04magk0odf8k2tc074fce4 HTTP/1.1
-> Soup-Debug-Timestamp: 1375108004
-> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 89 (0x7fffe4014c70), SoupSocket 82 (0x8dea20)
+> DELETE /calendar/feeds/default/private/full/i0h3hd7ash2mno0h4srh1vvu9s HTTP/1.1
+> Soup-Debug-Timestamp: 1375202791
+> Soup-Debug: SoupSession 1 (0x65a2e0), SoupMessage 89 (0x7fffe003f0a0), SoupSocket 82 (0x775490)
 > Host: www.google.com
-> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> Authorization: GoogleLogin auth=DQAAANUAAACtQA4YYe986jGVKTRKjvf_LQKCUZ-IrhGFxQuS1Zfjc3yd5y6Y5AHV3CUuKKT-NheGlvH_Hh7TOXLccehoG2zbN5TDNxZ-TDfe29rhXBteyCMVj5DvD7eNA2g8k8tM1sbnqitPfsPs-kbfR6iXisr9Yp_3Vt3LqvpmmxJI6AKoXpC08YhV24rZiqJZMMHhxxFr_TeYYtgiPL9vOqjnfhJJI6rGgNQ6eYvVaKo7TzLgbhWkg6Sikn3hbkowxi8_rA9_Bvwwxs77T15OWlsObAigagTJyjsQoAUGISPhESplZQ
 > GData-Version: 2
-> If-Match: "EEoDRgZBfip7JGA6WhNS"
+> If-Match: "EEUCQg1Jdip7JGA6WhNS"
 > Accept-Encoding: gzip, deflate
 > Connection: Keep-Alive
   
 < HTTP/1.1 302 Moved Temporarily
-< Soup-Debug-Timestamp: 1375108004
-< Soup-Debug: SoupMessage 89 (0x7fffe4014c70)
-< Update-Client-Auth: DQAAAM8AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXThTgckY3-hSb61OvnzXxSJ7d2jzDTq4SYJOcXEK19cfN8WmIspK2CGATjYnx3q1Fz9ZgntzaOCi00pQJhkctNT
-< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:26:45 GMT
-< Set-Cookie: S=calendar=CWYZzaWKKce27-tnWohbMw;Expires=Thu, 08-Aug-2013 17:50:56 GMT;Secure
-< Expires: Mon, 29 Jul 2013 14:26:44 GMT
-< Date: Mon, 29 Jul 2013 14:26:44 GMT
-< Location: https://www.google.com/calendar/feeds/default/private/full/fp1j04magk0odf8k2tc074fce4?gsessionid=CWYZzaWKKce27-tnWohbMw
+< Soup-Debug-Timestamp: 1375202791
+< Soup-Debug: SoupMessage 89 (0x7fffe003f0a0)
+< Update-Client-Auth: DQAAANYAAACtQA4YYe986jGVKTRKjvf_lzf1dm9Ue8N3SJp2J6o695WrE5nMbNLIXgO1GwYSOH0dinvA7V6dAhAIAEim2gLMsmbC2ddMnDUzaVKIGr3_JWCh97kMTIAR1M2IeSsu02b7EZA-X4HjICLw-x5pMnXhR8i08nLbVHSLT_No8fvB518lPWszfELKmW9TYG0-BAxXFzn9IKi_SmDnEv70WeTVk9AKBXEZK8GgbVvG2jwg9IxQwwSgxxH2Am-wKlw1Xh28Ocyi9bXsxw2zvbHLluu_emFBzQJ8Ds6aIurEQIryfg
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Tue, 30-Jul-2013 16:46:32 GMT
+< Set-Cookie: S=calendar=G45UfMvKT2wL-HKKZ9RUOw;Expires=Sat, 10-Aug-2013 07:27:48 GMT;Secure
+< Expires: Tue, 30 Jul 2013 16:46:31 GMT
+< Date: Tue, 30 Jul 2013 16:46:31 GMT
+< Location: https://www.google.com/calendar/feeds/default/private/full/i0h3hd7ash2mno0h4srh1vvu9s?gsessionid=G45UfMvKT2wL-HKKZ9RUOw
 < Content-Type: text/html; charset=UTF-8
 < Cache-control: private, max-age=0
 < X-Content-Type-Options: nosniff
@@ -96,28 +96,28 @@
 < </HEAD>
 < <BODY BGCOLOR="#FFFFFF" TEXT="#000000">
 < <H1>Moved Temporarily</H1>
-< The document has moved <A HREF="https://www.google.com/calendar/feeds/default/private/full/fp1j04magk0odf8k2tc074fce4?gsessionid=CWYZzaWKKce27-tnWohbMw">here</A>.
+< The document has moved <A HREF="https://www.google.com/calendar/feeds/default/private/full/i0h3hd7ash2mno0h4srh1vvu9s?gsessionid=G45UfMvKT2wL-HKKZ9RUOw">here</A>.
 < </BODY>
 < </HTML>
   
-> DELETE /calendar/feeds/default/private/full/fp1j04magk0odf8k2tc074fce4?gsessionid=CWYZzaWKKce27-tnWohbMw HTTP/1.1
-> Soup-Debug-Timestamp: 1375108004
-> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 89 (0x7fffe4014c70), SoupSocket 82 (0x8dea20), restarted
+> DELETE /calendar/feeds/default/private/full/i0h3hd7ash2mno0h4srh1vvu9s?gsessionid=G45UfMvKT2wL-HKKZ9RUOw HTTP/1.1
+> Soup-Debug-Timestamp: 1375202791
+> Soup-Debug: SoupSession 1 (0x65a2e0), SoupMessage 89 (0x7fffe003f0a0), SoupSocket 82 (0x775490), restarted
 > Host: www.google.com
-> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> Authorization: GoogleLogin auth=DQAAANUAAACtQA4YYe986jGVKTRKjvf_LQKCUZ-IrhGFxQuS1Zfjc3yd5y6Y5AHV3CUuKKT-NheGlvH_Hh7TOXLccehoG2zbN5TDNxZ-TDfe29rhXBteyCMVj5DvD7eNA2g8k8tM1sbnqitPfsPs-kbfR6iXisr9Yp_3Vt3LqvpmmxJI6AKoXpC08YhV24rZiqJZMMHhxxFr_TeYYtgiPL9vOqjnfhJJI6rGgNQ6eYvVaKo7TzLgbhWkg6Sikn3hbkowxi8_rA9_Bvwwxs77T15OWlsObAigagTJyjsQoAUGISPhESplZQ
 > GData-Version: 2
-> If-Match: "EEoDRgZBfip7JGA6WhNS"
+> If-Match: "EEUCQg1Jdip7JGA6WhNS"
 > Accept-Encoding: gzip, deflate
 > Connection: Keep-Alive
   
 < HTTP/1.1 200 OK
-< Soup-Debug-Timestamp: 1375108004
-< Soup-Debug: SoupMessage 89 (0x7fffe4014c70)
-< Update-Client-Auth: DQAAANAAAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXQ13oqRh_2p87WcrWeAQnJZpM9mi1et5TBGe84GimS7yuU_utQqgxo_ARltmYbhyQQy5oR9U-3hGYR8T6bNTF75
-< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:26:45 GMT
-< Set-Cookie: S=calendar=67Eg6BfzpKIzXfAG46cNhA;Expires=Tue, 06-Aug-2013 06:46:44 GMT;Secure
-< Expires: Mon, 29 Jul 2013 14:26:44 GMT
-< Date: Mon, 29 Jul 2013 14:26:44 GMT
+< Soup-Debug-Timestamp: 1375202791
+< Soup-Debug: SoupMessage 89 (0x7fffe003f0a0)
+< Update-Client-Auth: DQAAANYAAACtQA4YYe986jGVKTRKjvf_q4NwI2V8UT-SSEMjiblkY8jTSCIGQJCo_ZFavemirrG0G2jzg3jjEVC3CQauPSZoNTFtDCw6Eu1-1S6nOyDK2J9zwLcpKLPHGuWk8fzL5JjKgN0Z0HbdhVtGaldMU2XCoc4_I0dsAZNFNzMl12pQ2IhlOpKYk_syrjXgbEIFWB07e6wSu6Mp1XswtWQL95nokCfWJkTHf4YGsR2zpy2736UplfLIVHDJLz7fiJzKG-5nUmoz2a5jdwopbkQ6flW44tTL7okPm_2Y6nqlPi74Mg
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Tue, 30-Jul-2013 16:46:32 GMT
+< Set-Cookie: S=calendar=08UGw44y91rpdvXKiWRC_Q;Expires=Sun, 11-Aug-2013 13:27:57 GMT;Secure
+< Expires: Tue, 30 Jul 2013 16:46:32 GMT
+< Date: Tue, 30 Jul 2013 16:46:32 GMT
 < GData-Version: 2.6
 < Cache-control: private, max-age=0
 < X-Content-Type-Options: nosniff
@@ -128,25 +128,25 @@
 < Content-Type: text/html; charset=UTF-8
 < 
   
-> DELETE /calendar/feeds/default/private/full/d9s8fr5ao8l4ebm1f5qbdmb8gg HTTP/1.1
-> Soup-Debug-Timestamp: 1375108004
-> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 90 (0x7fffd804b0b0), SoupSocket 82 (0x8dea20)
+> DELETE /calendar/feeds/default/private/full/qv6rqh2gmrlee1uevomk3b1jok HTTP/1.1
+> Soup-Debug-Timestamp: 1375202791
+> Soup-Debug: SoupSession 1 (0x65a2e0), SoupMessage 90 (0x7fffe40158e0), SoupSocket 82 (0x775490)
 > Host: www.google.com
-> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> Authorization: GoogleLogin auth=DQAAANUAAACtQA4YYe986jGVKTRKjvf_LQKCUZ-IrhGFxQuS1Zfjc3yd5y6Y5AHV3CUuKKT-NheGlvH_Hh7TOXLccehoG2zbN5TDNxZ-TDfe29rhXBteyCMVj5DvD7eNA2g8k8tM1sbnqitPfsPs-kbfR6iXisr9Yp_3Vt3LqvpmmxJI6AKoXpC08YhV24rZiqJZMMHhxxFr_TeYYtgiPL9vOqjnfhJJI6rGgNQ6eYvVaKo7TzLgbhWkg6Sikn3hbkowxi8_rA9_Bvwwxs77T15OWlsObAigagTJyjsQoAUGISPhESplZQ
 > GData-Version: 2
-> If-Match: "EEoDRgZBfyp7JGA6WhNS"
+> If-Match: "EEUCQg1Jdyp7JGA6WhNS"
 > Accept-Encoding: gzip, deflate
 > Connection: Keep-Alive
   
 < HTTP/1.1 302 Moved Temporarily
-< Soup-Debug-Timestamp: 1375108005
-< Soup-Debug: SoupMessage 90 (0x7fffd804b0b0)
-< Update-Client-Auth: DQAAAM8AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXThTgckY3-hSb61OvnzXxSJ7d2jzDTq4SYJOcXEK19cfN8WmIspK2CGATjYnx3q1Fz9ZgntzaOCi00pQJhkctNT
-< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:26:46 GMT
-< Set-Cookie: S=calendar=bdhFJWSBnr7HJcfrofEsmw;Expires=Sat, 10-Aug-2013 13:08:55 GMT;Secure
-< Expires: Mon, 29 Jul 2013 14:26:45 GMT
-< Date: Mon, 29 Jul 2013 14:26:45 GMT
-< Location: https://www.google.com/calendar/feeds/default/private/full/d9s8fr5ao8l4ebm1f5qbdmb8gg?gsessionid=bdhFJWSBnr7HJcfrofEsmw
+< Soup-Debug-Timestamp: 1375202792
+< Soup-Debug: SoupMessage 90 (0x7fffe40158e0)
+< Update-Client-Auth: DQAAANYAAACtQA4YYe986jGVKTRKjvf_lzf1dm9Ue8N3SJp2J6o695WrE5nMbNLIXgO1GwYSOH0dinvA7V6dAhAIAEim2gLMsmbC2ddMnDUzaVKIGr3_JWCh97kMTIAR1M2IeSsu02b7EZA-X4HjICLw-x5pMnXhR8i08nLbVHSLT_No8fvB518lPWszfELKmW9TYG0-BAxXFzn9IKi_SmDnEv70WeTVk9AKBXEZK8GgbVvG2jwg9IxQwwSgxxH2Am-wKlw1Xh28Ocyi9bXsxw2zvbHLluu_emFBzQJ8Ds6aIurEQIryfg
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Tue, 30-Jul-2013 16:46:33 GMT
+< Set-Cookie: S=calendar=8PAeMbuMXvTRndwL5HsKow;Expires=Sun, 11-Aug-2013 21:06:25 GMT;Secure
+< Expires: Tue, 30 Jul 2013 16:46:32 GMT
+< Date: Tue, 30 Jul 2013 16:46:32 GMT
+< Location: https://www.google.com/calendar/feeds/default/private/full/qv6rqh2gmrlee1uevomk3b1jok?gsessionid=8PAeMbuMXvTRndwL5HsKow
 < Content-Type: text/html; charset=UTF-8
 < Cache-control: private, max-age=0
 < X-Content-Type-Options: nosniff
@@ -161,28 +161,28 @@
 < </HEAD>
 < <BODY BGCOLOR="#FFFFFF" TEXT="#000000">
 < <H1>Moved Temporarily</H1>
-< The document has moved <A HREF="https://www.google.com/calendar/feeds/default/private/full/d9s8fr5ao8l4ebm1f5qbdmb8gg?gsessionid=bdhFJWSBnr7HJcfrofEsmw">here</A>.
+< The document has moved <A HREF="https://www.google.com/calendar/feeds/default/private/full/qv6rqh2gmrlee1uevomk3b1jok?gsessionid=8PAeMbuMXvTRndwL5HsKow">here</A>.
 < </BODY>
 < </HTML>
   
-> DELETE /calendar/feeds/default/private/full/d9s8fr5ao8l4ebm1f5qbdmb8gg?gsessionid=bdhFJWSBnr7HJcfrofEsmw HTTP/1.1
-> Soup-Debug-Timestamp: 1375108005
-> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 90 (0x7fffd804b0b0), SoupSocket 82 (0x8dea20), restarted
+> DELETE /calendar/feeds/default/private/full/qv6rqh2gmrlee1uevomk3b1jok?gsessionid=8PAeMbuMXvTRndwL5HsKow HTTP/1.1
+> Soup-Debug-Timestamp: 1375202792
+> Soup-Debug: SoupSession 1 (0x65a2e0), SoupMessage 90 (0x7fffe40158e0), SoupSocket 82 (0x775490), restarted
 > Host: www.google.com
-> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> Authorization: GoogleLogin auth=DQAAANUAAACtQA4YYe986jGVKTRKjvf_LQKCUZ-IrhGFxQuS1Zfjc3yd5y6Y5AHV3CUuKKT-NheGlvH_Hh7TOXLccehoG2zbN5TDNxZ-TDfe29rhXBteyCMVj5DvD7eNA2g8k8tM1sbnqitPfsPs-kbfR6iXisr9Yp_3Vt3LqvpmmxJI6AKoXpC08YhV24rZiqJZMMHhxxFr_TeYYtgiPL9vOqjnfhJJI6rGgNQ6eYvVaKo7TzLgbhWkg6Sikn3hbkowxi8_rA9_Bvwwxs77T15OWlsObAigagTJyjsQoAUGISPhESplZQ
 > GData-Version: 2
-> If-Match: "EEoDRgZBfyp7JGA6WhNS"
+> If-Match: "EEUCQg1Jdyp7JGA6WhNS"
 > Accept-Encoding: gzip, deflate
 > Connection: Keep-Alive
   
 < HTTP/1.1 200 OK
-< Soup-Debug-Timestamp: 1375108005
-< Soup-Debug: SoupMessage 90 (0x7fffd804b0b0)
-< Update-Client-Auth: DQAAAM4AAAAlDUC-WQgltDHdndYDddr-geSwqup450dH73A2Cl-8pGWAz5Jr6k15x7ETDyyX-gKH9mQLgT8NgpcJeZVMLjIXm1EbZt7eOlczQvHw9uMmD40XUvTc3VuOvT58GOMc7bcR5a-xUVuHMkbEU3g2rCp7Fw3q3lP_QFTWqE59LQAuIJ1V1Mzrj5l73ZloZnprjZsoS6V737LE84MKS3EbUJwdhONiAUU1jBHCL_yAoimGEtnElJMGcEXxs1Pl3YW3Ceub90HJ43ybw11aZdO1mFDL
-< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:26:46 GMT
-< Set-Cookie: S=calendar=eyQxpte4IM2e8PV0u_VLew;Expires=Fri, 09-Aug-2013 14:19:41 GMT;Secure
-< Expires: Mon, 29 Jul 2013 14:26:45 GMT
-< Date: Mon, 29 Jul 2013 14:26:45 GMT
+< Soup-Debug-Timestamp: 1375202792
+< Soup-Debug: SoupMessage 90 (0x7fffe40158e0)
+< Update-Client-Auth: DQAAANYAAACtQA4YYe986jGVKTRKjvf_x9DCxs6Yn1ShR7x5wx1k6e37TbqaZyvZnHbBDD5MjDqIwu2doXjOCD97mfXE8YE20iZQLD52PYbtpDGgujgmHXXGW1wlvqMs94qpgxdE8eYecbfbso9UjfaO5uqfvsRXIhKhe7zV2m0bacHn0JcyH7mkYYXHxHv7XZ_tjZftH-i5SVfC5OZaKOQXxynRfd_Yz5PzuJngGrHUxv5bViZFI3gQCqJikX_t9TXaydAiNvFoCzIgXcLmw11rsBONKvKvzka6NqtM8xqoAdhWs62jAQ
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Tue, 30-Jul-2013 16:46:33 GMT
+< Set-Cookie: S=calendar=744KciCep53jBKPqGTy7YQ;Expires=Mon, 12-Aug-2013 01:58:04 GMT;Secure
+< Expires: Tue, 30 Jul 2013 16:46:32 GMT
+< Date: Tue, 30 Jul 2013 16:46:32 GMT
 < GData-Version: 2.6
 < Cache-control: private, max-age=0
 < X-Content-Type-Options: nosniff

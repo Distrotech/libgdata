@@ -1,22 +1,22 @@
-> DELETE /calendar/feeds/default/private/full/0qrt69rd60alvb0ti70ji14ktk HTTP/1.1
-> Soup-Debug-Timestamp: 1375108023
-> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 104 (0x7fffd804b1a0), SoupSocket 97 (0x8dede0)
+> DELETE /calendar/feeds/default/private/full/oqb4030l7frkp05mse8u33pqgk HTTP/1.1
+> Soup-Debug-Timestamp: 1375202809
+> Soup-Debug: SoupSession 1 (0x65a2e0), SoupMessage 103 (0x7fffe003f640), SoupSocket 95 (0x7fffe0040a30)
 > Host: www.google.com
-> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> Authorization: GoogleLogin auth=DQAAANUAAACtQA4YYe986jGVKTRKjvf_LQKCUZ-IrhGFxQuS1Zfjc3yd5y6Y5AHV3CUuKKT-NheGlvH_Hh7TOXLccehoG2zbN5TDNxZ-TDfe29rhXBteyCMVj5DvD7eNA2g8k8tM1sbnqitPfsPs-kbfR6iXisr9Yp_3Vt3LqvpmmxJI6AKoXpC08YhV24rZiqJZMMHhxxFr_TeYYtgiPL9vOqjnfhJJI6rGgNQ6eYvVaKo7TzLgbhWkg6Sikn3hbkowxi8_rA9_Bvwwxs77T15OWlsObAigagTJyjsQoAUGISPhESplZQ
 > GData-Version: 2
-> If-Match: "EEoDRgZDfCp7JGA6WhNS"
+> If-Match: "EEUCQQRBdyp7JGA6WhNS"
 > Accept-Encoding: gzip, deflate
 > Connection: Keep-Alive
   
 < HTTP/1.1 302 Moved Temporarily
-< Soup-Debug-Timestamp: 1375108023
-< Soup-Debug: SoupMessage 104 (0x7fffd804b1a0)
-< Update-Client-Auth: DQAAAM8AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXThTgckY3-hSb61OvnzXxSJ7d2jzDTq4SYJOcXEK19cfN8WmIspK2CGATjYnx3q1Fz9ZgntzaOCi00pQJhkctNT
-< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:27:04 GMT
-< Set-Cookie: S=calendar=P2FvqNggn2DMywk7he79_w;Expires=Fri, 09-Aug-2013 10:31:15 GMT;Secure
-< Expires: Mon, 29 Jul 2013 14:27:03 GMT
-< Date: Mon, 29 Jul 2013 14:27:03 GMT
-< Location: https://www.google.com/calendar/feeds/default/private/full/0qrt69rd60alvb0ti70ji14ktk?gsessionid=P2FvqNggn2DMywk7he79_w
+< Soup-Debug-Timestamp: 1375202809
+< Soup-Debug: SoupMessage 103 (0x7fffe003f640)
+< Update-Client-Auth: DQAAANYAAACtQA4YYe986jGVKTRKjvf_lzf1dm9Ue8N3SJp2J6o695WrE5nMbNLIXgO1GwYSOH0dinvA7V6dAhAIAEim2gLMsmbC2ddMnDUzaVKIGr3_JWCh97kMTIAR1M2IeSsu02b7EZA-X4HjICLw-x5pMnXhR8i08nLbVHSLT_No8fvB518lPWszfELKmW9TYG0-BAxXFzn9IKi_SmDnEv70WeTVk9AKBXEZK8GgbVvG2jwg9IxQwwSgxxH2Am-wKlw1Xh28Ocyi9bXsxw2zvbHLluu_emFBzQJ8Ds6aIurEQIryfg
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Tue, 30-Jul-2013 16:46:50 GMT
+< Set-Cookie: S=calendar=Uq4hBKxAoNj4T-2qzarcjw;Expires=Tue, 13-Aug-2013 08:41:14 GMT;Secure
+< Expires: Tue, 30 Jul 2013 16:46:49 GMT
+< Date: Tue, 30 Jul 2013 16:46:49 GMT
+< Location: https://www.google.com/calendar/feeds/default/private/full/oqb4030l7frkp05mse8u33pqgk?gsessionid=Uq4hBKxAoNj4T-2qzarcjw
 < Content-Type: text/html; charset=UTF-8
 < Cache-control: private, max-age=0
 < X-Content-Type-Options: nosniff
@@ -31,28 +31,28 @@
 < </HEAD>
 < <BODY BGCOLOR="#FFFFFF" TEXT="#000000">
 < <H1>Moved Temporarily</H1>
-< The document has moved <A HREF="https://www.google.com/calendar/feeds/default/private/full/0qrt69rd60alvb0ti70ji14ktk?gsessionid=P2FvqNggn2DMywk7he79_w">here</A>.
+< The document has moved <A HREF="https://www.google.com/calendar/feeds/default/private/full/oqb4030l7frkp05mse8u33pqgk?gsessionid=Uq4hBKxAoNj4T-2qzarcjw">here</A>.
 < </BODY>
 < </HTML>
   
-> DELETE /calendar/feeds/default/private/full/0qrt69rd60alvb0ti70ji14ktk?gsessionid=P2FvqNggn2DMywk7he79_w HTTP/1.1
-> Soup-Debug-Timestamp: 1375108023
-> Soup-Debug: SoupSession 1 (0x6592c0), SoupMessage 104 (0x7fffd804b1a0), SoupSocket 97 (0x8dede0), restarted
+> DELETE /calendar/feeds/default/private/full/oqb4030l7frkp05mse8u33pqgk?gsessionid=Uq4hBKxAoNj4T-2qzarcjw HTTP/1.1
+> Soup-Debug-Timestamp: 1375202809
+> Soup-Debug: SoupSession 1 (0x65a2e0), SoupMessage 103 (0x7fffe003f640), SoupSocket 95 (0x7fffe0040a30), restarted
 > Host: www.google.com
-> Authorization: GoogleLogin auth=DQAAAM4AAAAlDUC-WQgltDHdndYDddr-1F5rVSSb-XFGPYjU_reMdFj7RP5AC-wIlZUljXXhCvATEt-rmld3pWsbivzPlhqzJUZcnSXxXjuP_PPM9e9TDVfyT7zXdclDNBmUEUHpuRE2pV8FcZ694nfSJrFnDanE5PgCG-Dp1I5RxEuTPBxWWO7bnTkK1M79Pq_KbuLDIXRpK4Q4OopOOwGyiV_NzUDT4fZ6Kw_yLolXssa1hHDvNlxFt5JLoN5p81KiTlQbRKh13BT_PF54cV4v9VkeqkDm
+> Authorization: GoogleLogin auth=DQAAANUAAACtQA4YYe986jGVKTRKjvf_LQKCUZ-IrhGFxQuS1Zfjc3yd5y6Y5AHV3CUuKKT-NheGlvH_Hh7TOXLccehoG2zbN5TDNxZ-TDfe29rhXBteyCMVj5DvD7eNA2g8k8tM1sbnqitPfsPs-kbfR6iXisr9Yp_3Vt3LqvpmmxJI6AKoXpC08YhV24rZiqJZMMHhxxFr_TeYYtgiPL9vOqjnfhJJI6rGgNQ6eYvVaKo7TzLgbhWkg6Sikn3hbkowxi8_rA9_Bvwwxs77T15OWlsObAigagTJyjsQoAUGISPhESplZQ
 > GData-Version: 2
-> If-Match: "EEoDRgZDfCp7JGA6WhNS"
+> If-Match: "EEUCQQRBdyp7JGA6WhNS"
 > Accept-Encoding: gzip, deflate
 > Connection: Keep-Alive
   
 < HTTP/1.1 200 OK
-< Soup-Debug-Timestamp: 1375108023
-< Soup-Debug: SoupMessage 104 (0x7fffd804b1a0)
-< Update-Client-Auth: DQAAAM8AAAAlDUC-WQgltDHdndYDddr-ODYysS96Taaw1NaIYtJAAHEXCZ_GMPV8cwrWmi_-pskMkzDa8yS5h3Lx6BUX8K1OQLMPBV7rpZGHtUa1jYE1jA_4X05rZ800eKz2vNaGdZYoiYJwGnkqCe72OBS-ReHTEtvQtr7VG9ZYkAslaj0Tffvz8pB9ItwBfiM3-4oLSkIEFXx8_eyUlfeNChSfSAvSSqTyG58No5P6HZMRKSJtwsyLwtxAl4BhBMfGX_Uh_z0XCyGMW8beXiNXZ4h5XkwP
-< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Mon, 29-Jul-2013 14:27:04 GMT
-< Set-Cookie: S=calendar=wFPZRfM-e5C77dPtLdpNTw;Expires=Thu, 08-Aug-2013 05:21:32 GMT;Secure
-< Expires: Mon, 29 Jul 2013 14:27:03 GMT
-< Date: Mon, 29 Jul 2013 14:27:03 GMT
+< Soup-Debug-Timestamp: 1375202809
+< Soup-Debug: SoupMessage 103 (0x7fffe003f640)
+< Update-Client-Auth: DQAAANYAAACtQA4YYe986jGVKTRKjvf_q4NwI2V8UT-SSEMjiblkY8jTSCIGQJCo_ZFavemirrG0G2jzg3jjEVC3CQauPSZoNTFtDCw6Eu1-1S6nOyDK2J9zwLcpKLPHGuWk8fzL5JjKgN0Z0HbdhVtGaldMU2XCoc4_I0dsAZNFNzMl12pQ2IhlOpKYk_syrjXgbEIFWB07e6wSu6Mp1XswtWQL95nokCfWJkTHf4YGsR2zpy2736UplfLIVHDJLz7fiJzKG-5nUmoz2a5jdwopbkQ6flW44tTL7okPm_2Y6nqlPi74Mg
+< Set-Cookie: DO_NOT_CACHE_RESPONSE=true;Expires=Tue, 30-Jul-2013 16:46:50 GMT
+< Set-Cookie: S=calendar=prn2NDnInSXbDnfH6nCI5A;Expires=Fri, 09-Aug-2013 21:40:52 GMT;Secure
+< Expires: Tue, 30 Jul 2013 16:46:49 GMT
+< Date: Tue, 30 Jul 2013 16:46:49 GMT
 < GData-Version: 2.6
 < Cache-control: private, max-age=0
 < X-Content-Type-Options: nosniff
