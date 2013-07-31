@@ -179,6 +179,12 @@ set_up_query_all_contacts (QueryAllContactsData *data, gconstpointer service)
 	g_object_unref (contact);
 
 	gdata_mock_server_end_trace (mock_server);
+
+	/* It takes a few seconds for the contacts to reliably propagate around Google's servers. Distributed systems are so fun. Not.
+	 * Thankfully, we don't have to wait when running against the mock server. */
+	if (gdata_mock_server_get_enable_online (mock_server) == TRUE) {
+		g_usleep (G_USEC_PER_SEC * 5);
+	}
 }
 
 static void
