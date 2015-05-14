@@ -1,0 +1,72 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "Task",
+	"type": "object",
+	"properties": {
+		"title": {
+			"type": "string"
+		},
+		"id": {
+			"type": "string",
+			"minLength": 1
+		},
+		"updated": {
+			"type": "string",
+			"minLength": 1,
+			"format": "date-time"
+		},
+		"etag": {
+			"type": "string",
+			"minLength": 1
+		},
+		"selfLink": {
+			"type": "string",
+			"minLength": 1,
+			"format": "uri"
+		},
+		"kind": {
+			"type": "string",
+			"minLength": 1,
+			"enum": [
+				"tasks#task"
+			]
+		},
+		"parent": {
+			"type": "string"
+		},
+		"position": {
+			"type": "string",
+			"pattern": "[0-9]+"
+		},
+		"notes": {
+			"type": "string"
+		},
+		"status": {
+			"type": "string",
+			"enum": [
+				"needsAction"
+			]
+		},
+		"due": {
+			"type": "string",
+			"minLength": 1,
+			"format": "date-time"
+		},
+		"completed": {
+			"type": "string",
+			"minLength": 1,
+			"format": "date-time"
+		},
+		"deleted": {
+			"type": "boolean"
+		},
+		"hidden": {
+			"type": "boolean"
+		}
+	},
+	"required": [
+		"id",
+		"kind",
+		"updated"
+	]
+}

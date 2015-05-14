@@ -25,6 +25,8 @@
 #include "common.h"
 #include "gdata-dummy-authorizer.h"
 
+#include "tasks.schema.json.h"
+
 static UhmServer *mock_server = NULL;  /* owned */
 
 #undef CLIENT_ID  /* from common.h */
@@ -420,6 +422,35 @@ test_task_parser_minimal (void)
 	g_assert_cmpint (gdata_link_get_length (self_link), ==, -1);
 
 	g_object_unref (task);
+}
+
+/* Test the task parser with generated JSON. */
+static void
+test_task_parser_generated (void)
+{
+	guint i;
+
+	for (i = 0; i < G_N_ELEMENTS (json_instances); i++) {
+		GDataTasksTask *task = NULL;  /* owned */
+		GError *error = NULL;
+
+		task = GDATA_TASKS_TASK (gdata_parsable_new_from_json (GDATA_TYPE_TASKS_TASK,
+		                                                       json_instances[i].json, -1,
+		                                                       &error));
+
+		if (json_instances[i].is_valid) {
+			g_assert_no_error (error);
+			g_assert (GDATA_IS_TASKS_TASK (task));
+			gdata_test_compare_kind (GDATA_ENTRY (task), "tasks#task", NULL);
+
+			g_clear_object (&task);
+		} else {
+			g_assert (error != NULL);  /* TODO */
+			g_assert (task == NULL);
+
+			g_clear_error (&error);
+		}
+	}
 }
 
 /* Test the task parser with a maximal number of properties specified. */
@@ -1412,6 +1443,8 @@ main (int argc, char *argv[])
 	g_test_add_func ("/tasks/task/escaping", test_task_escaping);
 	g_test_add_func ("/tasks/task/parser/minimal",
 	                 test_task_parser_minimal);
+	g_test_add_func ("/tasks/task/parser/generated",
+	                 test_task_parser_generated);
 	g_test_add_func ("/tasks/task/parser/normal", test_task_parser_normal);
 
 	g_test_add_func ("/tasks/tasklist/properties",
